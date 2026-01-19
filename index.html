@@ -1,4 +1,32 @@
-<label>Beschäftigungsart</label>
-<select id="employeeType">
-  <option value="normal">Normaler Arbeitnehmer</option>
-</select>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>German Payroll Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>German Payroll Calculator</h1>
+
+  <label for="brutto">Bruttogehalt (€)</label>
+  <input type="number" id="brutto" placeholder="z.B. 3000">
+
+  <label for="zuschlaege">Zuschläge (€)</label>
+  <input type="number" id="zuschlaege" value="0">
+
+  <button onclick="calculateNetto()">Berechnen</button>
+
+  <h2>Ergebnis</h2>
+  <p id="output">Bitte Werte eingeben</p>
+
+  <p>
+    <small>
+      Hinweis: Dies ist ein Lern- und Demonstrationstool.
+      Alle Berechnungen sind vereinfacht und nicht rechtsverbindlich.
+    </small>
+  </p>
+
+  <script src="script.js"></script>
+</body>
+</html>
