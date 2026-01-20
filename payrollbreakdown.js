@@ -1,7 +1,9 @@
 document.getElementById("output").innerHTML =
   "<strong>Brutto Bestandteile</strong><br>" +
   "Grundgehalt: " + brutto.toFixed(2) + " €<br>" +
-  "Zuschläge: " + zuschlaege.toFixed(2) + " €<br>" +
+  "Nachtschichtzuschlag: " + Nachtschichtzuschlag.toFixed(2) + " €<br>" +
+  "Ferientagzuschlag: " + Ferientagzuschlag.toFixed(2) + " €<br>" +
+  "Sonntagzschlag: " + Sonntagzschlag.toFixed(2) + " €<br>" +
   "Überstunden: " + ueberstunden.toFixed(2) + " €<br>" +
   "NFS-Zuschläge: " + nfs.toFixed(2) + " €<br>" +
   "<strong>Gesamtbrutto: " + gesamtBrutto.toFixed(2) + " €</strong><br><br>" +
@@ -15,3 +17,4 @@ document.getElementById("output").innerHTML =
   "Jobticket: " + jobticket.toFixed(2) + " €<br><br>" +
 
   "<strong>Netto: " + netto.toFixed(2) + " €</strong>";
+
