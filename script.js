@@ -72,3 +72,14 @@ function calculateNetto() {
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
+window.onload = function() {
+  // define calculateNetto here
+  function calculateNetto() {
+    // your calculation code
+  }
+
+  // optional: attach button handler programmatically
+  document.querySelector('button').onclick = calculateNetto;
+};
+
