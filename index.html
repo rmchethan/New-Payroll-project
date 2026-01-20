@@ -1,62 +1,82 @@
-<table id="inputTable">
-  <tr>
-    <td><label for="brutto">Bruttogehalt (€)</label></td>
-    <td><input type="number" id="brutto" placeholder="z.B. 3000"></td>
-  </tr>
-  <tr>
-    <td><label>Steuerklasse</label></td>
-    <td>
-      <select id="steuerklasse">
-        <option value="1">Steuerklasse I</option>
-        <option value="2">Steuerklasse II</option>
-        <option value="3">Steuerklasse III</option>
-        <option value="4">Steuerklasse IV</option>
-        <option value="5">Steuerklasse V</option>
-        <option value="6">Steuerklasse VI</option>
-      </select>
-    </td>
-  </tr>
-  <tr>
-    <td><label for="Ueberstunden">ueberstunden (Stunden)</label></td>
-    <td><input type="number" id="ueberstunden" value="0"></td>
-  </tr>
-  <tr>
-    <td><label>VWL AG Zuschuss (€)</label></td>
-    <td><input type="number" id="vwl" value="0"></td>
-  </tr>
-  <tr>
-    <td><label>Nachtstunden 25%</label></td>
-    <td><input type="number" id="nacht25" value="0"></td>
-  </tr>
-  <tr>
-    <td><label>Nachtstunden 40%</label></td>
-    <td><input type="number" id="nacht40" value="0"></td>
-  </tr>
-  <tr>
-    <td><label>Sonntagstunden 50%</label></td>
-    <td><input type="number" id="sonntag50" value="0"></td>
-  </tr>
-  <tr>
-    <td><label>Feiertagstunden 125%</label></td>
-    <td><input type="number" id="feiertag125" value="0"></td>
-  </tr>
-  <tr>
-    <td><label for="jobticket">Jobticket (€)</label></td>
-    <td><input type="number" id="jobticket" value="0"></td>
-  </tr>
-  <tr>
-    <td><label>Beschäftigungsart</label></td>
-    <td>
-      <select id="employeeType">
-        <option value="normal">Normaler Arbeitnehmer</option>
-        <option value="praktikant">Praktikant</option>
-      </select>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" style="text-align:center">
-      <button onclick="calculateNetto()">Berechnen</button>
-    </td>
-  </tr>
-</table>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>German Payroll Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+  <h1>German Payroll Calculator</h1>
+
+  <!-- ===== Input Table ===== -->
+  <table id="inputTable">
+    <tr>
+      <td><label for="brutto">Bruttogehalt (€)</label></td>
+      <td><input type="number" id="brutto" placeholder="z.B. 3000"></td>
+    </tr>
+    <tr>
+      <td><label>Steuerklasse</label></td>
+      <td>
+        <select id="steuerklasse">
+          <option value="1">Steuerklasse I</option>
+          <option value="2">Steuerklasse II</option>
+          <option value="3">Steuerklasse III</option>
+          <option value="4">Steuerklasse IV</option>
+          <option value="5">Steuerklasse V</option>
+          <option value="6">Steuerklasse VI</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td><label for="ueberstunden">ueberstunden (Stunden)</label></td>
+      <td><input type="number" id="ueberstunden" value="0"></td>
+    </tr>
+    <tr>
+      <td><label>VWL AG Zuschuss (€)</label></td>
+      <td><input type="number" id="vwl" value="0"></td>
+    </tr>
+    <tr>
+      <td><label>Nachtstunden 25%</label></td>
+      <td><input type="number" id="nacht25" value="0"></td>
+    </tr>
+    <tr>
+      <td><label>Nachtstunden 40%</label></td>
+      <td><input type="number" id="nacht40" value="0"></td>
+    </tr>
+    <tr>
+      <td><label>Sonntagstunden 50%</label></td>
+      <td><input type="number" id="sonntag50" value="0"></td>
+    </tr>
+    <tr>
+      <td><label>Feiertagstunden 125%</label></td>
+      <td><input type="number" id="feiertag125" value="0"></td>
+    </tr>
+    <tr>
+      <td><label for="jobticket">Jobticket (€)</label></td>
+      <td><input type="number" id="jobticket" value="0"></td>
+    </tr>
+    <tr>
+      <td><label>Beschäftigungsart</label></td>
+      <td>
+        <select id="employeeType">
+          <option value="normal">Normaler Arbeitnehmer</option>
+          <option value="praktikant">Praktikant</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align:center">
+        <button onclick="calculateNetto()">Berechnen</button>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ===== Output ===== -->
+  <h2>Ergebnis</h2>
+  <p id="output">Bitte Werte eingeben</p>
+
+  <!-- ===== JS ===== -->
+  <script src="script.js"></script>
+</body>
+</html>
