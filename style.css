@@ -4,8 +4,13 @@ body {
   margin: auto;
 }
 
-input, button {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
+.input-group {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column; /* stack label above input */
+}
+
+.input-group label {
+  margin-bottom: 3px;
+  font-weight: bold;
 }
