@@ -22,6 +22,7 @@ function calculateNetto() {
 
   // ===== Überstunden (steuerpflichtig, NOT zuschlagsrelevant) =====
   let ueberstundenPay = ueberstunden * stundenlohn;
+  let ueberstundenZuschlag = ueberstundenPay * 0.25;
 
   // ===== Zuschläge (steuerfrei, based on Grundlohn only) =====
   let nacht25Pay = nacht25 * stundenlohn * 0.25;
@@ -89,3 +90,4 @@ function calculateNetto() {
 
     "<strong>Netto: " + netto.toFixed(2) + " €</strong>";
 }
+
