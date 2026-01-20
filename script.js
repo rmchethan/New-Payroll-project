@@ -1,5 +1,4 @@
 function calculateNetto() {
-  console.log("Button clicked");
 
   let brutto = Number(document.getElementById("brutto").value);
   let steuerklasse = document.getElementById("steuerklasse").value;
@@ -19,12 +18,12 @@ function calculateNetto() {
   // Stundenlohn
   let stundenlohn = grundlohn / 160;
 
-  // Überstunden
+  // Überstunden (steuerpflichtig)
   let ueberstundenPay = ueberstunden * stundenlohn;
   let ueberstundenZuschlag = ueberstundenPay * 0.25;
 
-  // Zuschläge (steuerfrei)
-  let zuschlaege =
+  // Steuerfreie Zuschläge
+  let steuerfreieZuschlaege =
     (nacht25 * stundenlohn * 0.25) +
     (nacht40 * stundenlohn * 0.40) +
     (sonntag50 * stundenlohn * 0.50) +
@@ -32,6 +31,7 @@ function calculateNetto() {
 
   // Steuerklasse
   let steuersatz = 0.20;
+  if (steuerklasse === "2") steuersatz = 0.18;
   if (steuerklasse === "3") steuersatz = 0.12;
   if (steuerklasse === "5") steuersatz = 0.26;
   if (steuerklasse === "6") steuersatz = 0.30;
@@ -43,14 +43,21 @@ function calculateNetto() {
 
   let lohnsteuer = steuerpflichtigesBrutto * steuersatz;
 
-  let gesamtBrutto = steuerpflichtigesBrutto + zuschlaege;
+  let gesamtBrutto =
+    steuerpflichtigesBrutto +
+    steuerfreieZuschlaege;
 
-  let netto = gesamtBrutto - lohnsteuer - jobticket;
+  let netto =
+    gesamtBrutto -
+    lohnsteuer -
+    jobticket;
 
   document.getElementById("output").innerHTML =
-    "Grundlohn: " + grundlohn.toFixed(2) + " €<br>" +
-    "Überstunden inkl. Zuschlag: " + (ueberstundenPay + ueberstundenZuschlag).toFixed(2) + " €<br>" +
-    "Steuerfreie Zuschläge: " + zuschlaege.toFixed(2) + " €<br>" +
-    "Lohnsteuer: " + lohnsteuer.toFixed(2) + " €<br><br>" +
-    "<strong>Netto: " + netto.toFixed(2) + " €</strong>";
+    "<strong>Grundlohn:</strong> " + grundlohn.toFixed(2) + " €<br>" +
+    "<strong>Überstunden inkl. Zuschlag:</strong> " +
+    (ueberstundenPay + ueberstundenZuschlag).toFixed(2) + " €<br>" +
+    "<strong>Steuerfreie Zuschläge:</strong> " +
+    steuerfreieZuschlaege.toFixed(2) + " €<br>" +
+    "<strong>Lohnsteuer:</strong> " + lohnsteuer.toFixed(2) + " €<br><br>" +
+    "<strong>Netto:</strong> " + netto.toFixed(2) + " €";
 }
