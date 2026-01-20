@@ -11,7 +11,7 @@ function calculateNetto() {
   let sonntag50 = Number(document.getElementById("sonntag50").value);
   let feiertag125 = Number(document.getElementById("feiertag125").value);
 
-  let jobticket = Number(document.getElementById("Jobtickets").value);
+  let jobticket = Number(document.getElementById("jobtickets").value);
 
   // ===== Grundlohn (Zuschlagsbasis) =====
   let grundlohn = brutto + vwl;
@@ -99,9 +99,10 @@ switch (steuerklasse) {
     "RV: " + rv.toFixed(2) + " €<br>" +
     "AV: " + av.toFixed(2) + " €<br>" +
     "PV: " + pv.toFixed(2) + " €<br>" +
-    "Jobticket: " + jobticket.toFixed(2) + " €<br><br>" +
+    "jobticket: " + jobticket.toFixed(2) + " €<br><br>" +
 
     "<strong>Netto: " + netto.toFixed(2) + " €</strong>";
 }
+
 
 
