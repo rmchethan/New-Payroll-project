@@ -1,25 +1,27 @@
 function calculateNetto() {
 
   let brutto = Number(document.getElementById("brutto").value);
-  let Überstunden = Number(document.getElementById("Überstunden").value);
+  let Ueberstunden = Number(document.getElementById("Ueberstunden").value);
   let Nachtschichtzuschlag = Number(document.getElementById("Nachtschichtzuschlag").value)
   let Ferientagzuschlag = Number(document.getElementById("Ferientagzuschlag").value)
   let Sonntagzschlag = Number(document.getElementById("Sonntagzschlag").value)
   let jobticket = Number(document.getElementById("jobticket").value);
 
-  let steuer = brutto * 0.20;
-  let sozial = brutto * 0.20;
+// Gesamtbrutto
+let gesamtBrutto = brutto + zuschlaege + ueberstunden + nfs;
 
-  let netto = brutto + zuschlaege - steuer - sozial;
+// Sozialversicherungen (vereinfachte Annahmen)
+let kv = gesamtBrutto * 0.073;   // Krankenversicherung
+let rv = gesamtBrutto * 0.093;   // Rentenversicherung
+let av = gesamtBrutto * 0.012;   // Arbeitslosenversicherung
+let pv = gesamtBrutto * 0.015;   // Pflegeversicherung
 
-  document.getElementById("output").innerHTML =
-    "Netto: " + netto.toFixed(2) + " €";
+let sozialversicherung = kv + rv + av + pv;
+
+// Steuer (vereinfacht)
+let lohnsteuer = gesamtBrutto * 0.20;
+
+// Netto
+let netto = gesamtBrutto - lohnsteuer - sozialversicherung - jobticket;
 }
 
-let employeeType = document.getElementById("employeeType").value;
-
-if (employeeType === "normal") {
-  steuer = brutto * 0.20;
-  sozial = brutto * 0.20;
-
-}
