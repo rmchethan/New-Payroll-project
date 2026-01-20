@@ -1,67 +1,56 @@
+/* Input table */
 #inputTable {
   border-collapse: collapse;
-  width: 400px;        /* table width */
-  margin: 10px auto;   /* center table */
+  width: 400px;
+  margin: 10px auto;
   font-family: Arial, sans-serif;
   font-size: 14px;
 }
-
 #inputTable td {
   padding: 5px 10px;
 }
-
 #inputTable label {
   font-weight: bold;
 }
-
 #inputTable input, #inputTable select {
-  width: 100%;           /* inputs fill cell */
+  width: 100%;
   box-sizing: border-box;
   padding: 4px;
 }
-
 #inputTable button {
   padding: 6px 12px;
   font-weight: bold;
   cursor: pointer;
 }
 
-
+/* Output table */
 #output table {
   border-collapse: collapse;
-  table-layout: fixed;      /* fixes column width ratio */
-  width: 400px;             /* fixed width for neat layout */
-  margin: 10px auto;        /* centers the table */
+  table-layout: fixed;
+  width: 400px;
+  margin: 10px auto;
   font-family: Arial, sans-serif;
   font-size: 14px;
 }
-
 #output th, #output td {
   border: 1px solid #666;
   padding: 5px 8px;
   overflow: hidden;
 }
-
 #output th {
   background-color: #f0f0f0;
-  text-align: left;        /* headers left-aligned */
+  text-align: left;
 }
-
 #output td {
-  text-align: right;       /* numbers right-aligned */
+  text-align: right;
 }
-
 #output tr:last-child td {
-  font-weight: bold;       /* highlight Netto row */
+  font-weight: bold;
   background-color: #e0f7fa;
 }
-
-/* Optional: adjust first column width */
 #output th:first-child, #output td:first-child {
-  width: 250px;            /* Komponente column */
+  width: 250px;
 }
 #output th:last-child, #output td:last-child {
-  width: 150px;            /* Betrag column */
+  width: 150px;
 }
-
-
