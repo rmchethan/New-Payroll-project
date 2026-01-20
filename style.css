@@ -16,5 +16,6 @@
 }
 
 #output td {
-  text-align: right;   /* numbers aligned right */
+  text-align: left;   /* numbers aligned left */
 }
+
