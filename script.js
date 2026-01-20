@@ -3,7 +3,7 @@ function calculateNetto() {
   // ===== Inputs =====
   let brutto = Number(document.getElementById("brutto").value);
   let steuerklasse = document.getElementById("steuerklasse").value;
-  let ueberstunden = Number(document.getElementById("Ueberstunden").value);
+  let ueberstunden = Number(document.getElementById("ueberstunden").value);
   let vwl = Number(document.getElementById("vwl").value);
 
   let nacht25 = Number(document.getElementById("nacht25").value);
@@ -72,3 +72,4 @@ function calculateNetto() {
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
