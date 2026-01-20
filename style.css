@@ -1,3 +1,15 @@
+body {
+  font-family: Arial;
+  max-width: 500px;
+  margin: auto;
+}
+
+input, button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
 #output table {
   border-collapse: collapse;
   table-layout: fixed;      /* fixes column width ratio */
@@ -34,3 +46,4 @@
 #output th:last-child, #output td:last-child {
   width: 150px;            /* Betrag column */
 }
+
