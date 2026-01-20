@@ -1,14 +1,31 @@
-body {
-  font-family: Arial;
-  max-width: 500px;
-  margin: auto;
+#inputTable {
+  border-collapse: collapse;
+  width: 400px;        /* table width */
+  margin: 10px auto;   /* center table */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
 }
 
-input, button {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
+#inputTable td {
+  padding: 5px 10px;
 }
+
+#inputTable label {
+  font-weight: bold;
+}
+
+#inputTable input, #inputTable select {
+  width: 100%;           /* inputs fill cell */
+  box-sizing: border-box;
+  padding: 4px;
+}
+
+#inputTable button {
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 
 #output table {
   border-collapse: collapse;
@@ -46,4 +63,5 @@ input, button {
 #output th:last-child, #output td:last-child {
   width: 150px;            /* Betrag column */
 }
+
 
