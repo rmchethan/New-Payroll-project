@@ -1,21 +1,36 @@
 #output table {
   border-collapse: collapse;
-  width: auto;          /* shrink to content */
-  max-width: 600px;     /* optional, prevents it from stretching too much */
-  margin: 10px auto;    /* center the table */
+  table-layout: fixed;      /* fixes column width ratio */
+  width: 400px;             /* fixed width for neat layout */
+  margin: 10px auto;        /* centers the table */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
 }
 
 #output th, #output td {
   border: 1px solid #666;
-  padding: 5px 10px;
+  padding: 5px 8px;
+  overflow: hidden;
 }
 
 #output th {
   background-color: #f0f0f0;
-  text-align: left;    /* headers aligned left */
+  text-align: left;        /* headers left-aligned */
 }
 
 #output td {
-  text-align: left;   /* numbers aligned left */
+  text-align: right;       /* numbers right-aligned */
 }
 
+#output tr:last-child td {
+  font-weight: bold;       /* highlight Netto row */
+  background-color: #e0f7fa;
+}
+
+/* Optional: adjust first column width */
+#output th:first-child, #output td:first-child {
+  width: 250px;            /* Komponente column */
+}
+#output th:last-child, #output td:last-child {
+  width: 150px;            /* Betrag column */
+}
