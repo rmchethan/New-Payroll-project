@@ -19,7 +19,7 @@ function calculateNetto() {
   // ===== Stundenlohn =====
   let stundenlohn = grundlohn / 160;
 
-  // ===== Überstunden =====
+  // ===== Überstunden (steuerpflichtig) =====
   let ueberstundenPay = ueberstunden * stundenlohn;
   let ueberstundenZuschlag = ueberstundenPay * 0.25;
 
@@ -54,7 +54,7 @@ function calculateNetto() {
   let outputHTML = `
   <table border="1" cellpadding="5">
     <tr><th>Komponente</th><th>Betrag (€)</th></tr>
-    <tr><td>Grundlohn (Bruttogehalt + VWL)</td><td>${grundlohn.toFixed(2)}</td></tr>
+    <tr><td>Grundlohn (Brutto + VWL)</td><td>${grundlohn.toFixed(2)}</td></tr>
     <tr><td>Überstunden</td><td>${ueberstundenPay.toFixed(2)}</td></tr>
     <tr><td>Überstundenzuschlag (25%)</td><td>${ueberstundenZuschlag.toFixed(2)}</td></tr>
     <tr><td>Nachtstunden 25%</td><td>${nacht25Pay.toFixed(2)}</td></tr>
@@ -72,14 +72,3 @@ function calculateNetto() {
 
   document.getElementById("output").innerHTML = outputHTML;
 }
-
-window.onload = function() {
-  // define calculateNetto here
-  function calculateNetto() {
-    // your calculation code
-  }
-
-  // optional: attach button handler programmatically
-  document.querySelector('button').onclick = calculateNetto;
-};
-
