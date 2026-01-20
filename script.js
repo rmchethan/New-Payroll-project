@@ -35,9 +35,9 @@ function calculateNetto() {
     "<strong>Brutto-Bestandteile</strong><br>" +
     "Grundgehalt: " + brutto.toFixed(2) + " €<br>" +
     "Überstunden: " + ueberstunden.toFixed(2) + " €<br>" +
-    "Nachtshichtzuschlag: " + nachtschicht.toFixed(2) + " €<br>" +
+    "Nachtschichtzuschlag: " + nachtschicht.toFixed(2) + " €<br>" +
     "Ferientagzuschlag: " + ferientag.toFixed(2) + " €<br>" +
-    "Sonntagzuschlag: " + sonntag.toFixed(2) + " €<br>" +
+    "Sonntagszuschlag: " + sonntag.toFixed(2) + " €<br>" +
     "<strong>Gesamtbrutto: " + gesamtBrutto.toFixed(2) + " €</strong><br><br>" +
 
     "<strong>Abzüge</strong><br>" +
@@ -50,4 +50,3 @@ function calculateNetto() {
 
     "<strong>Netto: " + netto.toFixed(2) + " €</strong>";
 }
-
