@@ -90,12 +90,16 @@ let arbeitgeberGesamt =
     <tr><td>Umlage 2 (0.75%)</td><td>${umlage2.toFixed(2)} €</td></tr>
     <tr><td>Insolvenzgeld (0.6%)</td><td>${insolvenzgeld.toFixed(2)} €</td></tr>
     <tr><td><strong>Arbeitgeber gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)} €</strong></td></tr>
+    <tr><th colspan="2">Gesamtkosten Arbeitgeber</th></tr>
+    <tr><td>Brutto + Arbeitgeberanteile</td><td>${(gesamtBrutto + arbeitgeberGesamt).toFixed(2)} €</td></tr>
+
 `  ;
   </table>
   `;
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
 
 
 
