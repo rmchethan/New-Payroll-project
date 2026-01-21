@@ -61,16 +61,22 @@ function calculateNetto() {
     <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
 
     <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-    <tr><td>AG gesamt</td><td>${arbeitgeberGesamt.toFixed(2)}</td></tr>
-    <tr><td><strong>Gesamtkosten AG</strong></td>
-        <td><strong>${(gesamtBrutto + arbeitgeberGesamt).toFixed(2)}</strong></td>
-    </tr>
+    <tr><td>KV AG (7.3%)</td><td>${ag_kv.toFixed(2)}</td></tr>
+    <tr><td>RV AG (9.3%)</td><td>${ag_rv.toFixed(2)}</td></tr>
+    <tr><td>AV AG (1.3%)</td><td>${ag_av.toFixed(2)}</td></tr>
+    <tr><td>PV AG (1.525%)</td><td>${ag_pv.toFixed(2)}</td></tr>
+    <tr><td>Umlage 1 (2.8%)</td><td>${umlage1.toFixed(2)}</td></tr>
+    <tr><td>Umlage 2 (0.75%)</td><td>${umlage2.toFixed(2)}</td></tr>
+    <tr><td>Insolvenzgeld (0.6%)</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
+    <tr><td><strong>AG Gesamt</strong></td><td>${arbeitgeberGesamt.toFixed(2)}</td></tr>
+    <tr><td><strong>Gesamtkosten AG</strong></td><td>${(gesamtBrutto + arbeitgeberGesamt).toFixed(2)}</td></tr>
   </table>
   `;
 
   document.getElementById("output").innerHTML = outputHTML;
 
   }
+
 
 
 
