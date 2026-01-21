@@ -28,11 +28,28 @@ function calculateNetto() {
   let steuerpflichtigesBrutto =
     grundlohn + ueberstundenPay + ueberstundenZuschlag;
 
-  let steuersatz = 0.20;
-  if (steuerklasse === "2") steuersatz = 0.18;
-  if (steuerklasse === "3") steuersatz = 0.12;
-  if (steuerklasse === "5") steuersatz = 0.26;
-  if (steuerklasse === "6") steuersatz = 0.30;
+  let steuersatz;
+
+switch(steuerklasse) {
+  case "1":
+  case "4":
+    steuersatz = 0.20;
+    break;
+  case "2":
+    steuersatz = 0.18;
+    break;
+  case "3":
+    steuersatz = 0.12;
+    break;
+  case "5":
+    steuersatz = 0.26;
+    break;
+  case "6":
+    steuersatz = 0.30;
+    break;
+  default:
+    steuersatz = 0.20; // fallback
+}
   let lohnsteuer = steuerpflichtigesBrutto * steuersatz;
 
   let netto =
@@ -80,6 +97,7 @@ function calculateNetto() {
   document.getElementById("output").innerHTML = outputHTML;
 
   }
+
 
 
 
