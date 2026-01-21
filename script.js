@@ -44,6 +44,19 @@ function calculateNetto() {
   // ===== Lohnsteuer =====
   let lohnsteuer = steuerpflichtigesBrutto * steuersatz;
 
+  // ===== Arbeitgeberanteile =====
+let ag_kv = steuerpflichtigesBrutto * 0.073;
+let ag_rv = steuerpflichtigesBrutto * 0.093;
+let ag_av = steuerpflichtigesBrutto * 0.013;
+let ag_pv = steuerpflichtigesBrutto * 0.01525;
+
+let umlage1 = steuerpflichtigesBrutto * 0.028;
+let umlage2 = steuerpflichtigesBrutto * 0.0075;
+let insolvenzgeld = steuerpflichtigesBrutto * 0.006;
+
+let arbeitgeberGesamt =
+  ag_kv + ag_rv + ag_av + ag_pv + umlage1 + umlage2 + insolvenzgeld;
+
   // ===== Gesamtbrutto =====
   let gesamtBrutto = steuerpflichtigesBrutto + steuerfreieZuschlaege;
 
@@ -69,7 +82,20 @@ function calculateNetto() {
     <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
   </table>
   `;
+  outputHTML += `
+<tr><th colspan="2">Arbeitgeberanteile</th></tr>
+<tr><td>KV Arbeitgeber (7.3%)</td><td>${ag_kv.toFixed(2)} €</td></tr>
+<tr><td>RV Arbeitgeber (9.3%)</td><td>${ag_rv.toFixed(2)} €</td></tr>
+<tr><td>AV Arbeitgeber (1.3%)</td><td>${ag_av.toFixed(2)} €</td></tr>
+<tr><td>PV Arbeitgeber (1.525%)</td><td>${ag_pv.toFixed(2)} €</td></tr>
+<tr><td>Umlage 1 (2.8%)</td><td>${umlage1.toFixed(2)} €</td></tr>
+<tr><td>Umlage 2 (0.75%)</td><td>${umlage2.toFixed(2)} €</td></tr>
+<tr><td>Insolvenzgeld (0.6%)</td><td>${insolvenzgeld.toFixed(2)} €</td></tr>
+<tr><td><strong>Arbeitgeber gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)} €</strong></td></tr>
+`;
+
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
 
