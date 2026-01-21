@@ -11,6 +11,18 @@
 
   <!-- ===== Input Table ===== -->
   <table id="inputTable">
+    <label for="employeeType">Beschäftigungsart</label>
+<select id="employeeType" onchange="toggleEmployeeType()">
+    <option value="normal">Normaler Arbeitnehmer</option>
+    <option value="praktikant">Praktikant</option>
+    <option value="minijob">Minijob (520 €)</option>
+</select>
+    <div id="minijobRVBlock" style="display:none">
+  <label>
+    <input type="checkbox" id="minijobRV" checked>
+    Arbeitnehmer zahlt 3.6% Rentenversicherung
+  </label>
+</div>
     <tr>
       <td><label for="brutto">Bruttogehalt (€)</label></td>
       <td><input type="number" id="brutto" placeholder="z.B. 3000"></td>
@@ -18,14 +30,17 @@
     <tr>
       <td><label>Steuerklasse</label></td>
       <td>
-        <select id="steuerklasse">
-          <option value="1">Steuerklasse I</option>
-          <option value="2">Steuerklasse II</option>
-          <option value="3">Steuerklasse III</option>
-          <option value="4">Steuerklasse IV</option>
-          <option value="5">Steuerklasse V</option>
-          <option value="6">Steuerklasse VI</option>
-        </select>
+       <div id="steuerklasseBlock">
+    <label for="steuerklasse">Steuerklasse</label>
+  <select id="steuerklasse">
+    <option value="1">I</option>
+    <option value="2">II</option>
+    <option value="3">III</option>
+    <option value="4">IV</option>
+    <option value="5">V</option>
+    <option value="6">VI</option>
+  </select>
+</div>
       </td>
     </tr>
     <tr>
@@ -59,14 +74,6 @@
     <tr>
       <td><label>Beschäftigungsart</label></td>
       <td>
-        <select id="employeeType">
-          <option value="normal">Normaler Arbeitnehmer</option>
-          <option value="praktikant">Praktikant</option>
-          <option value="minijob">Minijob (520 €)</option>
-          <label>
-          <input type="checkbox" id="rvOptIn"> Mitarbeiter zahlt 3.6% Rentenversicherung
-          </label>
-        </select>
       </td>
     </tr>
     <tr>
@@ -90,6 +97,7 @@
     Alle Berechnungen sind vereinfacht und nicht rechtsverbindlich.
   </small>
 </p>
+
 
 
 
