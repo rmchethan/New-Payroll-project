@@ -7,85 +7,98 @@
 </head>
 <body>
 
-  <h1>German Payroll Calculator</h1>
+<h1>German Payroll Calculator</h1>
 
-  <!-- ===== Input Table ===== -->
-  <table id="inputTable">
-    <label for="employeeType">Beschäftigungsart</label>
-<select id="employeeType" onchange="toggleEmployeeType()">
-    <option value="normal">Normaler Arbeitnehmer</option>
-    <option value="praktikant">Praktikant</option>
-    <option value="minijob">Minijob (520 €)</option>
-</select>
-    <div id="minijobRVBlock" style="display:none">
-  <label>
-    <input type="checkbox" id="minijobRV" checked>
-    Arbeitnehmer zahlt 3.6% Rentenversicherung
-  </label>
-</div>
-    <tr>
-      <td><label for="brutto">Bruttogehalt (€)</label></td>
-      <td><input type="number" id="brutto" placeholder="z.B. 3000"></td>
-    </tr>
-    <tr>
-      <td><label>Steuerklasse</label></td>
-      <td>
-       <div id="steuerklasseBlock">
-    <label for="steuerklasse">Steuerklasse</label>
-  <select id="steuerklasse">
-    <option value="1">I</option>
-    <option value="2">II</option>
-    <option value="3">III</option>
-    <option value="4">IV</option>
-    <option value="5">V</option>
-    <option value="6">VI</option>
-  </select>
-</div>
-      </td>
-    </tr>
-    <tr>
-      <td><label for="ueberstunden">Ueberstunden (Stunden)</label></td>
-      <td><input type="number" id="ueberstunden" value="0"></td>
-    </tr>
-    <tr>
-      <td><label>VWL AG Zuschuss (€)</label></td>
-      <td><input type="number" id="vwl" value="0"></td>
-    </tr>
-    <tr>
-      <td><label>Nachtstunden 25%</label></td>
-      <td><input type="number" id="nacht25" value="0"></td>
-    </tr>
-    <tr>
-      <td><label>Nachtstunden 40%</label></td>
-      <td><input type="number" id="nacht40" value="0"></td>
-    </tr>
-    <tr>
-      <td><label>Sonntagstunden 50%</label></td>
-      <td><input type="number" id="sonntag50" value="0"></td>
-    </tr>
-    <tr>
-      <td><label>Feiertagstunden 125%</label></td>
-      <td><input type="number" id="feiertag125" value="0"></td>
-    </tr>
-    <tr>
-      <td><label for="jobticket">Jobticket (€)</label></td>
-      <td><input type="number" id="jobticket" value="0"></td>
-    </tr>
+<table id="inputTable">
 
-    <tr>
-      <td colspan="2" style="text-align:center">
-        <button onclick="calculateNetto()">Berechnen</button>
-      </td>
-    </tr>
-  </table>
+  <!-- Employee type -->
+  <tr>
+    <td><label for="employeeType">Beschäftigungsart</label></td>
+    <td>
+      <select id="employeeType" onchange="toggleEmployeeType()">
+        <option value="normal">Normaler Arbeitnehmer</option>
+        <option value="praktikant">Praktikant</option>
+        <option value="minijob">Minijob (520 €)</option>
+      </select>
+    </td>
+  </tr>
 
-  <script src="script.js"></script>
-</body>
-</html>
-<p>
-  
- <h2>Ergebnis</h2>
-  <p id="output">Bitte Werte eingeben</p>
+  <!-- Minijob RV -->
+  <tr id="minijobRVBlock" style="display:none">
+    <td colspan="2">
+      <label>
+        <input type="checkbox" id="minijobRV" checked>
+        Arbeitnehmer zahlt 3.6% Rentenversicherung
+      </label>
+    </td>
+  </tr>
+
+  <!-- Brutto -->
+  <tr>
+    <td><label for="brutto">Bruttogehalt (€)</label></td>
+    <td><input type="number" id="brutto" placeholder="z.B. 3000"></td>
+  </tr>
+
+  <!-- Steuerklasse -->
+  <tr>
+    <td><label for="steuerklasse">Steuerklasse</label></td>
+    <td>
+      <select id="steuerklasse">
+        <option value="1">I</option>
+        <option value="2">II</option>
+        <option value="3">III</option>
+        <option value="4">IV</option>
+        <option value="5">V</option>
+        <option value="6">VI</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td><label for="ueberstunden">Überstunden (Stunden)</label></td>
+    <td><input type="number" id="ueberstunden" value="0"></td>
+  </tr>
+
+  <tr>
+    <td><label for="vwl">VWL AG Zuschuss (€)</label></td>
+    <td><input type="number" id="vwl" value="0"></td>
+  </tr>
+
+  <tr>
+    <td><label for="nacht25">Nachtstunden 25%</label></td>
+    <td><input type="number" id="nacht25" value="0"></td>
+  </tr>
+
+  <tr>
+    <td><label for="nacht40">Nachtstunden 40%</label></td>
+    <td><input type="number" id="nacht40" value="0"></td>
+  </tr>
+
+  <tr>
+    <td><label for="sonntag50">Sonntagstunden 50%</label></td>
+    <td><input type="number" id="sonntag50" value="0"></td>
+  </tr>
+
+  <tr>
+    <td><label for="feiertag125">Feiertagstunden 125%</label></td>
+    <td><input type="number" id="feiertag125" value="0"></td>
+  </tr>
+
+  <tr>
+    <td><label for="jobticket">Jobticket (€)</label></td>
+    <td><input type="number" id="jobticket" value="0"></td>
+  </tr>
+
+  <tr>
+    <td colspan="2" style="text-align:center">
+      <button onclick="calculateNetto()">Berechnen</button>
+    </td>
+  </tr>
+
+</table>
+
+<h2>Ergebnis</h2>
+<p id="output">Bitte Werte eingeben</p>
 
 <p>
   <small>
@@ -94,11 +107,7 @@
   </small>
 </p>
 
+<script src="script.js"></script>
 
-
-
-
-
-
-
-
+</body>
+</html>
