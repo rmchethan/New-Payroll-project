@@ -1,3 +1,16 @@
+function calculateNetto() {
+  let employeeType = document.getElementById("employeeType")?.value;
+
+  if(employeeType === "normal") {
+    // call existing logic
+    calculateNormal();
+  } else if(employeeType === "praktikant") {
+    calculatePraktikant();
+  } else if(employeeType === "minijob") {
+    calculateMinijob(); // NEW
+  }
+}
+
 function calculateMinijob() {
   let brutto = Number(document.getElementById("brutto")?.value) || 0;
   let ueberstunden = Number(document.getElementById("Ueberstunden")?.value) || 0;
@@ -56,20 +69,8 @@ function calculateMinijob() {
   document.getElementById("output").innerHTML = outputHTML;
 }
 
-function calculateNetto() {
-  let employeeType = document.getElementById("employeeType")?.value;
 
-  if(employeeType === "normal") {
-    // call existing logic
-    calculateNormal();
-  } else if(employeeType === "praktikant") {
-    calculatePraktikant();
-  } else if(employeeType === "minijob") {
-    calculateMinijob(); // NEW
-  }
-}
-
-function calculateNetto() {
+function calculateNormal() {
   // ===== Inputs =====
   let brutto = Number(document.getElementById("brutto")?.value) || 0;
   let ueberstunden = Number(document.getElementById("Ueberstunden")?.value) || 0;
@@ -166,4 +167,5 @@ function calculateNetto() {
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
 
