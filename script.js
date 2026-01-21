@@ -5,14 +5,14 @@ function calculateNetto() {
 }
 
   // ===== Inputs =====
-  let brutto = Number(document.getElementById("brutto").value) || 0;
-  let ueberstunden = Number(document.getElementById("Ueberstunden").value) || 0;
-  let vwl = Number(document.getElementById("vwl").value) || 0;
-  let nacht25 = Number(document.getElementById("nacht25").value) || 0;
-  let nacht40 = Number(document.getElementById("nacht40").value) || 0;
-  let sonntag50 = Number(document.getElementById("sonntag50").value) || 0;
-  let feiertag125 = Number(document.getElementById("feiertag125").value) || 0;
-  let jobticket = Number(document.getElementById("jobtickets").value) || 0;
+  let brutto = Number(document.getElementById("brutto")?.value) || 0;
+  let ueberstunden = Number(document.getElementById("Ueberstunden")?.value) || 0;
+  let vwl = Number(document.getElementById("vwl")?.value) || 0;
+  let nacht25 = Number(document.getElementById("nacht25")?.value) || 0;
+  let nacht40 = Number(document.getElementById("nacht40")?.value) || 0;
+  let sonntag50 = Number(document.getElementById("sonntag50")?.value) || 0;
+  let feiertag125 = Number(document.getElementById("feiertag125")?.value) || 0;
+  let jobticket = Number(document.getElementById("jobtickets")?.value) || 0;
 
   // ===== Basic calculations =====
   let grundlohn = brutto + vwl;
@@ -73,4 +73,5 @@ function calculateNetto() {
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
 
