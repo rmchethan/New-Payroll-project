@@ -41,8 +41,15 @@ switch (steuerklasse) {
 }
   let lohnsteuer = steuerpflichtigesBrutto * steuersatz;
 
+    // ===== Sozialversicherung =====  
+  let kv = gesamtBrutto * 0.073;
+  let rv = gesamtBrutto * 0.093;
+  let av = gesamtBrutto * 0.012;
+  let pv = gesamtBrutto * 0.015;
+  let sozialversicherung = kv + rv + av + pv;
+
   let netto =
-    steuerpflichtigesBrutto - lohnsteuer + steuerfreieZuschlaege - jobticket;
+    steuerpflichtigesBrutto - lohnsteuer - sozialversicherung  + steuerfreieZuschlaege - jobticket;
 
   // ===== Arbeitgeber =====
   let ag_kv = steuerpflichtigesBrutto * 0.073;
@@ -86,6 +93,7 @@ switch (steuerklasse) {
   document.getElementById("output").innerHTML = outputHTML;
 
   }
+
 
 
 
