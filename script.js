@@ -70,6 +70,9 @@ function calculateNetto() {
 
   document.getElementById("output").innerHTML = outputHTML;
 
+  }
+
+
 
 
 
