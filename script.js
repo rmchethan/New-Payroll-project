@@ -1,3 +1,74 @@
+function calculateMinijob() {
+  let brutto = Number(document.getElementById("brutto")?.value) || 0;
+  let ueberstunden = Number(document.getElementById("Ueberstunden")?.value) || 0;
+  let ueberstundenZuschlag = ueberstunden * 0.25;
+  let vwl = Number(document.getElementById("vwl")?.value) || 0;
+  let nacht25 = Number(document.getElementById("nacht25")?.value) || 0;
+  let nacht40 = Number(document.getElementById("nacht40")?.value) || 0;
+  let sonntag50 = Number(document.getElementById("sonntag50")?.value) || 0;
+  let feiertag125 = Number(document.getElementById("feiertag125")?.value) || 0;
+  let jobticket = Number(document.getElementById("jobtickets")?.value) || 0;
+  
+  // Steuerfreie Zuschläge
+  let steuerfreieZuschlaege = nacht25 + nacht40 + sonntag50 + feiertag125;
+  
+  // Employee Netto (steuerfrei)
+  let netto = brutto + ueberstunden + ueberstundenZuschlag + vwl + steuerfreieZuschlaege;
+
+  // Optional RV contribution
+  let rv = 0;
+  if(document.getElementById("rvOptIn")?.checked) {
+    rv = brutto * 0.036;
+    netto -= rv; // subtract employee RV if opted-in
+  }
+
+  // Arbeitgeberanteile
+  let ag_kv = brutto * 0.135; // 13.5%
+  let ag_rv = brutto * 0.15;  // 15%
+  let ag_av = 0;
+  let ag_pv = 0;
+  let pauschalsteuer = brutto * 0.02; // 2% flat tax
+  let arbeitgeberGesamt = ag_kv + ag_rv + ag_av + ag_pv + pauschalsteuer;
+
+  // ===== Build Output Table =====
+  let outputHTML = `
+  <table border="1" cellpadding="5">
+    <tr><th>Komponente</th><th>Betrag (€)</th></tr>
+    <tr><td>Grundgehalt</td><td>${brutto.toFixed(2)}</td></tr>
+    <tr><td>Überstunden</td><td>${ueberstunden.toFixed(2)}</td></tr>
+    <tr><td>Überstundenzuschlag 25%</td><td>${ueberstundenZuschlag.toFixed(2)}</td></tr>
+    <tr><td>VWL Zuschuss</td><td>${vwl.toFixed(2)}</td></tr>
+    <tr><td>Nachtstunden 25%</td><td>${nacht25.toFixed(2)}</td></tr>
+    <tr><td>Nachtstunden 40%</td><td>${nacht40.toFixed(2)}</td></tr>
+    <tr><td>Sonntagszuschlag 50%</td><td>${sonntag50.toFixed(2)}</td></tr>
+    <tr><td>Feiertag 125%</td><td>${feiertag125.toFixed(2)}</td></tr>
+    <tr><td><strong>Netto (steuerfrei)</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+
+    <tr><th colspan="2">Arbeitgeberanteile</th></tr>
+    <tr><td>KV AG (13.5%)</td><td>${ag_kv.toFixed(2)}</td></tr>
+    <tr><td>RV AG (15%)</td><td>${ag_rv.toFixed(2)}</td></tr>
+    <tr><td>Pauschalsteuer 2%</td><td>${pauschalsteuer.toFixed(2)}</td></tr>
+    <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+    <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(netto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
+  </table>
+  `;
+
+  document.getElementById("output").innerHTML = outputHTML;
+}
+
+function calculateNetto() {
+  let employeeType = document.getElementById("employeeType")?.value;
+
+  if(employeeType === "normal") {
+    // call existing logic
+    calculateNormal();
+  } else if(employeeType === "praktikant") {
+    calculatePraktikant();
+  } else if(employeeType === "minijob") {
+    calculateMinijob(); // NEW
+  }
+}
+
 function calculateNetto() {
   // ===== Inputs =====
   let brutto = Number(document.getElementById("brutto")?.value) || 0;
@@ -95,3 +166,4 @@ function calculateNetto() {
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
