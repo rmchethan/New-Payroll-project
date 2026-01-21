@@ -67,43 +67,37 @@ switch (steuerklasse) {
 
   // ===== Output =====
   let outputHTML = `
-  <table border="1" cellpadding="6" style="border-collapse:collapse; width:600px">
-    <tr><th>Komponente</th><th>Betrag (€)</th></tr>
-    <tr><td>Grundlohn</td><td>${grundlohn.toFixed(2)}</td></tr>
-    <tr><td>Überstunden</td><td>${ueberstundenPay.toFixed(2)}</td></tr>
-    <tr><td>Überstundenzuschlag</td><td>${ueberstundenZuschlag.toFixed(2)}</td></tr>
-    <tr><td>Steuerpflichtiges Brutto</td><td>${steuerpflichtigesBrutto.toFixed(2)}</td></tr>
-    <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
-    <tr><td>Steuerfreie Zuschläge</td><td>${steuerfreieZuschlaege.toFixed(2)}</td></tr>
-    <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+  <table border="1" cellpadding="5">
+  <tr><th>Komponente</th><th>Betrag (€)</th></tr>
+  <tr><td>Grundgehalt</td><td>${grundlohn.toFixed(2)}</td></tr>
+  <tr><td>Überstunden</td><td>${ueberstundenPay.toFixed(2)}</td></tr>
+  <tr><td>Überstundenzuschlag (25%)</td><td>${ueberstundenZuschlag.toFixed(2)}</td></tr>
+  <tr><td>VWL AG Zuschuss</td><td>${vwl.toFixed(2)}</td></tr>
+  <tr><td>Nachtzuschlag 25%</td><td>${nachtschicht.toFixed(2)}</td></tr>
+  <tr><td>Sonntagszuschlag 50%</td><td>${sonntag.toFixed(2)}</td></tr>
+  <tr><td>Feiertag 125%</td><td>${ferientag.toFixed(2)}</td></tr>
+  <tr><td><strong>Gesamtbrutto</strong></td><td>${gesamtBrutto.toFixed(2)}</td></tr>
 
-    <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-    <tr><td>KV AG (7.3%)</td><td>${ag_kv.toFixed(2)}</td></tr>
-    <tr><td>RV AG (9.3%)</td><td>${ag_rv.toFixed(2)}</td></tr>
-    <tr><td>AV AG (1.3%)</td><td>${ag_av.toFixed(2)}</td></tr>
-    <tr><td>PV AG (1.525%)</td><td>${ag_pv.toFixed(2)}</td></tr>
-    <tr><td>Umlage 1 (2.8%)</td><td>${umlage1.toFixed(2)}</td></tr>
-    <tr><td>Umlage 2 (0.75%)</td><td>${umlage2.toFixed(2)}</td></tr>
-    <tr><td>Insolvenzgeld (0.6%)</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
-    <tr><td><strong>AG Gesamt</strong></td><td>${arbeitgeberGesamt.toFixed(2)}</td></tr>
-    <tr><td><strong>Gesamtkosten AG</strong></td><td>${(gesamtBrutto + arbeitgeberGesamt).toFixed(2)}</td></tr>
-  </table>
-  `;
+  <tr><th colspan="2">Abzüge</th></tr>
+  <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
+  <tr><td>KV (7.3%)</td><td>${kv.toFixed(2)}</td></tr>
+  <tr><td>RV (9.3%)</td><td>${rv.toFixed(2)}</td></tr>
+  <tr><td>AV (1.2%)</td><td>${av.toFixed(2)}</td></tr>
+  <tr><td>PV (1.5%)</td><td>${pv.toFixed(2)}</td></tr>
+  <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
+  <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
 
-  document.getElementById("output").innerHTML = outputHTML;
+  <tr><th colspan="2">Arbeitgeberanteile</th></tr>
+  <tr><td>KV AG (7.3%)</td><td>${ag_kv.toFixed(2)}</td></tr>
+  <tr><td>RV AG (9.3%)</td><td>${ag_rv.toFixed(2)}</td></tr>
+  <tr><td>AV AG (1.3%)</td><td>${ag_av.toFixed(2)}</td></tr>
+  <tr><td>PV AG (1.525%)</td><td>${ag_pv.toFixed(2)}</td></tr>
+  <tr><td>Umlage 1 (2.8%)</td><td>${umlage1.toFixed(2)}</td></tr>
+  <tr><td>Umlage 2 (0.75%)</td><td>${umlage2.toFixed(2)}</td></tr>
+  <tr><td>Insolvenzgeld (0.6%)</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
+  <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+  <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(gesamtBrutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
+</table>
+`;
 
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+document.getElementById("output").innerHTML = outputHTML;
