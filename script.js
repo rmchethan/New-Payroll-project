@@ -1,103 +1,97 @@
 function calculateNetto() {
-  
-
   // ===== Inputs =====
   let brutto = Number(document.getElementById("brutto")?.value) || 0;
-  let ueberstunden = Number(document.getElementById("ueberstunden")?.value) || 0;
+  let ueberstunden = Number(document.getElementById("Ueberstunden")?.value) || 0;
   let vwl = Number(document.getElementById("vwl")?.value) || 0;
   let nacht25 = Number(document.getElementById("nacht25")?.value) || 0;
   let nacht40 = Number(document.getElementById("nacht40")?.value) || 0;
   let sonntag50 = Number(document.getElementById("sonntag50")?.value) || 0;
   let feiertag125 = Number(document.getElementById("feiertag125")?.value) || 0;
   let jobticket = Number(document.getElementById("jobtickets")?.value) || 0;
+  let steuerklasse = document.getElementById("steuerklasse")?.value || "1";
 
-  // ===== Basic calculations =====
+  // ===== Employee Brutto Components =====
+  let ueberstundenZuschlag = ueberstunden * 0.25;
+  let steuerfreieZuschlaege = nacht25 + nacht40 + sonntag50 + feiertag125;
   let grundlohn = brutto + vwl;
+  let steuerpflichtigesBrutto = grundlohn + ueberstunden + ueberstundenZuschlag; // Zuschläge steuerfrei
 
-  let ueberstundenPay = ueberstunden;
-  let ueberstundenZuschlag = ueberstundenPay * 0.25;
-
-  let nacht25Pay = grundlohn * 0.25 * nacht25;
-  let nacht40Pay = grundlohn * 0.40 * nacht40;
-  let sonntagPay = grundlohn * 0.50 * sonntag50;
-  let feiertagPay = grundlohn * 1.25 * feiertag125;
-
-  let steuerfreieZuschlaege =
-    nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
-
-  let steuerpflichtigesBrutto =
-    grundlohn + ueberstundenPay + ueberstundenZuschlag;
-
+  // ===== Steuerklasse Logic =====
   let steuersatz;
-  let steuerklasse = document.getElementById("steuerklasse").value;
-  let steuersatz = 0.20; // default
-switch (steuerklasse) {
-  case "1": steuersatz = 0.20; break;
-  case "2": steuersatz = 0.18; break;
-  case "3": steuersatz = 0.12; break;
-  case "4": steuersatz = 0.20; break;
-  case "5": steuersatz = 0.26; break;
-  case "6": steuersatz = 0.30; break;
-}
+  switch(steuerklasse) {
+    case "1":
+    case "4":
+      steuersatz = 0.20;
+      break;
+    case "2":
+      steuersatz = 0.18;
+      break;
+    case "3":
+      steuersatz = 0.12;
+      break;
+    case "5":
+      steuersatz = 0.26;
+      break;
+    case "6":
+      steuersatz = 0.30;
+      break;
+    default:
+      steuersatz = 0.20;
+  }
+
+  // ===== Abzüge =====
   let lohnsteuer = steuerpflichtigesBrutto * steuersatz;
+  let kv = steuerpflichtigesBrutto * 0.073;
+  let rv = steuerpflichtigesBrutto * 0.093;
+  let av = steuerpflichtigesBrutto * 0.012;
+  let pv = steuerpflichtigesBrutto * 0.015;
+  let sozialversicherungGesamt = kv + rv + av + pv;
+  let netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungGesamt - jobticket + steuerfreieZuschlaege;
 
-    // ===== Sozialversicherung =====  
-  let kv = gesamtBrutto * 0.073;
-  let rv = gesamtBrutto * 0.093;
-  let av = gesamtBrutto * 0.012;
-  let pv = gesamtBrutto * 0.015;
-  let sozialversicherung = kv + rv + av + pv;
-
-  let netto =
-    steuerpflichtigesBrutto - lohnsteuer - sozialversicherung  + steuerfreieZuschlaege - jobticket;
-
-  // ===== Arbeitgeber =====
+  // ===== Arbeitgeberanteile =====
   let ag_kv = steuerpflichtigesBrutto * 0.073;
   let ag_rv = steuerpflichtigesBrutto * 0.093;
   let ag_av = steuerpflichtigesBrutto * 0.013;
-  let ag_pv = steuerpflichtigesBrutto * 0.01525;
+  let ag_pv = steuerpflichtigesBrutto * 0.015;
   let umlage1 = steuerpflichtigesBrutto * 0.028;
   let umlage2 = steuerpflichtigesBrutto * 0.0075;
   let insolvenzgeld = steuerpflichtigesBrutto * 0.006;
+  let arbeitgeberGesamt = ag_kv + ag_rv + ag_av + ag_pv + umlage1 + umlage2 + insolvenzgeld;
 
-  let arbeitgeberGesamt =
-    ag_kv + ag_rv + ag_av + ag_pv + umlage1 + umlage2 + insolvenzgeld;
-
-  let gesamtBrutto = steuerpflichtigesBrutto + steuerfreieZuschlaege;
-
-  // ===== Output =====
+  // ===== Build Output Table =====
   let outputHTML = `
   <table border="1" cellpadding="5">
-  <tr><th>Komponente</th><th>Betrag (€)</th></tr>
-  <tr><td>Grundgehalt</td><td>${grundlohn.toFixed(2)}</td></tr>
-  <tr><td>Überstunden</td><td>${ueberstundenPay.toFixed(2)}</td></tr>
-  <tr><td>Überstundenzuschlag (25%)</td><td>${ueberstundenZuschlag.toFixed(2)}</td></tr>
-  <tr><td>VWL AG Zuschuss</td><td>${vwl.toFixed(2)}</td></tr>
-  <tr><td>Nachtzuschlag 25%</td><td>${nachtschicht.toFixed(2)}</td></tr>
-  <tr><td>Sonntagszuschlag 50%</td><td>${sonntag.toFixed(2)}</td></tr>
-  <tr><td>Feiertag 125%</td><td>${ferientag.toFixed(2)}</td></tr>
-  <tr><td><strong>Gesamtbrutto</strong></td><td>${gesamtBrutto.toFixed(2)}</td></tr>
+    <tr><th>Komponente</th><th>Betrag (€)</th></tr>
+    <tr><td>Grundgehalt + VWL</td><td>${grundlohn.toFixed(2)}</td></tr>
+    <tr><td>Überstunden</td><td>${ueberstunden.toFixed(2)}</td></tr>
+    <tr><td>Überstundenzuschlag 25%</td><td>${ueberstundenZuschlag.toFixed(2)}</td></tr>
+    <tr><td>Nachtstunden 25%</td><td>${nacht25.toFixed(2)}</td></tr>
+    <tr><td>Nachtstunden 40%</td><td>${nacht40.toFixed(2)}</td></tr>
+    <tr><td>Sonntagszuschlag 50%</td><td>${sonntag50.toFixed(2)}</td></tr>
+    <tr><td>Feiertag 125%</td><td>${feiertag125.toFixed(2)}</td></tr>
+    <tr><td><strong>Gesamtbrutto</strong></td><td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege).toFixed(2)}</strong></td></tr>
 
-  <tr><th colspan="2">Abzüge</th></tr>
-  <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
-  <tr><td>KV (7.3%)</td><td>${kv.toFixed(2)}</td></tr>
-  <tr><td>RV (9.3%)</td><td>${rv.toFixed(2)}</td></tr>
-  <tr><td>AV (1.2%)</td><td>${av.toFixed(2)}</td></tr>
-  <tr><td>PV (1.5%)</td><td>${pv.toFixed(2)}</td></tr>
-  <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
-  <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+    <tr><th colspan="2">Abzüge</th></tr>
+    <tr><td>Lohnsteuer (${(steuersatz*100).toFixed(0)}%)</td><td>${lohnsteuer.toFixed(2)}</td></tr>
+    <tr><td>KV</td><td>${kv.toFixed(2)}</td></tr>
+    <tr><td>RV</td><td>${rv.toFixed(2)}</td></tr>
+    <tr><td>AV</td><td>${av.toFixed(2)}</td></tr>
+    <tr><td>PV</td><td>${pv.toFixed(2)}</td></tr>
+    <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
+    <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
 
-  <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-  <tr><td>KV AG (7.3%)</td><td>${ag_kv.toFixed(2)}</td></tr>
-  <tr><td>RV AG (9.3%)</td><td>${ag_rv.toFixed(2)}</td></tr>
-  <tr><td>AV AG (1.3%)</td><td>${ag_av.toFixed(2)}</td></tr>
-  <tr><td>PV AG (1.525%)</td><td>${ag_pv.toFixed(2)}</td></tr>
-  <tr><td>Umlage 1 (2.8%)</td><td>${umlage1.toFixed(2)}</td></tr>
-  <tr><td>Umlage 2 (0.75%)</td><td>${umlage2.toFixed(2)}</td></tr>
-  <tr><td>Insolvenzgeld (0.6%)</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
-  <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
-  <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(gesamtBrutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
-</table>
-`;
+    <tr><th colspan="2">Arbeitgeberanteile</th></tr>
+    <tr><td>KV AG (7.3%)</td><td>${ag_kv.toFixed(2)}</td></tr>
+    <tr><td>RV AG (9.3%)</td><td>${ag_rv.toFixed(2)}</td></tr>
+    <tr><td>AV AG (1.3%)</td><td>${ag_av.toFixed(2)}</td></tr>
+    <tr><td>PV AG (1.525%)</td><td>${ag_pv.toFixed(2)}</td></tr>
+    <tr><td>Umlage 1 (2.8%)</td><td>${umlage1.toFixed(2)}</td></tr>
+    <tr><td>Umlage 2 (0.75%)</td><td>${umlage2.toFixed(2)}</td></tr>
+    <tr><td>Insolvenzgeld (0.6%)</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
+    <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+    <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
+  </table>
+  `;
 
-document.getElementById("output").innerHTML = outputHTML;
+  document.getElementById("output").innerHTML = outputHTML;
+}
