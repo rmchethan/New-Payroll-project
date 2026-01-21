@@ -6,7 +6,7 @@ function calculateNetto() {
 
   // ===== Inputs =====
   let brutto = Number(document.getElementById("brutto")?.value) || 0;
-  let ueberstunden = Number(document.getElementById("Ueberstunden")?.value) || 0;
+  let ueberstunden = Number(document.getElementById("ueberstunden")?.value) || 0;
   let vwl = Number(document.getElementById("vwl")?.value) || 0;
   let nacht25 = Number(document.getElementById("nacht25")?.value) || 0;
   let nacht40 = Number(document.getElementById("nacht40")?.value) || 0;
@@ -73,5 +73,6 @@ function calculateNetto() {
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
 
 
