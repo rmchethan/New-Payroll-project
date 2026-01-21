@@ -64,9 +64,16 @@ let arbeitgeberGesamt =
   let netto = gesamtBrutto - lohnsteuer - jobticket;
 
   // ===== Output table =====
-  let outputHTML = `
-  <table border="1" cellpadding="5">
-    <tr><th>Komponente</th><th>Betrag (€)</th></tr>
+ let outputHTML = `
+<table border="1" cellpadding="6" style="border-collapse:collapse; width:600px">
+  <thead>
+    <tr>
+      <th>Komponente</th>
+      <th>Betrag (€)</th>
+    </tr>
+  </thead>
+
+  <tbody>
     <tr><td>Grundlohn (Brutto + VWL)</td><td>${grundlohn.toFixed(2)}</td></tr>
     <tr><td>Überstunden</td><td>${ueberstundenPay.toFixed(2)}</td></tr>
     <tr><td>Überstundenzuschlag (25%)</td><td>${ueberstundenZuschlag.toFixed(2)}</td></tr>
@@ -74,31 +81,33 @@ let arbeitgeberGesamt =
     <tr><td>Nachtstunden 40%</td><td>${nacht40Pay.toFixed(2)}</td></tr>
     <tr><td>Sonntag 50%</td><td>${sonntagPay.toFixed(2)}</td></tr>
     <tr><td>Feiertag 125%</td><td>${feiertagPay.toFixed(2)}</td></tr>
-    <tr><td><strong>Steuerpflichtiges Brutto</strong></td><td>${steuerpflichtigesBrutto.toFixed(2)}</td></tr>
+    <tr><td><strong>Steuerpflichtiges Brutto</strong></td><td><strong>${steuerpflichtigesBrutto.toFixed(2)}</strong></td></tr>
     <tr><td>Lohnsteuer (${(steuersatz*100).toFixed(0)}%)</td><td>${lohnsteuer.toFixed(2)}</td></tr>
     <tr><td>Steuerfreie Zuschläge gesamt</td><td>${steuerfreieZuschlaege.toFixed(2)}</td></tr>
     <tr><td>Gesamtbrutto</td><td>${gesamtBrutto.toFixed(2)}</td></tr>
     <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
     <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
-    `;
-      outputHTML += `
+  </tbody>
+
+  <tbody>
     <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-    <tr><td>KV Arbeitgeber (7.3%)</td><td>${ag_kv.toFixed(2)} €</td></tr>
-    <tr><td>RV Arbeitgeber (9.3%)</td><td>${ag_rv.toFixed(2)} €</td></tr>
-    <tr><td>AV Arbeitgeber (1.3%)</td><td>${ag_av.toFixed(2)} €</td></tr>
-    <tr><td>PV Arbeitgeber (1.525%)</td><td>${ag_pv.toFixed(2)} €</td></tr>
-    <tr><td>Umlage 1 (2.8%)</td><td>${umlage1.toFixed(2)} €</td></tr>
-    <tr><td>Umlage 2 (0.75%)</td><td>${umlage2.toFixed(2)} €</td></tr>
-    <tr><td>Insolvenzgeld (0.6%)</td><td>${insolvenzgeld.toFixed(2)} €</td></tr>
-    <tr><td><strong>Arbeitgeber gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)} €</strong></td></tr>
-    <tr><th colspan="2">Gesamtkosten Arbeitgeber</th></tr>
-    <tr><td>Brutto + Arbeitgeberanteile</td><td>${(gesamtBrutto + arbeitgeberGesamt).toFixed(2)} €</td></tr>
+    <tr><td>KV Arbeitgeber (7.3%)</td><td>${ag_kv.toFixed(2)}</td></tr>
+    <tr><td>RV Arbeitgeber (9.3%)</td><td>${ag_rv.toFixed(2)}</td></tr>
+    <tr><td>AV Arbeitgeber (1.3%)</td><td>${ag_av.toFixed(2)}</td></tr>
+    <tr><td>PV Arbeitgeber (1.525%)</td><td>${ag_pv.toFixed(2)}</td></tr>
+    <tr><td>Umlage 1 (2.8%)</td><td>${umlage1.toFixed(2)}</td></tr>
+    <tr><td>Umlage 2 (0.75%)</td><td>${umlage2.toFixed(2)}</td></tr>
+    <tr><td>Insolvenzgeld (0.6%)</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
+    <tr><td><strong>Arbeitgeber gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+    <tr><td><strong>Gesamtkosten Arbeitgeber</strong></td>
+        <td><strong>${(gesamtBrutto + arbeitgeberGesamt).toFixed(2)}</strong></td>
+    </tr>
+  </tbody>
+</table>
+`;
 
-`  ;
-  outputHTML += `</table>`;
+document.getElementById("output").innerHTML = outputHTML;
 
-  document.getElementById("output").innerHTML = outputHTML;
-}
 
 
 
