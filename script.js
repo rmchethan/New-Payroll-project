@@ -1,8 +1,5 @@
-console.log("script.js loaded");
-
 function calculateNetto() {
-  alert("calculateNetto works");
-}
+  }
 
   // ===== Inputs =====
   let brutto = Number(document.getElementById("brutto")?.value) || 0;
@@ -72,6 +69,7 @@ function calculateNetto() {
   `;
 
   document.getElementById("output").innerHTML = outputHTML;
+
 
 
 
