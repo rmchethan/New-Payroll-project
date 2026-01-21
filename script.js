@@ -1,3 +1,17 @@
+function toggleEmployeeType() {
+  const type = document.getElementById("employeeType").value;
+  const steuerklasse = document.getElementById("steuerklasse");
+  const minijobRVBlock = document.getElementById("minijobRVBlock");
+
+  if (type === "minijob") {
+    steuerklasse.disabled = true;
+    minijobRVBlock.style.display = "block";
+  } else {
+    steuerklasse.disabled = false;
+    minijobRVBlock.style.display = "none";
+  }
+}
+
 function calculateNetto() {
   let employeeType = document.getElementById("employeeType")?.value;
 
@@ -167,5 +181,6 @@ function calculateNormal() {
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
 
 
