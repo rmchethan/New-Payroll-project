@@ -96,11 +96,10 @@ let arbeitgeberGesamt =
 
 `  ;
   outputHTML += `</table>`;
-  </table>
-  `;
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
 
 
 
