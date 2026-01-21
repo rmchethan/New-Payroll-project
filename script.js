@@ -80,6 +80,7 @@ let arbeitgeberGesamt =
     <tr><td>Gesamtbrutto</td><td>${gesamtBrutto.toFixed(2)}</td></tr>
     <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
     <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+    `;
       outputHTML += `
     <tr><th colspan="2">Arbeitgeberanteile</th></tr>
     <tr><td>KV Arbeitgeber (7.3%)</td><td>${ag_kv.toFixed(2)} €</td></tr>
@@ -94,11 +95,13 @@ let arbeitgeberGesamt =
     <tr><td>Brutto + Arbeitgeberanteile</td><td>${(gesamtBrutto + arbeitgeberGesamt).toFixed(2)} €</td></tr>
 
 `  ;
+  outputHTML += `</table>`;
   </table>
   `;
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
 
 
 
