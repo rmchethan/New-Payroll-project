@@ -182,5 +182,6 @@ function calculateNormal() {
   document.getElementById("output").innerHTML = outputHTML;
 }
 
+window.onload = toggleEmployeeType;
 
 
