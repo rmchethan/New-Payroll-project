@@ -81,7 +81,6 @@ function calculateMinijob() {
     `;
 
     return; // 
-}
 
   document.getElementById("output").innerHTML = outputHTML;
 }
@@ -186,6 +185,7 @@ function calculateNormal() {
 }
 
 window.onload = toggleEmployeeType;
+
 
 
 
