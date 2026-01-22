@@ -157,7 +157,6 @@ const feiertagPay = feiertag125 * stundenlohn * 1.25;
   // ===== Brutto components =====
   const ueberstundenZuschlag = ueberstunden * 0.25;
   const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
-  const grundlohn = brutto + vwl;
   const steuerpflichtigesBrutto = grundlohn + ueberstunden + ueberstundenZuschlag;
 
   // ===== Steuerklasse logic =====
@@ -248,5 +247,6 @@ const feiertagPay = feiertag125 * stundenlohn * 1.25;
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
