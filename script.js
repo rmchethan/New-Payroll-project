@@ -60,11 +60,10 @@ function calculateNetto() {
 
 function calculateMinijob() {
    let brutto = Number(document.getElementById("brutto").value) || 0;
-    let jobticket = Number(document.getElementById("jobticket").value) || 0;
     let rvCheckbox = document.getElementById("minijobRV").checked;
  
     let rvAN = rvCheckbox ? brutto * 0.036 : 0;
-    let netto = brutto - rvAN - jobticket;
+    let netto = brutto - rvAN;
 
   // Arbeitgeberanteile Minijob
     let ag_rv = brutto * 0.15;
@@ -198,6 +197,7 @@ function calculateNormal() {
 }
 
 window.onload = toggleEmployeeType;
+
 
 
 
