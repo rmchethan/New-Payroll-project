@@ -197,24 +197,28 @@ if (kirchensteuerpflichtig) {
   const rv = steuerpflichtigesBrutto * 0.093;
   const av = steuerpflichtigesBrutto * 0.012;
 
-  // === PV dynamic ===
+// === PV dynamic ===
 const state = document.getElementById("state")?.value || "default";
 
-// === Get PV rates considering children and age ===
-const pvRates = getPvRates(children, age);
-let pvANRate = pvRates.pvANRate; // employee rate
-let pvAGRate = pvRates.pvAGRate; // employer rate
-
 // Sachsen exception: employee pays reduced PV rate
+let pvANRate = 0.018; // default AN rate
+let pvAGRate = 0.018; // default AG rate
+
+// Get PV rates considering children and age
+const pvRates = getPvRates(children, age);
+pvANRate = pvRates.pvANRate;
+pvAGRate = pvRates.pvAGRate;
+
+// Apply Sachsen exception AFTER getting normal rates
 if (state === "Sachsen") {
-  pvANRate = 0.00775; // 0.775%
+  pvANRate = 0.00775; // 0.775% employee rate
 }
 
-// === PV amounts ===
+// PV amounts
 const pvAN = steuerpflichtigesBrutto * pvANRate;
 const pvAG = steuerpflichtigesBrutto * pvAGRate;
 
-// === Social security total for AN ===
+// Social security total for AN
 const sozialversicherungAN = kv + rv + av + pvAN;
 
 // Now use `pvAN` and `pvAG` in your net and AG calculations
@@ -291,6 +295,7 @@ const sozialversicherungAN = kv + rv + av + pvAN;
 
 
 window.onload = toggleEmployeeType;
+
 
 
 
