@@ -1,4 +1,15 @@
 
+  // === Kirchensteuer calculation ===
+const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
+let kirchensteuer = 0;
+
+if (kirchensteuerpflichtig) {
+  // Determine percentage based on state
+  const kirchensteuerRate = ["Bayern", "Baden-Württemberg"].includes(state) ? 0.08 : 0.09;
+  kirchensteuer = lohnsteuer * kirchensteuerRate;
+}
+
+
 function calculateAge(dob) {
   if (!dob) return 0;
 
@@ -156,15 +167,6 @@ function calculateNormal() {
   const jobticket = Number(document.getElementById("jobticket")?.value) || 0;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
 
-  // === Kirchensteuer calculation ===
-const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
-let kirchensteuer = 0;
-
-if (kirchensteuerpflichtig) {
-  // Determine percentage based on state
-  const kirchensteuerRate = ["Bayern", "Baden-Württemberg"].includes(state) ? 0.08 : 0.09;
-  kirchensteuer = lohnsteuer * kirchensteuerRate;
-}
 
   // PV inputs
   const dob = document.getElementById("dob")?.value;
@@ -291,6 +293,7 @@ const sozialversicherungAN = kv + rv + av + pvAN;
 
 
 window.onload = toggleEmployeeType;
+
 
 
 
