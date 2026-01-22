@@ -42,6 +42,9 @@ function getPvRates(children, age) {
   };
 }
 
+// First, get the state
+const state = document.getElementById("state")?.value || "default";
+
 
 function toggleEmployeeType() {
   const employeeType = document.getElementById("employeeType").value;
@@ -295,6 +298,7 @@ const sozialversicherungAN = kv + rv + av + pvAN;
 
 
 window.onload = toggleEmployeeType;
+
 
 
 
