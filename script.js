@@ -153,7 +153,6 @@ const nacht40Pay = nacht40 * stundenlohn * 0.40;
 const sonntagPay = sonntag50 * stundenlohn * 0.50; 
 const feiertagPay = feiertag125 * stundenlohn * 1.25;
 
-const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
 
   // ===== Brutto components =====
   const ueberstundenZuschlag = ueberstunden * 0.25;
@@ -249,4 +248,5 @@ const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
