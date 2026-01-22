@@ -144,9 +144,20 @@ function calculateNormal() {
   // Sachsen & state
   const state = document.getElementById("state")?.value || "default";
 
+const grundlohn = brutto + vwl;
+const monatlicheStunden = 160;  
+const stundenlohn = grundlohn / monatlicheStunden;
+
+const nacht25Pay = nacht25 * stundenlohn * 0.25;
+const nacht40Pay = nacht40 * stundenlohn * 0.40;
+const sonntagPay = sonntag50 * stundenlohn * 0.50; 
+const feiertagPay = feiertag125 * stundenlohn * 1.25;
+
+const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
+
   // ===== Brutto components =====
   const ueberstundenZuschlag = ueberstunden * 0.25;
-  const steuerfreieZuschlaege = nacht25 + nacht40 + sonntag50 + feiertag125;
+  const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
   const grundlohn = brutto + vwl;
   const steuerpflichtigesBrutto = grundlohn + ueberstunden + ueberstundenZuschlag;
 
@@ -238,3 +249,4 @@ function calculateNormal() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
