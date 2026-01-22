@@ -156,6 +156,16 @@ function calculateNormal() {
   const jobticket = Number(document.getElementById("jobticket")?.value) || 0;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
 
+  // === Kirchensteuer calculation ===
+const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
+let kirchensteuer = 0;
+
+if (kirchensteuerpflichtig) {
+  // Determine percentage based on state
+  const kirchensteuerRate = ["Bayern", "Baden-Württemberg"].includes(state) ? 0.08 : 0.09;
+  kirchensteuer = lohnsteuer * kirchensteuerRate;
+}
+
   // PV inputs
   const dob = document.getElementById("dob")?.value;
   const children = Number(document.getElementById("children")?.value || 0);
@@ -216,6 +226,7 @@ const sozialversicherungAN = kv + rv + av + pvAN;
     - lohnsteuer
     - sozialversicherungAN
     - jobticket
+    - kirchensteuer
     + steuerfreieZuschlaege;
 
   // ===== Arbeitgeberanteile =====
@@ -250,6 +261,7 @@ const sozialversicherungAN = kv + rv + av + pvAN;
 
     <tr><th colspan="2">Abzüge Arbeitnehmer</th></tr>
     <tr><td>Lohnsteuer (${(steuersatz * 100).toFixed(0)}%)</td><td>${lohnsteuer.toFixed(2)}</td></tr>
+    <tr><td>Kirchensteuer (${(kirchensteuerRate*100).toFixed(0)}%)</td><td>${kirchensteuer.toFixed(2)}</td></tr>
     <tr><td>KV</td><td>${kv.toFixed(2)}</td></tr>
     <tr><td>RV</td><td>${rv.toFixed(2)}</td></tr>
     <tr><td>AV</td><td>${av.toFixed(2)}</td></tr>
@@ -279,6 +291,7 @@ const sozialversicherungAN = kv + rv + av + pvAN;
 
 
 window.onload = toggleEmployeeType;
+
 
 
 
