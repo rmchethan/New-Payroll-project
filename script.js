@@ -248,16 +248,17 @@ const sozialversicherungAN = kv + rv + av + pvAN;
 
   // ===== Output =====
   const outputHTML = `
-  <table border="1" cellpadding="5">
+    <table border="1" cellpadding="5">
     <tr><th>Komponente</th><th>Betrag (€)</th></tr>
-
     <tr><td>Grundgehalt + VWL</td><td>${grundlohn.toFixed(2)}</td></tr>
     <tr><td>Überstunden</td><td>${ueberstunden.toFixed(2)}</td></tr>
     <tr><td>Überstundenzuschlag 25%</td><td>${ueberstundenZuschlag.toFixed(2)}</td></tr>
-    <tr><td>Steuerfreie Zuschläge</td><td>${steuerfreieZuschlaege.toFixed(2)}</td></tr>
-
+    <tr><td>Nachtstunden 25%</td><td>${nacht25Pay.toFixed(2)}</td></tr>
+    <tr><td>Nachtstunden 40%</td><td>${nacht40Pay.toFixed(2)}</td></tr>
+    <tr><td>Sonntag 50%</td><td>${sonntagPay.toFixed(2)}</td></tr>
+    <tr><td>Feiertag 125%/150%</td><td>${feiertagPay.toFixed(2)}</td></tr>
     <tr><td><strong>Gesamtbrutto</strong></td>
-        <td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege).toFixed(2)}</strong></td></tr>
+    <td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege).toFixed(2)}</strong></td></tr>
 
     <tr><th colspan="2">Abzüge Arbeitnehmer</th></tr>
     <tr><td>Lohnsteuer (${(steuersatz * 100).toFixed(0)}%)</td><td>${lohnsteuer.toFixed(2)}</td></tr>
@@ -290,6 +291,7 @@ const sozialversicherungAN = kv + rv + av + pvAN;
 
 
 window.onload = toggleEmployeeType;
+
 
 
 
