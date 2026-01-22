@@ -66,8 +66,7 @@ function calculateMinijob() {
     let rvAN = rvCheckbox ? brutto * 0.036 : 0;
     let netto = brutto - rvAN - jobticket;
     
-    document.getElementById("jobticket").disabled = true;
-    document.getElementById("output").innerHTML = `
+     document.getElementById("output").innerHTML = `
       <table border="1" cellpadding="5">
         <tr><th>Komponente</th><th>Betrag (€)</th></tr>
         <tr><td>Brutto (Minijob)</td><td>${brutto.toFixed(2)}</td></tr>
@@ -187,6 +186,7 @@ function calculateNormal() {
 }
 
 window.onload = toggleEmployeeType;
+
 
 
 
