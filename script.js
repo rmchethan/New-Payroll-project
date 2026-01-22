@@ -1,12 +1,45 @@
+
 function toggleEmployeeType() {
-  const type = document.getElementById("employeeType").value;
+  const employeeType = document.getElementById("employeeType").value;
+
   const steuerklasse = document.getElementById("steuerklasse");
+  const brutto = document.getElementById("brutto");
   const minijobRVBlock = document.getElementById("minijobRVBlock");
 
-  if (type === "minijob") {
+  // Fields that are NOT allowed for Minijob
+  const disabledFields = [
+    "steuerklasse",
+    "ueberstunden",
+    "vwl",
+    "nacht25",
+    "nacht40",
+    "sonntag50",
+    "feiertag125"
+  ];
+
+  if (employeeType === "minijob") {
+    // Set & lock brutto
+    brutto.value = 603.00;
+    brutto.disabled = true;
+
+    // Disable all non-eligible fields
+    disabledFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = true;
+    });
+
     steuerklasse.disabled = true;
     minijobRVBlock.style.display = "block";
+
   } else {
+    // Enable everything back
+    brutto.disabled = false;
+
+    disabledFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = false;
+    });
+
     steuerklasse.disabled = false;
     minijobRVBlock.style.display = "none";
   }
@@ -183,5 +216,6 @@ function calculateNormal() {
 }
 
 window.onload = toggleEmployeeType;
+
 
 
