@@ -65,21 +65,34 @@ function calculateMinijob() {
  
     let rvAN = rvCheckbox ? brutto * 0.036 : 0;
     let netto = brutto - rvAN - jobticket;
+
+  // Arbeitgeberanteile Minijob
+    let ag_rv = brutto * 0.15;
+    let ag_kv = brutto * 0.13;
+    let arbeitgeberGesamt = ag_rv + ag_kv;
+    let agGesamtkosten = brutto + arbeitgeberGesamt;
     
      document.getElementById("output").innerHTML = `
-      <table border="1" cellpadding="5">
-        <tr><th>Komponente</th><th>Betrag (€)</th></tr>
-        <tr><td>Brutto (Minijob)</td><td>${brutto.toFixed(2)}</td></tr>
-        ${
-          rvCheckbox
-          ? `<tr><td>RV Arbeitnehmer (3.6%)</td><td>${rvAN.toFixed(2)}</td></tr>`
-          : ``
-        }
-        <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
-        <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
-      </table>
-    `;
+    <table border="1" cellpadding="5">
+    <tr><th>Komponente</th><th>Betrag (€)</th></tr>
+    <tr><td>Brutto (Minijob)</td><td>${brutto.toFixed(2)}</td></tr>
+    ${
+      rvCheckbox
+        ? `<tr><td>RV Arbeitnehmer (3.6%)</td><td>${rvAN.toFixed(2)}</td></tr>`
+        : ``
+    }
 
+    <tr><td><strong>Netto</strong></td>
+    <td><strong>${netto.toFixed(2)}</strong></td></tr>
+    <tr><th colspan="2">Arbeitgeberanteile</th></tr>
+    <tr><td>RV Arbeitgeber (15%)</td><td>${ag_rv.toFixed(2)}</td></tr>
+    <tr><td>KV Arbeitgeber (13%)</td><td>${ag_kv.toFixed(2)}</td></tr>
+    <tr><td><strong>AG gesamt</strong></td>
+    <td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+    <tr><td><strong>Gesamtkosten AG</strong></td>
+    <td><strong>${agGesamtkosten.toFixed(2)}</strong></td></tr>
+  </table>
+`;
     return; // 
 
   document.getElementById("output").innerHTML = outputHTML;
@@ -185,6 +198,7 @@ function calculateNormal() {
 }
 
 window.onload = toggleEmployeeType;
+
 
 
 
