@@ -265,7 +265,7 @@ const sozialversicherungAN = kv + rv + av + pvAN;
     <tr><td>KV</td><td>${kv.toFixed(2)}</td></tr>
     <tr><td>RV</td><td>${rv.toFixed(2)}</td></tr>
     <tr><td>AV</td><td>${av.toFixed(2)}</td></tr>
-    <tr><td>PV AN(${(pvANRate * 100).toFixed(2)}%)</td><td>${pvAN.toFixed(2)}</td></tr>
+    <tr><td>PV AN (${(pvANRate*100).toFixed(2)}%)</td><td>${pvAN.toFixed(2)}</td></tr>
     <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
 
     <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
@@ -290,6 +290,7 @@ const sozialversicherungAN = kv + rv + av + pvAN;
 
 
 window.onload = toggleEmployeeType;
+
 
 
 
