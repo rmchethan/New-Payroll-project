@@ -188,15 +188,27 @@ function calculateNormal() {
   const av = steuerpflichtigesBrutto * 0.012;
 
   // === PV dynamic ===
-  const { pvANRate, pvAGRate } = getPvRates(children, age);
-  const pvAN = steuerpflichtigesBrutto * pvANRate;
-  const pvAG = steuerpflichtigesBrutto * pvAGRate;
+const state = document.getElementById("state")?.value || "default";
 
-  const sozialversicherungAN =
-    kv +
-    rv +
-    av +
-    pvAN;
+// === Get PV rates considering children and age ===
+const pvRates = getPvRates(children, age);
+let pvANRate = pvRates.pvANRate; // employee rate
+let pvAGRate = pvRates.pvAGRate; // employer rate
+
+// Sachsen exception: employee pays reduced PV rate
+if (state === "Sachsen") {
+  pvANRate = 0.00775; // 0.775%
+}
+
+// === PV amounts ===
+const pvAN = steuerpflichtigesBrutto * pvANRate;
+const pvAG = steuerpflichtigesBrutto * pvAGRate;
+
+// === Social security total for AN ===
+const sozialversicherungAN = kv + rv + av + pvAN;
+
+// Now use `pvAN` and `pvAG` in your net and AG calculations
+
 
   // ===== Netto =====
   const netto =
@@ -251,6 +263,7 @@ function calculateNormal() {
     <tr><td>RV AG</td><td>${ag_rv.toFixed(2)}</td></tr>
     <tr><td>AV AG</td><td>${ag_av.toFixed(2)}</td></tr>
     <tr><td>PV AG (1.8%)</td><td>${pvAG.toFixed(2)}</td></tr>
+    <tr><td>PV AN (${(pvANRate*100).toFixed(2)}%)</td><td>${pvAN.toFixed(2)}</td></tr>
     <tr><td>Umlage 1</td><td>${umlage1.toFixed(2)}</td></tr>
     <tr><td>Umlage 2</td><td>${umlage2.toFixed(2)}</td></tr>
     <tr><td>Insolvenzgeld</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
@@ -266,6 +279,7 @@ function calculateNormal() {
 
 
 window.onload = toggleEmployeeType;
+
 
 
 
