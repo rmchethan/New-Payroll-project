@@ -14,7 +14,8 @@ function toggleEmployeeType() {
     "nacht25",
     "nacht40",
     "sonntag50",
-    "feiertag125"
+    "feiertag125",
+    "jobtickets"
   ];
 
   if (employeeType === "minijob") {
@@ -197,6 +198,7 @@ function calculateNormal() {
 }
 
 window.onload = toggleEmployeeType;
+
 
 
 
