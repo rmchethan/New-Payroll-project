@@ -275,7 +275,6 @@ const sozialversicherungAN = kv + rv + av + pvAN;
     <tr><td>RV AG</td><td>${ag_rv.toFixed(2)}</td></tr>
     <tr><td>AV AG</td><td>${ag_av.toFixed(2)}</td></tr>
     <tr><td>PV AG (1.8%)</td><td>${pvAG.toFixed(2)}</td></tr>
-    <tr><td>PV AN (${(pvANRate*100).toFixed(2)}%)</td><td>${pvAN.toFixed(2)}</td></tr>
     <tr><td>Umlage 1</td><td>${umlage1.toFixed(2)}</td></tr>
     <tr><td>Umlage 2</td><td>${umlage2.toFixed(2)}</td></tr>
     <tr><td>Insolvenzgeld</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
@@ -291,6 +290,7 @@ const sozialversicherungAN = kv + rv + av + pvAN;
 
 
 window.onload = toggleEmployeeType;
+
 
 
 
