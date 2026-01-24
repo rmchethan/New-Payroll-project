@@ -175,14 +175,30 @@ const feiertagPay = feiertag125 * stundenlohn * 1.25;
   const rv = steuerpflichtigesBrutto * 0.093;
   const av = steuerpflichtigesBrutto * 0.012;
 
-  // PV dynamic
-  let { pvANRate, pvAGRate } = getPvRates(children, age);
-  if (state === "Sachsen") pvANRate = 0.00775; // Sachsen exception
-  const pvAN = steuerpflichtigesBrutto * pvANRate;
-  const pvAG = steuerpflichtigesBrutto * pvAGRate;
+ // PV dynamic – before override
+let { pvANRate, pvAGRate } = getPvRates(children, age);
 
-  const sozialversicherungAN = kv + rv + av + pvAN;
-
+// Saxony override for AG share & AN share:
+if (state === "Sachsen") {
+  pvAGRate = 0.013; // employer always 1.3%
+  
+  // Adjust employee PV share based on children/age:
+  if (children === 0 && age >= 23) {
+    pvANRate = 0.029; // 2.90%
+  } else if (children === 1) {
+    pvANRate = 0.023; // 2.30%
+  } else if (children === 2) {
+    pvANRate = 0.0205; // 2.05%
+  } else if (children === 3) {
+    pvANRate = 0.018; // 1.80%
+  } else if (children === 4) {
+    pvANRate = 0.0155; // 1.55%
+  } else if (children >= 5) {
+    pvANRate = 0.013; // 1.30%
+  } else {
+    // default fallback – not needed if above covers all
+  }
+}
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
   let kirchensteuer = 0;
@@ -247,6 +263,7 @@ const feiertagPay = feiertag125 * stundenlohn * 1.25;
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
