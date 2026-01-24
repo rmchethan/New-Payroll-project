@@ -213,6 +213,10 @@ if (state === "Sachsen") {
     // default fallback – not needed if above covers all
   }
 }
+
+  const pvAN = steuerpflichtigesBrutto * pvANRate;
+  const pvAG = steuerpflichtigesBrutto * pvAGRate;
+  
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
   let kirchensteuer = 0;
@@ -275,6 +279,7 @@ if (state === "Sachsen") {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
