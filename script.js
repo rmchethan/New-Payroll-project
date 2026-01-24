@@ -136,7 +136,8 @@ function calculateNormal() {
   // Sachsen & state
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value || "default";
-
+  console.log("STATE:", state, "CHILDREN:", children, "AGE:", age, "PV AN RATE:", pvANRate);
+  
   if (state === "Sachsen") {
   pvAGRate = 0.013;
 
@@ -263,6 +264,7 @@ const steuerpflichtigesBrutto =
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
