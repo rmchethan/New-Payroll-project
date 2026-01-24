@@ -137,6 +137,17 @@ function calculateNormal() {
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value || "default";
 
+  if (state === "Sachsen") {
+  pvAGRate = 0.013;
+
+  if (children === 0 && age >= 23) pvANRate = 0.029;
+  else if (children === 1) pvANRate = 0.023;
+  else if (children === 2) pvANRate = 0.0205;
+  else if (children === 3) pvANRate = 0.018;
+  else if (children === 4) pvANRate = 0.0155;
+  else if (children >= 5) pvANRate = 0.013;
+}
+
   // ===== Stundenlohn =====
 const grundlohn = brutto + vwl;
 const monatlicheStunden = 160;
@@ -184,16 +195,7 @@ const steuerpflichtigesBrutto =
 
   let { pvANRate, pvAGRate } = getPvRates(children, age);
 
-if (state === "Sachsen") {
-  pvAGRate = 0.013;
 
-  if (children === 0 && age >= 23) pvANRate = 0.029;
-  else if (children === 1) pvANRate = 0.023;
-  else if (children === 2) pvANRate = 0.0205;
-  else if (children === 3) pvANRate = 0.018;
-  else if (children === 4) pvANRate = 0.0155;
-  else if (children >= 5) pvANRate = 0.013;
-}
 
   const pvAN = steuerpflichtigesBrutto * pvANRate;
   const pvAG = steuerpflichtigesBrutto * pvAGRate;
@@ -261,6 +263,7 @@ if (state === "Sachsen") {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
