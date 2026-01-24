@@ -187,8 +187,7 @@ const steuerpflichtigesBrutto =
   const kv = steuerpflichtigesBrutto * 0.073;
   const rv = steuerpflichtigesBrutto * 0.093;
   const av = steuerpflichtigesBrutto * 0.012;
-  const sozialversicherungAN = kv + rv + av + pvAN;
-
+  
  // PV dynamic – before override
 let { pvANRate, pvAGRate } = getPvRates(children, age);
 
@@ -216,6 +215,8 @@ if (state === "Sachsen") {
 
   const pvAN = steuerpflichtigesBrutto * pvANRate;
   const pvAG = steuerpflichtigesBrutto * pvAGRate;
+  const sozialversicherungAN = kv + rv + av + pvAN;
+
   
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
@@ -279,6 +280,7 @@ if (state === "Sachsen") {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
