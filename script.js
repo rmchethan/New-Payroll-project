@@ -144,21 +144,34 @@ function calculateNormal() {
   // Sachsen & state
   const state = document.getElementById("state")?.value || "default";
 
+  // ===== Stundenlohn =====
 const grundlohn = brutto + vwl;
-const monatlicheStunden = 160;  
+const monatlicheStunden = 160;
 const stundenlohn = grundlohn / monatlicheStunden;
 
-const nacht25Pay = nacht25 * stundenlohn * 0.25;
-const nacht40Pay = nacht40 * stundenlohn * 0.40;
-const sonntagPay = sonntag50 * stundenlohn * 0.50; 
+// ===== Überstunden =====
+const ueberstundenPay = ueberstunden * stundenlohn;        // 100% pay
+const ueberstundenZuschlag = ueberstundenPay * 0.25;       // 25% Zuschlag (steuerpflichtig)
+  
+  // ===== Zuschläge (steuerfrei) =====
+const nacht25Pay  = nacht25     * stundenlohn * 0.25;
+const nacht40Pay  = nacht40     * stundenlohn * 0.40;
+const sonntagPay  = sonntag50   * stundenlohn * 0.50;
 const feiertagPay = feiertag125 * stundenlohn * 1.25;
 
-
   // ===== Brutto components =====
-  const ueberstundenZuschlag = ueberstunden * 0.25;
-  const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
-  const steuerpflichtigesBrutto = grundlohn + ueberstunden + ueberstundenZuschlag;
+const steuerfreieZuschlaege =
+  nacht25Pay +
+  nacht40Pay +
+  sonntagPay +
+  feiertagPay;
 
+// ===== Steuerpflichtiges Brutto (SV-Basis) =====
+const steuerpflichtigesBrutto =
+  grundlohn +
+  ueberstundenPay +
+  ueberstundenZuschlag;
+  
   // ===== Steuerklasse logic =====
   let steuersatz = 0.20;
   switch (steuerklasse) {
@@ -226,14 +239,13 @@ if (state === "Sachsen") {
     <table border="1" cellpadding="5">
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
       <tr><td>Grundgehalt + VWL</td><td>${grundlohn.toFixed(2)}</td></tr>
-      <tr><td>Überstunden</td><td>${ueberstunden.toFixed(2)}</td></tr>
+      <tr><td>Überstunden</td><td>${ueberstundenPay.toFixed(2)}</td></tr>
       <tr><td>Überstundenzuschlag 25%</td><td>${ueberstundenZuschlag.toFixed(2)}</td></tr>
-      <tr><td>Nachtstunden 25%</td><td>${nacht25.toFixed(2)}</td></tr>
-      <tr><td>Nachtstunden 40%</td><td>${nacht40.toFixed(2)}</td></tr>
-      <tr><td>Sonntag 50%</td><td>${sonntag50.toFixed(2)}</td></tr>
-      <tr><td>Feiertag 125%</td><td>${feiertag125.toFixed(2)}</td></tr>
+      <tr><td>Nacht 25%</td><td>${nacht25Pay.toFixed(2)}</td></tr>
+      <tr><td>Nacht 40%</td><td>${nacht40Pay.toFixed(2)}</td></tr>
+      <tr><td>Sonntag 50%</td><td>${sonntagPay.toFixed(2)}</td></tr>
+      <tr><td>Feiertag 125%</td><td>${feiertagPay.toFixed(2)}</td></tr>
       <tr><td><strong>Gesamtbrutto</strong></td><td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege).toFixed(2)}</strong></td></tr>
-
       <tr><th colspan="2">Abzüge Arbeitnehmer</th></tr>
       <tr><td>Lohnsteuer (${(steuersatz * 100).toFixed(0)}%)</td><td>${lohnsteuer.toFixed(2)}</td></tr>
       <tr><td>Kirchensteuer (${(kirchensteuerRate*100).toFixed(0)}%)</td><td>${kirchensteuer.toFixed(2)}</td></tr>
@@ -242,7 +254,6 @@ if (state === "Sachsen") {
       <tr><td>AV</td><td>${av.toFixed(2)}</td></tr>
       <tr><td>PV AN</td><td>${pvAN.toFixed(2)}</td></tr>
       <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
-
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
 
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
@@ -263,6 +274,7 @@ if (state === "Sachsen") {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
