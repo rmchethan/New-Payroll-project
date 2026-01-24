@@ -16,8 +16,7 @@ function calculateAge(dob) {
   return age;
 }
 
-const children = Number(document.getElementById("children")?.value || 0);
-  const state = document.getElementById("state")?.value || "default";
+
 
 function getPvRates(children, age) {
   const pvAGRate = 0.018;
@@ -135,7 +134,8 @@ function calculateNormal() {
   const age = calculateAge(dob);
 
   // Sachsen & state
-
+  const children = Number(document.getElementById("children")?.value || 0);
+  const state = document.getElementById("state")?.value || "default";
 
   // ===== Stundenlohn =====
 const grundlohn = brutto + vwl;
@@ -261,6 +261,7 @@ if (state === "Sachsen") {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
