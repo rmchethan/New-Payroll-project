@@ -1,3 +1,5 @@
+console.log("STATE:", state, "CHILDREN:", children, "AGE:", age, "PV RATE:", pvANRate);
+
 function calculateAge(dob) {
   if (!dob) return 0;
 
@@ -13,6 +15,9 @@ function calculateAge(dob) {
 
   return age;
 }
+
+const children = Number(document.getElementById("children")?.value || 0);
+
 
 function getPvRates(children, age) {
   let pvANRate = 0.018; // base 1.8%
@@ -138,7 +143,6 @@ function calculateNormal() {
 
   // PV & age/children
   const dob = document.getElementById("dob")?.value;
-  const children = Number(document.getElementById("children")?.value || 0);
   const age = calculateAge(dob);
 
   // Sachsen & state
@@ -280,6 +284,7 @@ if (state === "Sachsen") {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
