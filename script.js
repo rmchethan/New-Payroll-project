@@ -20,31 +20,20 @@ const children = Number(document.getElementById("children")?.value || 0);
 
 
 function getPvRates(children, age) {
-  let pvANRate = 0.018; // base 1.8%
-  const pvAGRate = 0.018; // fixed
+  const pvAGRate = 0.018;
+  let pvANRate;
 
-  if (children >= 5) {
-    pvANRate = 0.008;
-  } else if (children === 4) {
-    pvANRate = 0.0105;
-  } else if (children === 3) {
-    pvANRate = 0.013;
-  } else if (children === 2) {
-    pvANRate = 0.0155;
-  } else if (children === 1) {
-    pvANRate = 0.018;
-  } else {
-    // children === 0
-    if (age >= 23) {
-      pvANRate = 0.024; // Zuschlag
-    }
-  }
+  if (children >= 5) pvANRate = 0.008;
+  else if (children === 4) pvANRate = 0.0105;
+  else if (children === 3) pvANRate = 0.013;
+  else if (children === 2) pvANRate = 0.0155;
+  else if (children === 1) pvANRate = 0.018;
+  else if (children === 0 && age >= 23) pvANRate = 0.024;
+  else pvANRate = 0.018; // fallback (e.g. under 23, no kids)
 
-  return {
-    pvANRate,
-    pvAGRate
-  };
+  return { pvANRate, pvAGRate };
 }
+
 
 function toggleEmployeeType() {
   const employeeType = document.getElementById("employeeType").value;
@@ -191,36 +180,24 @@ const steuerpflichtigesBrutto =
   const kv = steuerpflichtigesBrutto * 0.073;
   const rv = steuerpflichtigesBrutto * 0.093;
   const av = steuerpflichtigesBrutto * 0.012;
-  
- // PV dynamic – before override
-let { pvANRate, pvAGRate } = getPvRates(children, age);
 
-// Saxony override for AG share & AN share:
+
+  let { pvANRate, pvAGRate } = getPvRates(children, age);
+
 if (state === "Sachsen") {
-  pvAGRate = 0.013; // employer always 1.3%
-  
-  // Adjust employee PV share based on children/age:
-  if (children === 0 && age >= 23) {
-    pvANRate = 0.029; // 2.90%
-  } else if (children === 1) {
-    pvANRate = 0.023; // 2.30%
-  } else if (children === 2) {
-    pvANRate = 0.0205; // 2.05%
-  } else if (children === 3) {
-    pvANRate = 0.018; // 1.80%
-  } else if (children === 4) {
-    pvANRate = 0.0155; // 1.55%
-  } else if (children >= 5) {
-    pvANRate = 0.013; // 1.30%
-  } else {
-    // default fallback – not needed if above covers all
-  }
+  pvAGRate = 0.013;
+
+  if (children === 0 && age >= 23) pvANRate = 0.029;
+  else if (children === 1) pvANRate = 0.023;
+  else if (children === 2) pvANRate = 0.0205;
+  else if (children === 3) pvANRate = 0.018;
+  else if (children === 4) pvANRate = 0.0155;
+  else if (children >= 5) pvANRate = 0.013;
 }
 
   const pvAN = steuerpflichtigesBrutto * pvANRate;
   const pvAG = steuerpflichtigesBrutto * pvAGRate;
   const sozialversicherungAN = kv + rv + av + pvAN;
-  console.log("STATE:", state, "CHILDREN:", children, "AGE:", age, "PV RATE:", pvANRate);
   
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
@@ -284,6 +261,7 @@ if (state === "Sachsen") {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
