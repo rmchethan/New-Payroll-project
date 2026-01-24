@@ -1,4 +1,4 @@
-console.log("STATE:", state, "CHILDREN:", children, "AGE:", age, "PV RATE:", pvANRate);
+
 
 function calculateAge(dob) {
   if (!dob) return 0;
@@ -220,7 +220,7 @@ if (state === "Sachsen") {
   const pvAN = steuerpflichtigesBrutto * pvANRate;
   const pvAG = steuerpflichtigesBrutto * pvAGRate;
   const sozialversicherungAN = kv + rv + av + pvAN;
-
+  console.log("STATE:", state, "CHILDREN:", children, "AGE:", age, "PV RATE:", pvANRate);
   
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
@@ -284,6 +284,7 @@ if (state === "Sachsen") {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
