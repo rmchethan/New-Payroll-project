@@ -136,7 +136,7 @@ function calculateNormal() {
   // Sachsen & state
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value || "default";
-  console.log("STATE:", state, "CHILDREN:", children, "AGE:", age, "PV AN RATE:", pvANRate);
+  
   
   if (state === "Sachsen") {
   pvAGRate = 0.013;
@@ -201,6 +201,8 @@ const steuerpflichtigesBrutto =
   const pvAN = steuerpflichtigesBrutto * pvANRate;
   const pvAG = steuerpflichtigesBrutto * pvAGRate;
   const sozialversicherungAN = kv + rv + av + pvAN;
+
+  console.log("STATE:", state, "CHILDREN:", children, "AGE:", age, "PV AN RATE:", pvANRate);
   
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
@@ -264,6 +266,7 @@ const steuerpflichtigesBrutto =
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
