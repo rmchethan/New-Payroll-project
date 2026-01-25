@@ -195,10 +195,6 @@ const steuerpflichtigesBrutto =
   const av = steuerpflichtigesBrutto * 0.012;
 
 
-  let { pvANRate, pvAGRate } = getPvRates(children, age);
-
-
-
   const pvAN = steuerpflichtigesBrutto * pvANRate;
   const pvAG = steuerpflichtigesBrutto * pvAGRate;
   const sozialversicherungAN = kv + rv + av + pvAN;
@@ -267,6 +263,7 @@ const steuerpflichtigesBrutto =
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
