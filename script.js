@@ -137,6 +137,7 @@ function calculateNormal() {
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value || "default";
   
+  let { pvANRate, pvAGRate } = getPvRates(children, age);
   
   if (state === "SN") {
   pvAGRate = 0.013;
@@ -266,6 +267,7 @@ const steuerpflichtigesBrutto =
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
