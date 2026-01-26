@@ -76,6 +76,9 @@ function toggleEmployeeType() {
   }
 }
 
+const BBG_KV_PV = 5175;
+const BBG_RV_AV = 7550;
+
 function calculateNetto() {
   const employeeType = document.getElementById("employeeType")?.value || "normal";
 
@@ -177,6 +180,10 @@ const steuerpflichtigesBrutto =
   grundlohn +
   ueberstundenPay +
   ueberstundenZuschlag;
+
+const kvPvBase = Math.min(steuerpflichtigesBrutto, BBG_KV_PV);
+const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
+
   
   // ===== Steuerklasse logic =====
   let steuersatz = 0.20;
@@ -190,13 +197,13 @@ const steuerpflichtigesBrutto =
   const lohnsteuer = steuerpflichtigesBrutto * steuersatz;
 
   // ===== Sozialversicherung =====
-  const kv = steuerpflichtigesBrutto * 0.073;
-  const rv = steuerpflichtigesBrutto * 0.093;
-  const av = steuerpflichtigesBrutto * 0.012;
+  const kv = kvPvBase * 0.073;
+  const rv = rvAvBase * 0.093;
+  const av = rvAvBase * 0.012;
 
 
-  const pvAN = steuerpflichtigesBrutto * pvANRate;
-  const pvAG = steuerpflichtigesBrutto * pvAGRate;
+  const pvAN = kvPvBase * pvANRate;
+  const pvAG = kvPvBase * pvAGRate;
   const sozialversicherungAN = kv + rv + av + pvAN;
 
   console.log("STATE:", state, "CHILDREN:", children, "AGE:", age, "PV AN RATE:", pvANRate);
@@ -214,9 +221,9 @@ const steuerpflichtigesBrutto =
   const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN - jobticket - kirchensteuer + steuerfreieZuschlaege;
 
   // ===== Arbeitgeberanteile =====
-  const ag_kv = steuerpflichtigesBrutto * 0.073;
-  const ag_rv = steuerpflichtigesBrutto * 0.093;
-  const ag_av = steuerpflichtigesBrutto * 0.013;
+  const ag_kv = kvPvBase * 0.073;
+  const ag_rv = rvAvBase * 0.093;
+  const ag_av = rvAvBase * 0.013;
   const umlage1 = steuerpflichtigesBrutto * 0.028;
   const umlage2 = steuerpflichtigesBrutto * 0.0075;
   const insolvenzgeld = steuerpflichtigesBrutto * 0.006;
@@ -263,6 +270,7 @@ const steuerpflichtigesBrutto =
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
