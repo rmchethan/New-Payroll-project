@@ -174,6 +174,7 @@ function calculateNormal() {
   const jobticket = Number(document.getElementById("jobticket")?.value) || 0;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
 
+
   // PV & age/children
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
@@ -238,8 +239,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
  
   let lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
-  const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-  lohnsteuer = adjustTaxBySteuerklasse(lohnsteuer, steuerklasse);
+   lohnsteuer = adjustTaxBySteuerklasse(lohnsteuer, steuerklasse);
 
 
   // ===== Sozialversicherung =====
@@ -316,6 +316,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
