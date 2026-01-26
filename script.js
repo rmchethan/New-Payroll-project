@@ -62,6 +62,19 @@ function calculateProgressiveTax(monthlyIncome) {
   return tax;
 }
 
+function adjustTaxBySteuerklasse(tax, steuerklasse) {
+    switch(steuerklasse) {
+        case "1": return tax;               // base
+        case "2": return tax * 0.85;        // 15% reduction for single parent
+        case "3": return tax * 0.6;         // main earner, big reduction
+        case "4": return tax;               // same as 1
+        case "5": return tax * 1.4;         // secondary earner, higher tax
+        case "6": return tax * 1.5;         // multiple jobs, highest
+        default: return tax;
+    }
+}
+
+
 
 function toggleEmployeeType() {
   const employeeType = document.getElementById("employeeType").value;
@@ -223,7 +236,11 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
     case "6": steuersatz = 0.30; break;
   }
 
-  const lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
+ 
+  let lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
+  const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
+  lohnsteuer = adjustTaxBySteuerklasse(lohnsteuer, steuerklasse);
+
 
   // ===== Sozialversicherung =====
   const kv = kvPvBase * 0.073;
@@ -299,6 +316,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
