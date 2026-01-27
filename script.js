@@ -130,6 +130,8 @@ function calculateNetto() {
     calculatePraktikant();
   } else if (employeeType === "minijob") {
     calculateMinijob();
+  } else if (employeeType === "midijob") {
+    calculateMidijob();
   }
 }
 
@@ -316,6 +318,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
