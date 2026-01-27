@@ -135,6 +135,7 @@ function calculateNetto() {
   }
 }
 
+// Calculate for Minijob
 function calculateMinijob() {
   const brutto = Number(document.getElementById("brutto").value) || 0;
   const rvCheckbox = document.getElementById("minijobRV").checked;
@@ -165,6 +166,30 @@ function calculateMinijob() {
   return; // Important to stop execution
 }
 
+// Calculate for Midijob
+function calculateMidijob() {
+  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+
+  if (brutto <= 538 || brutto > 2000) {
+    alert("Brutto liegt nicht im Übergangsbereich (538,01 – 2.000 €)");
+    return;
+  }
+
+  // 1️⃣ Steuerpflichtiges Brutto (voll!)
+  const steuerpflichtigesBrutto = brutto;
+
+  // 2️⃣ Lohnsteuer (normal / progressive)
+  const lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
+
+  // 3️⃣ Übergangsbereich-Berechnung (SV-Basis)
+  const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto);
+
+  // 4️⃣ SV contributions (AN reduced, AG full)
+  // 5️⃣ Netto calculation
+  // 6️⃣ Output
+}
+
+ // Calculate for Normal AN
 function calculateNormal() {
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
   const ueberstunden = Number(document.getElementById("ueberstunden")?.value) || 0;
@@ -318,6 +343,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
