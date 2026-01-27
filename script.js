@@ -94,7 +94,13 @@ function toggleEmployeeType() {
     "feiertag125",
     "jobticket"
   ];
-
+  
+disabledFields.forEach(id => { 
+  const el = document.getElementById(id);
+  if (el) {
+    el.disabled = true; // only disable if element exists
+  }
+});
   
   if (employeeType === "minijob") {
     // Minijob fixed brutto
@@ -409,6 +415,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
