@@ -64,17 +64,36 @@ function calculateAnnualProgressiveTax(annualIncome) {
 }
 
 // Steuerklasse allowances
-function getAnnualAllowance(steuerklasse) {
-  switch (steuerklasse) {
-    case "1": return 12348;
-    case "2": return 12348 + 4260; // Single parent
-    case "3": return 24696;       // Main earner
-    case "4": return 2 * 12348;   // Married both normal
-    case "5": return 0;           // Secondary earner
-    case "6": return 0;           // Multiple jobs
-    default: return 12348;
-  }
+function adjustTaxBySteuerklasse(tax, steuerklasse, children) {
+    switch(steuerklasse) {
+        case "1": 
+            return tax; // base tax
+        case "2": 
+            // Single parent: only the first child reduces tax
+            if (children >= 1) return tax - calculateChildAllowance(tax, 1);
+            return tax;
+        case "3": 
+            // Main earner: all children reduce tax
+            if (children >= 1) return tax - calculateChildAllowance(tax, children);
+            return tax;
+        case "4": 
+            return tax; // same as 1
+        case "5": 
+            return tax * 1.4; // secondary earner higher tax
+        case "6": 
+            return tax * 1.5; // multiple jobs, highest tax
+        default: 
+            return tax;
+    }
 }
+
+function calculateChildAllowance(tax, numChildren) {
+    // For now, use a placeholder fixed reduction per child
+    // TODO: Replace with actual 2026 Kinderfreibetrag or Kindergeld-adjusted amount
+    const perChildReduction = 200; // Example: €200 reduction per child
+    return perChildReduction * numChildren;
+}
+
 
 // Compute monthly Lohnsteuer after allowances
 function calculateMonthlyLohnsteuer(steuerpflichtigesBrutto, steuerklasse, svAN = 0) {
@@ -348,10 +367,10 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
     case "6": steuersatz = 0.30; break;
   }
 
+  let lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
+  lohnsteuer = adjustTaxBySteuerklasse(lohnsteuer, steuerklasse, children);
  
-  const lohnsteuer = calculateMonthlyLohnsteuer(steuerpflichtigesBrutto, steuerklasse, pvAN);
-
-
+ 
   // ===== Sozialversicherung =====
   const kv = kvPvBase * 0.073;
   const rv = rvAvBase * 0.093;
@@ -426,6 +445,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
