@@ -153,10 +153,10 @@ function calculateMinijob() {
 
   const rvAN = rvCheckbox ? brutto * 0.036 : 0;
   const netto = brutto - rvAN;
-
+  const pauschalsteuer = brutto * 0.02;
   const ag_rv = brutto * 0.15;
   const ag_kv = brutto * 0.13;
-  const arbeitgeberGesamt = ag_rv + ag_kv;
+  const arbeitgeberGesamt = ag_rv + ag_kv+ pauschalsteuer;
   const agGesamtkosten = brutto + arbeitgeberGesamt;
 
   const outputHTML = `
@@ -166,6 +166,7 @@ function calculateMinijob() {
       ${rvCheckbox ? `<tr><td>RV Arbeitnehmer (3.6%)</td><td>${rvAN.toFixed(2)}</td></tr>` : ``}
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
+      <tr><td>Pauschalsteuer 2%</td><td>${pauschalsteuer.toFixed(2)}</td></tr>
       <tr><td>RV Arbeitgeber (15%)</td><td>${ag_rv.toFixed(2)}</td></tr>
       <tr><td>KV Arbeitgeber (13%)</td><td>${ag_kv.toFixed(2)}</td></tr>
       <tr><td><strong>AG gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
@@ -367,6 +368,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
