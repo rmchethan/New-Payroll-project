@@ -1,5 +1,5 @@
 
-console.log("Midijob SV base:", beitragspflichtigesEntgelt);
+
 
 function calculateAge(dob) {
   if (!dob) return 0;
@@ -82,6 +82,7 @@ function toggleEmployeeType() {
   const steuerklasse = document.getElementById("steuerklasse");
   const brutto = document.getElementById("brutto");
   const minijobRVBlock = document.getElementById("minijobRVBlock");
+  }
 
   // Fields that are NOT allowed for Minijob
   const disabledFields = [
@@ -185,7 +186,6 @@ function calculateMidijobSVBase(brutto) {
   return beitragspflichtigesEntgelt;
 }
 
-console.log("Midijob SV base:", beitragspflichtigesEntgelt);
 
 // Calculate for Midijob
 function calculateMidijob() {
@@ -204,6 +204,7 @@ function calculateMidijob() {
 
   // 3️⃣ Übergangsbereich-Berechnung (SV-Basis)
   const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto);
+  console.log("Midijob SV base:", beitragspflichtigesEntgelt);
 
   // 4️⃣ SV contributions (AN reduced, AG full)
   // 5️⃣ Netto calculation
@@ -364,6 +365,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
