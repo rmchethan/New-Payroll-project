@@ -196,20 +196,64 @@ function calculateMidijob() {
     return;
   }
 
-  // 1️⃣ Steuerpflichtiges Brutto (voll!)
+  // 1️⃣ Steuerpflichtiges Brutto
   const steuerpflichtigesBrutto = brutto;
 
-  // 2️⃣ Lohnsteuer (normal / progressive)
+  // 2️⃣ Lohnsteuer
   const lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
 
   // 3️⃣ Übergangsbereich-Berechnung (SV-Basis)
   const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto);
-  console.log("Midijob SV base:", beitragspflichtigesEntgelt);
 
-  // 4️⃣ SV contributions (AN reduced, AG full)
-  // 5️⃣ Netto calculation
-  // 6️⃣ Output
+  // 4️⃣ Sozialversicherung AN (reduced) & AG (full)
+  const kvRate = 0.073;
+  const rvRate = 0.093;
+  const avRate = 0.012;
+  const pvRate = 0.018; // example, can adapt per state
+
+  const kvAN = beitragspflichtigesEntgelt * kvRate;
+  const rvAN = beitragspflichtigesEntgelt * rvRate;
+  const avAN = beitragspflichtigesEntgelt * avRate;
+  const pvAN = beitragspflichtigesEntgelt * pvRate;
+
+  const sozialversicherungAN = kvAN + rvAN + avAN + pvAN;
+
+  // AG contributions (full)
+  const kvAG = steuerpflichtigesBrutto * kvRate;
+  const rvAG = steuerpflichtigesBrutto * rvRate;
+  const avAG = steuerpflichtigesBrutto * avRate;
+  const pvAG = steuerpflichtigesBrutto * pvRate;
+
+  const arbeitgeberGesamt = kvAG + rvAG + avAG + pvAG;
+
+  // 5️⃣ Netto
+  const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN;
+
+  // 6️⃣ Output table
+  const outputHTML = `
+    <table border="1" cellpadding="5">
+      <tr><th>Komponente</th><th>Betrag (€)</th></tr>
+      <tr><td>Brutto (Midijob)</td><td>${brutto.toFixed(2)}</td></tr>
+      <tr><td>Steuerpflichtiges Brutto</td><td>${steuerpflichtigesBrutto.toFixed(2)}</td></tr>
+      <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
+      <tr><td>KV AN</td><td>${kvAN.toFixed(2)}</td></tr>
+      <tr><td>RV AN</td><td>${rvAN.toFixed(2)}</td></tr>
+      <tr><td>AV AN</td><td>${avAN.toFixed(2)}</td></tr>
+      <tr><td>PV AN</td><td>${pvAN.toFixed(2)}</td></tr>
+      <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+      <tr><th colspan="2">Arbeitgeberanteile</th></tr>
+      <tr><td>KV AG</td><td>${kvAG.toFixed(2)}</td></tr>
+      <tr><td>RV AG</td><td>${rvAG.toFixed(2)}</td></tr>
+      <tr><td>AV AG</td><td>${avAG.toFixed(2)}</td></tr>
+      <tr><td>PV AG</td><td>${pvAG.toFixed(2)}</td></tr>
+      <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+      <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(steuerpflichtigesBrutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
+    </table>
+  `;
+
+  document.getElementById("output").innerHTML = outputHTML;
 }
+
 
  // Calculate for Normal AN
 function calculateNormal() {
@@ -365,6 +409,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
