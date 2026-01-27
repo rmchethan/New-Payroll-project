@@ -75,14 +75,30 @@ function adjustTaxBySteuerklasse(tax, steuerklasse) {
     }
 }
 
-
+console.log("steuerklasse element:", steuerklasse);
 
 function toggleEmployeeType() {
-  const employeeType = document.getElementById("employeeType").value;
+  const employeeType = document.getElementById("employeeType")?.value;
   const steuerklasse = document.getElementById("steuerklasse");
   const brutto = document.getElementById("brutto");
   const minijobRVBlock = document.getElementById("minijobRVBlock");
+
+  if (employeeType === "minijob") {
+    if (brutto) {
+      brutto.value = 603;
+      brutto.disabled = true;
+    }
+
+    if (steuerklasse) steuerklasse.disabled = true;
+    if (minijobRVBlock) minijobRVBlock.style.display = "block";
+  } 
+  else {
+    if (brutto) brutto.disabled = false;
+    if (steuerklasse) steuerklasse.disabled = false;
+    if (minijobRVBlock) minijobRVBlock.style.display = "none";
   }
+}
+
 
   // Fields that are NOT allowed for Minijob
   const disabledFields = [
@@ -96,28 +112,21 @@ function toggleEmployeeType() {
     "jobticket"
   ];
 
-  if (employeeType === "minijob") {
-    brutto.value = 603.00;
-    brutto.disabled = true;
+ if (employeeType === "minijob") {
+    if (brutto) {
+      brutto.value = 603;
+      brutto.disabled = true;
+    }
 
-    disabledFields.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.disabled = true;
-    });
-
-    steuerklasse.disabled = true;
-    minijobRVBlock.style.display = "block";
-  } else {
-    brutto.disabled = false;
-
-    disabledFields.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.disabled = false;
-    });
-
-    steuerklasse.disabled = false;
-    minijobRVBlock.style.display = "none";
+    if (steuerklasse) steuerklasse.disabled = true;
+    if (minijobRVBlock) minijobRVBlock.style.display = "block";
+  } 
+  else {
+    if (brutto) brutto.disabled = false;
+    if (steuerklasse) steuerklasse.disabled = false;
+    if (minijobRVBlock) minijobRVBlock.style.display = "none";
   }
+}
 
 
 const BBG_KV_PV = 5175;
@@ -358,6 +367,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
