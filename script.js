@@ -1,4 +1,7 @@
 
+function calculateMidijob() {
+  alert("Midijob calculation placeholder – function is wired correctly.");
+}
 
 function calculateAge(dob) {
   if (!dob) return 0;
@@ -343,6 +346,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
