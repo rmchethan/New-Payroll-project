@@ -34,46 +34,58 @@ function getPvRates(children, age) {
   return { pvANRate, pvAGRate };
 }
 
-function calculateProgressiveTax(monthlyIncome) {
+
+// Progressive tax for annual taxable income
+function calculateAnnualProgressiveTax(annualIncome) {
   let tax = 0;
 
-  if (monthlyIncome <= 1200) {
-    return 0;
-  }
+  if (annualIncome <= 12348) return 0; // Grundfreibetrag 2026
 
-  if (monthlyIncome > 1200) {
-    const taxable = Math.min(monthlyIncome, 2000) - 1200;
+  if (annualIncome > 12348) {
+    const taxable = Math.min(annualIncome, 20000) - 12348;
     tax += taxable * 0.14;
   }
 
-  if (monthlyIncome > 2000) {
-    const taxable = Math.min(monthlyIncome, 4000) - 2000;
+  if (annualIncome > 20000) {
+    const taxable = Math.min(annualIncome, 40000) - 20000;
     tax += taxable * 0.24;
   }
 
-  if (monthlyIncome > 4000) {
-    const taxable = Math.min(monthlyIncome, 7000) - 4000;
+  if (annualIncome > 40000) {
+    const taxable = Math.min(annualIncome, 70000) - 40000;
     tax += taxable * 0.34;
   }
 
-  if (monthlyIncome > 7000) {
-    tax += (monthlyIncome - 7000) * 0.42;
+  if (annualIncome > 70000) {
+    tax += (annualIncome - 70000) * 0.42;
   }
 
   return tax;
 }
 
-function adjustTaxBySteuerklasse(tax, steuerklasse) {
-    switch(steuerklasse) {
-        case "1": return tax;               // base
-        case "2": return tax * 0.85;        // 15% reduction for single parent
-        case "3": return tax * 0.6;         // main earner, big reduction
-        case "4": return tax;               // same as 1
-        case "5": return tax * 1.4;         // secondary earner, higher tax
-        case "6": return tax * 1.5;         // multiple jobs, highest
-        default: return tax;
-    }
+// Steuerklasse allowances
+function getAnnualAllowance(steuerklasse) {
+  switch (steuerklasse) {
+    case "1": return 12348;
+    case "2": return 12348 + 4260; // Single parent
+    case "3": return 24696;       // Main earner
+    case "4": return 2 * 12348;   // Married both normal
+    case "5": return 0;           // Secondary earner
+    case "6": return 0;           // Multiple jobs
+    default: return 12348;
+  }
 }
+
+// Compute monthly Lohnsteuer after allowances
+function calculateMonthlyLohnsteuer(steuerpflichtigesBrutto, steuerklasse, svAN = 0) {
+  const annualGross = (steuerpflichtigesBrutto - svAN) * 12;
+  const annualAllowance = getAnnualAllowance(steuerklasse);
+  const netAnnualTaxable = Math.max(0, annualGross - annualAllowance);
+  const annualTax = calculateAnnualProgressiveTax(netAnnualTaxable);
+  return annualTax / 12;
+}
+
+
 
 console.log("steuerklasse element:", steuerklasse);
 
@@ -337,8 +349,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
   }
 
  
-  let lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
-   lohnsteuer = adjustTaxBySteuerklasse(lohnsteuer, steuerklasse);
+  const lohnsteuer = calculateMonthlyLohnsteuer(steuerpflichtigesBrutto, steuerklasse, pvAN);
 
 
   // ===== Sozialversicherung =====
@@ -415,6 +426,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
