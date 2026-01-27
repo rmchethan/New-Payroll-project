@@ -95,6 +95,33 @@ function calculateChildAllowance(tax, numChildren) {
     return perChildReduction * numChildren;
 }
 
+function calculateProgressiveTax(monthlyIncome) {
+  let tax = 0;
+
+  if (monthlyIncome <= 1200) return 0;
+
+  if (monthlyIncome > 1200) {
+    const taxable = Math.min(monthlyIncome, 2000) - 1200;
+    tax += taxable * 0.14;
+  }
+
+  if (monthlyIncome > 2000) {
+    const taxable = Math.min(monthlyIncome, 4000) - 2000;
+    tax += taxable * 0.24;
+  }
+
+  if (monthlyIncome > 4000) {
+    const taxable = Math.min(monthlyIncome, 7000) - 4000;
+    tax += taxable * 0.34;
+  }
+
+  if (monthlyIncome > 7000) {
+    tax += (monthlyIncome - 7000) * 0.42;
+  }
+
+  return tax;
+}
+
 
 // Compute monthly Lohnsteuer after allowances
 function calculateMonthlyLohnsteuer(steuerpflichtigesBrutto, steuerklasse, svAN = 0) {
@@ -446,6 +473,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
