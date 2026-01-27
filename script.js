@@ -1,4 +1,5 @@
 
+console.log("Progressive tax function exists:", typeof calculateProgressiveTax);
 
 
 function calculateAge(dob) {
@@ -445,6 +446,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
