@@ -169,21 +169,14 @@ function calculateMinijob() {
 }
 
 function calculateMidijobSVBase(brutto) {
-  // Übergangsbereich 2024/2025 (simplified monthly logic)
-  // Midijob range: 538.01 € – 2,000 €
-
   if (brutto <= 538) return brutto;
   if (brutto >= 2000) return brutto;
 
-  // Formula (simplified, payroll-acceptable)
   const lower = 538;
   const upper = 2000;
 
   const factor = (brutto - lower) / (upper - lower);
-  const beitragspflichtigesEntgelt =
-    lower + factor * (brutto - lower);
-
-  return beitragspflichtigesEntgelt;
+  return lower + factor * (brutto - lower);
 }
 
 
@@ -365,6 +358,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
