@@ -126,7 +126,7 @@ function toggleEmployeeType() {
     if (steuerklasse) steuerklasse.disabled = false;
     if (minijobRVBlock) minijobRVBlock.style.display = "none";
   }
-}
+
 
 
 const BBG_KV_PV = 5175;
@@ -367,6 +367,7 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
