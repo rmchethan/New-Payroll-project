@@ -5,6 +5,18 @@ window.onload = toggleEmployeeType;
 const BBG_KV_PV = 5175;
 const BBG_RV_AV = 7550;
 
+const disabledFields = [
+  "steuerklasse",
+  "ueberstunden",
+  "vwl",
+  "nacht25",
+  "nacht40",
+  "sonntag50",
+  "feiertag125",
+  "jobticket"
+];
+
+
 function calculateAge(dob) {
   if (!dob) return 0;
 
@@ -134,97 +146,56 @@ function calculateMonthlyLohnsteuer(steuerpflichtigesBrutto, steuerklasse, svAN 
   return annualTax / 12;
 }
 
-
-
 console.log("steuerklasse element:", steuerklasse);
-
-// Fields that are NOT allowed for Minijob
-  const disabledFields = [
-    "steuerklasse",
-    "ueberstunden",
-    "vwl",
-    "nacht25",
-    "nacht40",
-    "sonntag50",
-    "feiertag125",
-    "jobticket"
-  ];
-
-  const praktikumDisabledFields = [
-  "ueberstunden",
-  "vwl",
-  "nacht25",
-  "nacht40",
-  "sonntag50",
-  "feiertag125",
-  "jobticket"
-];
 
 
 function toggleEmployeeType() {
   const employeeType = document.getElementById("employeeType")?.value;
-  const steuerklasse = document.getElementById("steuerklasse");
   const brutto = document.getElementById("brutto");
+  const steuerklasse = document.getElementById("steuerklasse");
   const minijobRVBlock = document.getElementById("minijobRVBlock");
 
-  
-    // Reset all Praktikum fields first
-  praktikumDisabledFields.forEach(id => {
+  // Reset everything first
+  brutto.disabled = false;
+  disabledFields.forEach(id => {
     const el = document.getElementById(id);
-    if (el) {
-      el.disabled = false;
-    }
+    if (el) el.disabled = false;
   });
 
-  // Praktikant-specific lock
-  if (employeeType === "praktikant") {
-    praktikumDisabledFields.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.value = 0;
-        el.disabled = true;
-      }
-    });
-  }
+  if (minijobRVBlock) minijobRVBlock.style.display = "none";
 
-  // existing Minijob / Midijob logic continues below
-}
- 
-disabledFields.forEach(id => { 
-  const el = document.getElementById(id);
-  if (el) {
-    el.disabled = true; // only disable if element exists
-  }
-});
-  
+  // ===== MINIJOB =====
   if (employeeType === "minijob") {
-    // Minijob fixed brutto
-    if (brutto) {
-      brutto.value = 603;
-      brutto.disabled = true;
-    }
+    brutto.value = 603;
+    brutto.disabled = true;
 
-    // Disable all forbidden fields
     disabledFields.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.disabled = true;
     });
 
     if (minijobRVBlock) minijobRVBlock.style.display = "block";
-  } 
-  else {
-    // Enable everything back
-    if (brutto) brutto.disabled = false;
-
-    disabledFields.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.disabled = false;
-    });
-
-    if (minijobRVBlock) minijobRVBlock.style.display = "none";
   }
 
+  // ===== MIDIJOB (Übergangsbereich) =====
+  if (employeeType === "midijob") {
+    disabledFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = true;
+    });
 
+    // Steuerklasse still relevant for tax
+    steuerklasse.disabled = false;
+  }
+
+  // ===== PRAKTIKANT =====
+  if (employeeType === "praktikant") {
+    disabledFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = true;
+    });
+  }
+}
 
 function calculateNetto() {
   const employeeType = document.getElementById("employeeType")?.value || "normal";
@@ -241,6 +212,10 @@ function calculateNetto() {
 }
 
 // Calculate for Minijob
+if (brutto > 603) {
+  alert("Minijob: Brutto darf maximal 603 € sein");
+  return;
+}
 function calculateMinijob() {
   const brutto = Number(document.getElementById("brutto").value) || 0;
   const rvCheckbox = document.getElementById("minijobRV").checked;
@@ -293,29 +268,11 @@ function calculateMidijob() {
     return;
   }
 
-  // 1️⃣ Steuerpflichtiges Brutto
-  const steuerpflichtigesBrutto = brutto;
+  const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto);
 
-  // 2️⃣ Lohnsteuer
-  function calculateProgressiveTax(monthlyIncome) {
-  let tax = 0;
-  if (monthlyIncome <= 1200) return 0;
-
-  if (monthlyIncome > 1200) {
-    tax += (Math.min(monthlyIncome, 2000) - 1200) * 0.14;
-  }
-  if (monthlyIncome > 2000) {
-    tax += (Math.min(monthlyIncome, 4000) - 2000) * 0.24;
-  }
-  if (monthlyIncome > 4000) {
-    tax += (Math.min(monthlyIncome, 7000) - 4000) * 0.34;
-  }
-  if (monthlyIncome > 7000) {
-    tax += (monthlyIncome - 7000) * 0.42;
-  }
-  return tax;
+  // SV based on beitragspflichtigesEntgelt
+  // Steuer based on full brutto
 }
-
 
   // 3️⃣ Übergangsbereich-Berechnung (SV-Basis)
   const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto);
@@ -575,6 +532,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
