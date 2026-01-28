@@ -471,8 +471,61 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
   document.getElementById("output").innerHTML = outputHTML;
 }
 
+function calculatePraktikant() {
+  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  const dob = document.getElementById("dob")?.value;
+  const age = calculateAge(dob);
+  const children = Number(document.getElementById("children")?.value || 0);
+  const state = document.getElementById("bundesland")?.value || "default";
+
+  // ===== Steuerpflichtiges Brutto =====
+  const steuerpflichtigesBrutto = brutto;
+
+  // ===== Lohnsteuer =====
+  let lohnsteuer = 0;
+  if (steuerpflichtigesBrutto > 1200) {
+    lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
+  }
+
+  // ===== Sozialversicherung =====
+  const kv = steuerpflichtigesBrutto * 0.073; // example, adjust if exempt
+  const rv = steuerpflichtigesBrutto * 0.093; // may be reduced or 0
+  const av = steuerpflichtigesBrutto * 0.012; // may be 0
+  let { pvANRate, pvAGRate } = getPvRates(children, age);
+  if (state === "SN") pvANRate = 0.023; // example
+  const pvAN = steuerpflichtigesBrutto * pvANRate;
+  const pvAG = steuerpflichtigesBrutto * pvAGRate;
+  const sozialversicherungAN = kv + rv + av + pvAN;
+
+  // ===== Netto =====
+  const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN;
+
+  // ===== Arbeitgeberanteile =====
+  const arbeitgeberGesamt = kv + rv + av + pvAG;
+
+  // ===== Output =====
+  const outputHTML = `
+    <table border="1" cellpadding="5">
+      <tr><th>Komponente</th><th>Betrag (€)</th></tr>
+      <tr><td>Brutto (Praktikant)</td><td>${brutto.toFixed(2)}</td></tr>
+      <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
+      <tr><td>KV</td><td>${kv.toFixed(2)}</td></tr>
+      <tr><td>RV</td><td>${rv.toFixed(2)}</td></tr>
+      <tr><td>AV</td><td>${av.toFixed(2)}</td></tr>
+      <tr><td>PV AN</td><td>${pvAN.toFixed(2)}</td></tr>
+      <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+      <tr><td>PV AG</td><td>${pvAG.toFixed(2)}</td></tr>
+      <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+    </table>
+  `;
+
+  document.getElementById("output").innerHTML = outputHTML;
+}
+
+
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
