@@ -260,28 +260,42 @@ function calculateMidijobSVBase(brutto) {
 
 
 // Calculate for Midijob
-// 1️⃣ Bases
-const bruttoInput = document.getElementById("brutto")?.value;
-const brutto = Number(bruttoInput);
-if (isNaN(brutto)) {
-  alert("Ungültiges Bruttogehalt");
-  }
-const steuerpflichtigesBrutto = brutto; // FULL brutto for tax
-const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto); // reduced SV base
+
+function calculateMidijobSVBase(brutto) {
+  if (brutto <= 538 || brutto >= 2000) return brutto;
+
+  const lower = 538;
+  const upper = 2000;
+
+  const factor = (brutto - lower) / (upper - lower);
+  return lower + factor * (brutto - lower);
+}
+
 
 function calculateMidijob() {
-  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  // 1️⃣ Read & validate input
+  const brutto = Number(document.getElementById("brutto")?.value);
+
+  if (isNaN(brutto)) {
+    alert("Ungültiges Bruttogehalt");
+    return;
+  }
+
   if (brutto <= 538 || brutto > 2000) {
     alert("Brutto liegt nicht im Übergangsbereich (538,01 – 2.000 €)");
     return;
   }
 
-  // 2️⃣ Tax (full brutto)
+  // 2️⃣ Bases
+  const steuerpflichtigesBrutto = brutto; // FULL for tax
+  const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto);
+
+  // 3️⃣ Tax
   let lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
   lohnsteuer = adjustTaxBySteuerklasse(lohnsteuer, steuerklasse);
 
-  // 3️⃣ Social insurance (reduced AN base)
+  // 4️⃣ AN SV (reduced base)
   const kvAN = beitragspflichtigesEntgelt * 0.073;
   const rvAN = beitragspflichtigesEntgelt * 0.093;
   const avAN = beitragspflichtigesEntgelt * 0.012;
@@ -289,10 +303,10 @@ function calculateMidijob() {
 
   const sozialversicherungAN = kvAN + rvAN + avAN + pvAN;
 
-  // 4️⃣ Netto
+  // 5️⃣ Netto
   const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN;
 
-  // 5️⃣ AG contributions (FULL brutto)
+  // 6️⃣ AG SV (FULL brutto)
   const kvAG = brutto * 0.073;
   const rvAG = brutto * 0.093;
   const avAG = brutto * 0.013;
@@ -300,13 +314,11 @@ function calculateMidijob() {
 
   const arbeitgeberGesamt = kvAG + rvAG + avAG + pvAG;
 
-}
-
-  // 6️⃣ Output table
+  // 7️⃣ Output (MUST be inside function)
   const outputHTML = `
     <table border="1" cellpadding="5">
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
-      <td>${brutto.toFixed(2)}</td>
+      <tr><td>Brutto (Midijob)</td><td>${brutto.toFixed(2)}</td></tr>
       <tr><td>Steuerpflichtiges Brutto</td><td>${steuerpflichtigesBrutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
       <tr><td>KV AN</td><td>${kvAN.toFixed(2)}</td></tr>
@@ -314,17 +326,19 @@ function calculateMidijob() {
       <tr><td>AV AN</td><td>${avAN.toFixed(2)}</td></tr>
       <tr><td>PV AN</td><td>${pvAN.toFixed(2)}</td></tr>
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
       <tr><td>KV AG</td><td>${kvAG.toFixed(2)}</td></tr>
       <tr><td>RV AG</td><td>${rvAG.toFixed(2)}</td></tr>
       <tr><td>AV AG</td><td>${avAG.toFixed(2)}</td></tr>
       <tr><td>PV AG</td><td>${pvAG.toFixed(2)}</td></tr>
       <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
-      <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(steuerpflichtigesBrutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
+      <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(brutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
     </table>
   `;
 
   document.getElementById("output").innerHTML = outputHTML;
+}
 
 
 
@@ -533,6 +547,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
