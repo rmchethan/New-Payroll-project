@@ -214,8 +214,8 @@ function calculateNetto() {
 // Calculate for Minijob
 if (brutto > 603) {
   alert("Minijob: Brutto darf maximal 603 € sein");
-  return;
-}
+  }
+
 function calculateMinijob() {
   const brutto = Number(document.getElementById("brutto").value) || 0;
   const rvCheckbox = document.getElementById("minijobRV").checked;
@@ -532,6 +532,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
