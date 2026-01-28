@@ -265,8 +265,7 @@ const bruttoInput = document.getElementById("brutto")?.value;
 const brutto = Number(bruttoInput);
 if (isNaN(brutto)) {
   alert("Ungültiges Bruttogehalt");
-  return;
-}
+  }
 const steuerpflichtigesBrutto = brutto; // FULL brutto for tax
 const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto); // reduced SV base
 
@@ -534,6 +533,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
