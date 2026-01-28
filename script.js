@@ -324,7 +324,7 @@ function calculateMidijob() {
   `;
 
   document.getElementById("output").innerHTML = outputHTML;
-}
+
 
 
  // Calculate for Normal AN
@@ -532,6 +532,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
