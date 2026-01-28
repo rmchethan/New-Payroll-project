@@ -137,13 +137,7 @@ function calculateMonthlyLohnsteuer(steuerpflichtigesBrutto, steuerklasse, svAN 
 
 console.log("steuerklasse element:", steuerklasse);
 
-function toggleEmployeeType() {
-  const employeeType = document.getElementById("employeeType")?.value;
-  const steuerklasse = document.getElementById("steuerklasse");
-  const brutto = document.getElementById("brutto");
-  const minijobRVBlock = document.getElementById("minijobRVBlock");
-
-  // Fields that are NOT allowed for Minijob
+// Fields that are NOT allowed for Minijob
   const disabledFields = [
     "steuerklasse",
     "ueberstunden",
@@ -165,6 +159,14 @@ function toggleEmployeeType() {
   "jobticket"
 ];
 
+
+function toggleEmployeeType() {
+  const employeeType = document.getElementById("employeeType")?.value;
+  const steuerklasse = document.getElementById("steuerklasse");
+  const brutto = document.getElementById("brutto");
+  const minijobRVBlock = document.getElementById("minijobRVBlock");
+
+  
     // Reset all Praktikum fields first
   praktikumDisabledFields.forEach(id => {
     const el = document.getElementById(id);
@@ -186,8 +188,7 @@ function toggleEmployeeType() {
 
   // existing Minijob / Midijob logic continues below
 }
-
-  
+ 
 disabledFields.forEach(id => { 
   const el = document.getElementById(id);
   if (el) {
@@ -222,9 +223,6 @@ disabledFields.forEach(id => {
     if (minijobRVBlock) minijobRVBlock.style.display = "none";
   }
 
-  
-  
- 
 const BBG_KV_PV = 5175;
 const BBG_RV_AV = 7550;
 
@@ -299,7 +297,25 @@ function calculateMidijob() {
   const steuerpflichtigesBrutto = brutto;
 
   // 2️⃣ Lohnsteuer
-  const lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
+  function calculateProgressiveTax(monthlyIncome) {
+  let tax = 0;
+  if (monthlyIncome <= 1200) return 0;
+
+  if (monthlyIncome > 1200) {
+    tax += (Math.min(monthlyIncome, 2000) - 1200) * 0.14;
+  }
+  if (monthlyIncome > 2000) {
+    tax += (Math.min(monthlyIncome, 4000) - 2000) * 0.24;
+  }
+  if (monthlyIncome > 4000) {
+    tax += (Math.min(monthlyIncome, 7000) - 4000) * 0.34;
+  }
+  if (monthlyIncome > 7000) {
+    tax += (monthlyIncome - 7000) * 0.42;
+  }
+  return tax;
+}
+
 
   // 3️⃣ Übergangsbereich-Berechnung (SV-Basis)
   const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto);
@@ -559,6 +575,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
