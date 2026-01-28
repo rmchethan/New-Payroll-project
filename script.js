@@ -2,6 +2,8 @@
 console.log("Progressive tax function exists:", typeof calculateProgressiveTax);
 window.onload = toggleEmployeeType;
 
+const BBG_KV_PV = 5175;
+const BBG_RV_AV = 7550;
 
 function calculateAge(dob) {
   if (!dob) return 0;
@@ -18,7 +20,6 @@ function calculateAge(dob) {
 
   return age;
 }
-
 
 
 function getPvRates(children, age) {
@@ -223,8 +224,7 @@ disabledFields.forEach(id => {
     if (minijobRVBlock) minijobRVBlock.style.display = "none";
   }
 
-const BBG_KV_PV = 5175;
-const BBG_RV_AV = 7550;
+
 
 function calculateNetto() {
   const employeeType = document.getElementById("employeeType")?.value || "normal";
@@ -575,6 +575,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
