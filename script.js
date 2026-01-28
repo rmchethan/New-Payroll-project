@@ -221,7 +221,7 @@ disabledFields.forEach(id => {
 
     if (minijobRVBlock) minijobRVBlock.style.display = "none";
   }
-}
+
   
   
  
@@ -559,6 +559,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
