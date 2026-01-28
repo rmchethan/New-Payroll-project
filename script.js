@@ -260,6 +260,9 @@ function calculateMidijobSVBase(brutto) {
 
 
 // Calculate for Midijob
+const steuerpflichtigesBrutto = brutto; // FULL brutto for tax
+const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto); // reduced SV base
+
 function calculateMidijob() {
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
 
@@ -297,7 +300,7 @@ function calculateMidijob() {
   const pvAG = steuerpflichtigesBrutto * pvRate;
 
   const arbeitgeberGesamt = kvAG + rvAG + avAG + pvAG;
-
+}
   // 5️⃣ Netto
   const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN;
 
@@ -532,6 +535,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
