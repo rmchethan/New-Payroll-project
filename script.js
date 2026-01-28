@@ -260,49 +260,42 @@ function calculateMidijobSVBase(brutto) {
 
 
 // Calculate for Midijob
+// 1️⃣ Bases
 const steuerpflichtigesBrutto = brutto; // FULL brutto for tax
 const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto); // reduced SV base
 
 function calculateMidijob() {
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
-
   if (brutto <= 538 || brutto > 2000) {
     alert("Brutto liegt nicht im Übergangsbereich (538,01 – 2.000 €)");
     return;
   }
 
-  const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto);
+  // 2️⃣ Tax (full brutto)
+  let lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
+  const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
+  lohnsteuer = adjustTaxBySteuerklasse(lohnsteuer, steuerklasse);
 
-  // SV based on beitragspflichtigesEntgelt
-  // Steuer based on full brutto
-}
-
-  // 3️⃣ Übergangsbereich-Berechnung (SV-Basis)
-  const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto);
-
-  // 4️⃣ Sozialversicherung AN (reduced) & AG (full)
-  const kvRate = 0.073;
-  const rvRate = 0.093;
-  const avRate = 0.012;
-  const pvRate = 0.018; // example, can adapt per state
-
-  const kvAN = beitragspflichtigesEntgelt * kvRate;
-  const rvAN = beitragspflichtigesEntgelt * rvRate;
-  const avAN = beitragspflichtigesEntgelt * avRate;
-  const pvAN = beitragspflichtigesEntgelt * pvRate;
+  // 3️⃣ Social insurance (reduced AN base)
+  const kvAN = beitragspflichtigesEntgelt * 0.073;
+  const rvAN = beitragspflichtigesEntgelt * 0.093;
+  const avAN = beitragspflichtigesEntgelt * 0.012;
+  const pvAN = beitragspflichtigesEntgelt * 0.018;
 
   const sozialversicherungAN = kvAN + rvAN + avAN + pvAN;
 
-  // AG contributions (full)
-  const kvAG = steuerpflichtigesBrutto * kvRate;
-  const rvAG = steuerpflichtigesBrutto * rvRate;
-  const avAG = steuerpflichtigesBrutto * avRate;
-  const pvAG = steuerpflichtigesBrutto * pvRate;
+  // 4️⃣ Netto
+  const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN;
+
+  // 5️⃣ AG contributions (FULL brutto)
+  const kvAG = brutto * 0.073;
+  const rvAG = brutto * 0.093;
+  const avAG = brutto * 0.013;
+  const pvAG = brutto * 0.018;
 
   const arbeitgeberGesamt = kvAG + rvAG + avAG + pvAG;
+
 }
-  // 5️⃣ Netto
-  const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN;
 
   // 6️⃣ Output table
   const outputHTML = `
@@ -535,6 +528,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
