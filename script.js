@@ -1,5 +1,6 @@
 
 console.log("Progressive tax function exists:", typeof calculateProgressiveTax);
+window.onload = toggleEmployeeType;
 
 
 function calculateAge(dob) {
@@ -153,6 +154,39 @@ function toggleEmployeeType() {
     "feiertag125",
     "jobticket"
   ];
+
+  const praktikumDisabledFields = [
+  "ueberstunden",
+  "vwl",
+  "nacht25",
+  "nacht40",
+  "sonntag50",
+  "feiertag125",
+  "jobticket"
+];
+
+    // Reset all Praktikum fields first
+  praktikumDisabledFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.disabled = false;
+    }
+  });
+
+  // Praktikant-specific lock
+  if (employeeType === "praktikant") {
+    praktikumDisabledFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.value = 0;
+        el.disabled = true;
+      }
+    });
+  }
+
+  // existing Minijob / Midijob logic continues below
+}
+
   
 disabledFields.forEach(id => { 
   const el = document.getElementById(id);
@@ -525,6 +559,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
