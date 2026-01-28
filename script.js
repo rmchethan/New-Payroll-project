@@ -261,6 +261,12 @@ function calculateMidijobSVBase(brutto) {
 
 // Calculate for Midijob
 // 1️⃣ Bases
+const bruttoInput = document.getElementById("brutto")?.value;
+const brutto = Number(bruttoInput);
+if (isNaN(brutto)) {
+  alert("Ungültiges Bruttogehalt");
+  return;
+}
 const steuerpflichtigesBrutto = brutto; // FULL brutto for tax
 const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto); // reduced SV base
 
@@ -301,7 +307,7 @@ function calculateMidijob() {
   const outputHTML = `
     <table border="1" cellpadding="5">
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
-      <tr><td>Brutto (Midijob)</td><td>${brutto.toFixed(2)}</td></tr>
+      <td>${brutto.toFixed(2)}</td>
       <tr><td>Steuerpflichtiges Brutto</td><td>${steuerpflichtigesBrutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
       <tr><td>KV AN</td><td>${kvAN.toFixed(2)}</td></tr>
@@ -528,6 +534,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
