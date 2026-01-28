@@ -247,17 +247,6 @@ function calculateMinijob() {
   return; // Important to stop execution
 }
 
-function calculateMidijobSVBase(brutto) {
-  if (brutto <= 538) return brutto;
-  if (brutto >= 2000) return brutto;
-
-  const lower = 538;
-  const upper = 2000;
-
-  const factor = (brutto - lower) / (upper - lower);
-  return lower + factor * (brutto - lower);
-}
-
 
 // Calculate for Midijob
 
@@ -547,6 +536,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
