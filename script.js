@@ -612,7 +612,8 @@ const outputHTML = `
 
     <tr><td><strong>AG Gesamt</strong></td>
         <td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
-  </table>
+        <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(brutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
+     </table>
 `;
 
 document.getElementById("output").innerHTML = outputHTML;
@@ -621,6 +622,7 @@ document.getElementById("output").innerHTML = outputHTML;
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
