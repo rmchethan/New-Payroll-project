@@ -547,7 +547,7 @@ function calculatePraktikant() {
   document.getElementById("output").innerHTML = outputHTML;
 }
 
-  // Calculate Azubi
+  
   
   function calculateAzubi() {
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
@@ -603,6 +603,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
