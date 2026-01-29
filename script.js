@@ -616,11 +616,12 @@ const outputHTML = `
 `;
 
 document.getElementById("output").innerHTML = outputHTML;
-
+ }
 
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
