@@ -571,8 +571,7 @@ function calculatePraktikant() {
   let { pvANRate, pvAGRate } = getPvRates(children, age);
   if (state === "SN") pvANRate = 0.023; // example
   const pvAN = steuerpflichtigesBrutto * pvANRate;
-  const pvAG = steuerpflichtigesBrutto * pvAGRate;
-    
+      
   const sozialversicherungAN = kvAN + rvAN + avAN + pvAN;
 
   // ===== Netto =====
@@ -622,6 +621,7 @@ document.getElementById("output").innerHTML = outputHTML;
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
