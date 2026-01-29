@@ -51,32 +51,31 @@ function getPvRates(children, age) {
 
 
 // Progressive tax for annual taxable income
+
+const annualBrutto = steuerpflichtigesBrutto * 12;
+
 function calculateAnnualProgressiveTax(annualIncome) {
-  let tax = 0;
+    let tax = 0;
 
-  if (annualIncome <= 12348) return 0; // Grundfreibetrag 2026
+    if (annualIncome <= 14400) return 0; // Grundfreibetrag
 
-  if (annualIncome > 12348) {
-    const taxable = Math.min(annualIncome, 20000) - 12348;
-    tax += taxable * 0.14;
-  }
+    if (annualIncome > 14400 && annualIncome <= 24000) {
+        tax += (annualIncome - 14400) * 0.14;
+    }
+    if (annualIncome > 24000 && annualIncome <= 48000) {
+        tax += (24000 - 14400) * 0.14 + (annualIncome - 24000) * 0.24;
+    }
+    if (annualIncome > 48000 && annualIncome <= 84000) {
+        tax += (24000 - 14400) * 0.14 + (48000 - 24000) * 0.24 + (annualIncome - 48000) * 0.34;
+    }
+    if (annualIncome > 84000) {
+        tax += (24000 - 14400) * 0.14 + (48000 - 24000) * 0.24 + (84000 - 48000) * 0.34 + (annualIncome - 84000) * 0.42;
+    }
 
-  if (annualIncome > 20000) {
-    const taxable = Math.min(annualIncome, 40000) - 20000;
-    tax += taxable * 0.24;
-  }
-
-  if (annualIncome > 40000) {
-    const taxable = Math.min(annualIncome, 70000) - 40000;
-    tax += taxable * 0.34;
-  }
-
-  if (annualIncome > 70000) {
-    tax += (annualIncome - 70000) * 0.42;
-  }
-
-  return tax;
+    return tax;
 }
+
+const lohnsteuerMonat = calculateAnnualProgressiveTax(annualBrutto) / 12;
 
 // Steuerklasse allowances
 function adjustTaxBySteuerklasse(tax, steuerklasse, children) {
@@ -622,6 +621,7 @@ document.getElementById("output").innerHTML = outputHTML;
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
