@@ -51,8 +51,6 @@ function getPvRates(children, age) {
 
 // Progressive tax for annual taxable income
 
-const annualIncome = steuerpflichtigesBrutto * 12;
-
 function calculateAnnualProgressiveTax(annualIncome) {
     let tax = 0;
 
@@ -684,6 +682,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
