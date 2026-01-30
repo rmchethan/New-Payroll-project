@@ -2,8 +2,7 @@
 console.log("Progressive tax function exists:", typeof calculateProgressiveTax);
 window.onload = toggleEmployeeType;
 
-const BBG_KV_PV = 5175;
-const BBG_RV_AV = 7550;
+
 
 const disabledFields = [
   "steuerklasse",
@@ -661,6 +660,7 @@ document.getElementById("output").innerHTML = outputHTML;
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
