@@ -625,7 +625,7 @@ const rvAG = brutto * 0.093;   // RV AG (full)
 const avAG = brutto * 0.013;   // AV AG
 const pvAG = brutto * pvAGRate;
 
-const arbeitgeberGesamt = kvAG + rvAG + avAG + pvAG;
+
 
 
     // ===== Output =====
@@ -660,6 +660,7 @@ document.getElementById("output").innerHTML = outputHTML;
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
