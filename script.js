@@ -271,8 +271,8 @@ function calculateMidijob() {
   const kirchensteuerpflichtig =
     document.getElementById("kirchensteuer")?.checked || false;
 
-  if (brutto <= 538 || brutto > 2000) {
-    alert("Brutto liegt nicht im Übergangsbereich (538,01 – 2.000 €)");
+  if (brutto <= 603 || brutto > 2000) {
+    alert("Brutto liegt nicht im Übergangsbereich (603,01 – 2.000 €)");
     return;
   }
 
@@ -602,6 +602,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
