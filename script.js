@@ -1,9 +1,8 @@
-
+// ===== Global Setup =====
 console.log("Progressive tax function exists:", typeof calculateProgressiveTax);
 window.onload = toggleEmployeeType;
 
-
-
+// Fields to disable for certain employee types
 const disabledFields = [
   "steuerklasse",
   "ueberstunden",
@@ -15,7 +14,9 @@ const disabledFields = [
   "jobticket"
 ];
 
+// ===== Utility Functions =====
 
+// Calculate age from date of birth
 function calculateAge(dob) {
   if (!dob) return 0;
 
@@ -24,15 +25,13 @@ function calculateAge(dob) {
 
   let age = today.getFullYear() - birthDate.getFullYear();
   const m = today.getMonth() - birthDate.getMonth();
-
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
-
   return age;
 }
 
-
+// Get PV rates depending on children and age
 function getPvRates(children, age) {
   const pvAGRate = 0.018;
   let pvANRate;
@@ -43,120 +42,14 @@ function getPvRates(children, age) {
   else if (children === 2) pvANRate = 0.0155;
   else if (children === 1) pvANRate = 0.018;
   else if (children === 0 && age >= 23) pvANRate = 0.024;
-  else pvANRate = 0.018; // fallback (e.g. under 23, no kids)
+  else pvANRate = 0.018; // fallback for under 23, no kids
 
   return { pvANRate, pvAGRate };
 }
 
-
-// Progressive tax for annual taxable income
-
-function calculateAnnualProgressiveTax(annualIncome) {
-    let tax = 0;
-
-    if (annualIncome <= 14400) return 0; // Grundfreibetrag
-
-    if (annualIncome > 14400 && annualIncome <= 24000) {
-        tax += (annualIncome - 14400) * 0.14;
-    }
-    if (annualIncome > 24000 && annualIncome <= 48000) {
-        tax += (24000 - 14400) * 0.14 + (annualIncome - 24000) * 0.24;
-    }
-    if (annualIncome > 48000 && annualIncome <= 84000) {
-        tax += (24000 - 14400) * 0.14 + (48000 - 24000) * 0.24 + (annualIncome - 48000) * 0.34;
-    }
-    if (annualIncome > 84000) {
-        tax += (24000 - 14400) * 0.14 + (48000 - 24000) * 0.24 + (84000 - 48000) * 0.34 + (annualIncome - 84000) * 0.42;
-    }
-
-    return tax;
-}
-
-
-const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false; 
-let kirchensteuer = 0;
-
-if (kirchensteuerpflichtig) {
-    const state = document.getElementById("bundesland")?.value || "default";
-
-    const kirchensteuerRate = ["BW", "BY"].includes(state) ? 0.08 : 0.09;
-    kirchensteuer = lohnsteuerMonat * kirchensteuerRate;
-}
-
-
-// Steuerklasse allowances
-function adjustTaxBySteuerklasse(tax, steuerklasse, children) {
-    switch(steuerklasse) {
-        case "1": 
-            return tax; // base tax
-        case "2": 
-            // Single parent: only the first child reduces tax
-            if (children >= 1) return tax - calculateChildAllowance(tax, 1);
-            return tax;
-        case "3": 
-            // Main earner: all children reduce tax
-            if (children >= 1) return tax - calculateChildAllowance(tax, children);
-            return tax;
-        case "4": 
-            return tax; // same as 1
-        case "5": 
-            return tax * 1.4; // secondary earner higher tax
-        case "6": 
-            return tax * 1.5; // multiple jobs, highest tax
-        default: 
-            return tax;
-    }
-}
-
-function calculateChildAllowance(tax, numChildren) {
-    // For now, use a placeholder fixed reduction per child
-    // TODO: Replace with actual 2026 Kinderfreibetrag or Kindergeld-adjusted amount
-    const perChildReduction = 200; // Example: €200 reduction per child
-    return perChildReduction * numChildren;
-}
-
-function calculateProgressiveTax(monthlyIncome) {
-  let tax = 0;
-
-  if (monthlyIncome <= 1200) return 0;
-
-  if (monthlyIncome > 1200) {
-    const taxable = Math.min(monthlyIncome, 2000) - 1200;
-    tax += taxable * 0.14;
-  }
-
-  if (monthlyIncome > 2000) {
-    const taxable = Math.min(monthlyIncome, 4000) - 2000;
-    tax += taxable * 0.24;
-  }
-
-  if (monthlyIncome > 4000) {
-    const taxable = Math.min(monthlyIncome, 7000) - 4000;
-    tax += taxable * 0.34;
-  }
-
-  if (monthlyIncome > 7000) {
-    tax += (monthlyIncome - 7000) * 0.42;
-  }
-
-  return tax;
-}
-
-
-// Compute monthly Lohnsteuer after allowances
-function calculateMonthlyLohnsteuer(steuerpflichtigesBrutto, steuerklasse, svAN = 0) {
-  const annualGross = (steuerpflichtigesBrutto - svAN) * 12;
-  const annualAllowance = getAnnualAllowance(steuerklasse);
-  const netAnnualTaxable = Math.max(0, annualGross - annualAllowance);
-  const annualTax = calculateAnnualProgressiveTax(netAnnualTaxable);
-  return annualTax / 12;
-}
-
-console.log("steuerklasse element:", steuerklasse);
-
-// BBG function
+// Apply BBG (Beitragsbemessungsgrenze) caps
 function applyBBG(brutto) {
-  const BBG_KV_PV = 5175;   // example 2025 monthly
+  const BBG_KV_PV = 5175;   // Example 2025 monthly
   const BBG_RV_AV = 7550;   // West – adjust if needed
 
   return {
@@ -165,9 +58,8 @@ function applyBBG(brutto) {
   };
 }
 
-
-//Calculate SV 
-function calculateSV({brutto,svBaseAN,svBaseAG,children,age,state,includeKV = true,includeRV = true,includeAV = true,includePV = true}) {
+// Calculate Social Insurance contributions
+function calculateSV({brutto, svBaseAN, svBaseAG, children, age, state, includeKV=true, includeRV=true, includeAV=true, includePV=true}) {
   let kvAN = 0, rvAN = 0, avAN = 0, pvAN = 0;
   let kvAG = 0, rvAG = 0, avAG = 0, pvAG = 0;
 
@@ -182,17 +74,14 @@ function calculateSV({brutto,svBaseAN,svBaseAG,children,age,state,includeKV = tr
     kvAN = svBaseAN * 0.073;
     kvAG = svBaseAG * 0.073;
   }
-
   if (includeRV) {
     rvAN = svBaseAN * 0.093;
     rvAG = svBaseAG * 0.093;
   }
-
   if (includeAV) {
     avAN = svBaseAN * 0.012;
     avAG = svBaseAG * 0.013;
   }
-
   if (includePV) {
     pvAN = svBaseAN * pvANRate;
     pvAG = svBaseAG * pvAGRate;
@@ -201,84 +90,120 @@ function calculateSV({brutto,svBaseAN,svBaseAG,children,age,state,includeKV = tr
   return {
     kvAN, rvAN, avAN, pvAN,
     kvAG, rvAG, avAG, pvAG,
-    anTotal: kvAN + rvAN + avAN + pvAN,
-    agTotal: kvAG + rvAG + avAG + pvAG
+    totalAN: kvAN + rvAN + avAN + pvAN,
+    totalAG: kvAG + rvAG + avAG + pvAG
   };
 }
 
+// ===== Progressive Tax Functions =====
 
+// Monthly progressive tax
+function calculateProgressiveTax(monthlyIncome) {
+  let tax = 0;
 
+  if (monthlyIncome <= 1200) return 0;
+
+  if (monthlyIncome > 1200) {
+    const taxable = Math.min(monthlyIncome, 2000) - 1200;
+    tax += taxable * 0.14;
+  }
+  if (monthlyIncome > 2000) {
+    const taxable = Math.min(monthlyIncome, 4000) - 2000;
+    tax += taxable * 0.24;
+  }
+  if (monthlyIncome > 4000) {
+    const taxable = Math.min(monthlyIncome, 7000) - 4000;
+    tax += taxable * 0.34;
+  }
+  if (monthlyIncome > 7000) {
+    tax += (monthlyIncome - 7000) * 0.42;
+  }
+
+  return tax;
+}
+
+// Annual progressive tax
+function calculateAnnualProgressiveTax(annualIncome) {
+  let tax = 0;
+
+  if (annualIncome <= 14400) return 0; // Grundfreibetrag
+  if (annualIncome > 14400 && annualIncome <= 24000) {
+    tax += (annualIncome - 14400) * 0.14;
+  }
+  if (annualIncome > 24000 && annualIncome <= 48000) {
+    tax += (24000 - 14400) * 0.14 + (annualIncome - 24000) * 0.24;
+  }
+  if (annualIncome > 48000 && annualIncome <= 84000) {
+    tax += (24000 - 14400) * 0.14 + (48000 - 24000) * 0.24 + (annualIncome - 48000) * 0.34;
+  }
+  if (annualIncome > 84000) {
+    tax += (24000 - 14400) * 0.14 + (48000 - 24000) * 0.24 + (84000 - 48000) * 0.34 + (annualIncome - 84000) * 0.42;
+  }
+
+  return tax;
+}
+
+// Steuerklasse allowances
+function adjustTaxBySteuerklasse(tax, steuerklasse, children) {
+  switch(steuerklasse) {
+    case "1": return tax;
+    case "2": return children >= 1 ? tax - calculateChildAllowance(tax, 1) : tax;
+    case "3": return children >= 1 ? tax - calculateChildAllowance(tax, children) : tax;
+    case "4": return tax;
+    case "5": return tax * 1.4;
+    case "6": return tax * 1.5;
+    default: return tax;
+  }
+}
+
+function calculateChildAllowance(tax, numChildren) {
+  const perChildReduction = 200; // placeholder, adjust with 2026 law
+  return perChildReduction * numChildren;
+}
+
+// Employee type toggle (disables irrelevant fields)
 function toggleEmployeeType() {
   const employeeType = document.getElementById("employeeType")?.value;
   const brutto = document.getElementById("brutto");
   const steuerklasse = document.getElementById("steuerklasse");
   const minijobRVBlock = document.getElementById("minijobRVBlock");
 
-  // Reset everything first
+  // Reset all fields
   brutto.disabled = false;
   disabledFields.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.disabled = false;
   });
-
   if (minijobRVBlock) minijobRVBlock.style.display = "none";
 
-  // ===== MINIJOB =====
   if (employeeType === "minijob") {
     brutto.value = 603;
     brutto.disabled = true;
-
-    disabledFields.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.disabled = true;
-    });
-
+    disabledFields.forEach(id => { const el = document.getElementById(id); if(el) el.disabled=true; });
     if (minijobRVBlock) minijobRVBlock.style.display = "block";
   }
 
-  // ===== MIDIJOB (Übergangsbereich) =====
+  if (employeeType === "midijob" || employeeType === "praktikant" || employeeType === "azubi") {
+    disabledFields.forEach(id => { const el = document.getElementById(id); if(el) el.disabled=true; });
+  }
+
   if (employeeType === "midijob") {
-    disabledFields.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.disabled = true;
-    });
-
-    // Steuerklasse still relevant for tax
-    steuerklasse.disabled = false;
+    steuerklasse.disabled = false; // Steuerklasse still relevant for Midijob
   }
+}
 
-  // ===== PRAKTIKANT =====
-  if (employeeType === "praktikant") {
-    disabledFields.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.disabled = true;
-    });
-  }
-
-   // ===== Azubi =====
-  if (employeeType === "azubi") {
-    disabledFields.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.disabled = true;
-    });
-  }
-  }
-
-
+// Main calculate function
 function calculateNetto() {
   const employeeType = document.getElementById("employeeType")?.value || "normal";
 
-  if (employeeType === "normal") {
-    calculateNormal();
-  } else if (employeeType === "praktikant") {
-    calculatePraktikant();
-  } else if (employeeType === "minijob") {
-    calculateMinijob();
-  } else if (employeeType === "midijob") {
-    calculateMidijob();
-  } else if (employeeType === "azubi") {
-    calculateAzubi();
+  if (employeeType === "normal") calculateNormal();
+  else if (employeeType === "praktikant") calculatePraktikant();
+  else if (employeeType === "minijob") calculateMinijob();
+  else if (employeeType === "midijob") calculateMidijob();
+  else if (employeeType === "azubi") calculateAzubi();
 }
+
+
 
 // Calculate for Minijob
 if (brutto > 603) {
@@ -682,6 +607,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
