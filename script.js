@@ -206,117 +206,143 @@ function calculateNetto() {
 
 
 // Calculate for Minijob
-if (brutto > 603) {
-  alert("Minijob: Brutto darf maximal 603 € sein");
+function calculateMinijob() {
+  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+
+  if (brutto > 538) {
+    alert("Minijob darf 538€ nicht überschreiten.");
+    return;
   }
 
-function calculateMinijob() {
-  const brutto = Number(document.getElementById("brutto").value) || 0;
-  const rvCheckbox = document.getElementById("minijobRV").checked;
+  const steuerpflichtigesBrutto = brutto;
 
-  const rvAN = rvCheckbox ? brutto * 0.036 : 0;
-  const netto = brutto - rvAN;
-  const pauschalsteuer = brutto * 0.02;
-  const ag_rv = brutto * 0.15;
-  const ag_kv = brutto * 0.13;
-  const arbeitgeberGesamt = ag_rv + ag_kv+ pauschalsteuer;
-  const agGesamtkosten = brutto + arbeitgeberGesamt;
+  // ===== Arbeitnehmer =====
+  const lohnsteuer = 0;
+  const sozialversicherungAN = 0;
+  const netto = brutto;
 
+  // ===== Arbeitgeber (pauschal) =====
+  const kvAG = brutto * 0.13;      // 13% KV
+  const rvAG = brutto * 0.15;      // 15% RV
+  const pauschsteuer = brutto * 0.02; // 2% pauschal
+  const umlage1 = brutto * 0.028;
+  const umlage2 = brutto * 0.0075;
+  const insolvenzgeld = brutto * 0.006;
+
+  const arbeitgeberGesamt =
+    kvAG + rvAG + pauschsteuer + umlage1 + umlage2 + insolvenzgeld;
+
+  // ===== Output =====
   const outputHTML = `
     <table border="1" cellpadding="5">
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
       <tr><td>Brutto (Minijob)</td><td>${brutto.toFixed(2)}</td></tr>
-      ${rvCheckbox ? `<tr><td>RV Arbeitnehmer (3.6%)</td><td>${rvAN.toFixed(2)}</td></tr>` : ``}
+      <tr><td>Lohnsteuer</td><td>0.00</td></tr>
+      <tr><td>Sozialversicherung AN</td><td>0.00</td></tr>
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>Pauschalsteuer 2%</td><td>${pauschalsteuer.toFixed(2)}</td></tr>
-      <tr><td>RV Arbeitgeber (15%)</td><td>${ag_rv.toFixed(2)}</td></tr>
-      <tr><td>KV Arbeitgeber (13%)</td><td>${ag_kv.toFixed(2)}</td></tr>
-      <tr><td><strong>AG gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
-      <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${agGesamtkosten.toFixed(2)}</strong></td></tr>
+      <tr><td>KV AG (13%)</td><td>${kvAG.toFixed(2)}</td></tr>
+      <tr><td>RV AG (15%)</td><td>${rvAG.toFixed(2)}</td></tr>
+      <tr><td>Pauschsteuer (2%)</td><td>${pauschsteuer.toFixed(2)}</td></tr>
+      <tr><td>Umlage 1</td><td>${umlage1.toFixed(2)}</td></tr>
+      <tr><td>Umlage 2</td><td>${umlage2.toFixed(2)}</td></tr>
+      <tr><td>Insolvenzgeld</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
+      <tr><td><strong>AG Gesamt</strong></td>
+          <td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+      <tr><td><strong>Gesamtkosten AG</strong></td>
+          <td><strong>${(brutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
     </table>
   `;
 
   document.getElementById("output").innerHTML = outputHTML;
-  return; // Important to stop execution
 }
 
 
 // Calculate for Midijob
 
-function calculateMidijobSVBase(brutto) {
-  if (brutto <= 538 || brutto >= 2000) return brutto;
-
-  const lower = 538;
-  const upper = 2000;
-
-  const factor = (brutto - lower) / (upper - lower);
-  return lower + factor * (brutto - lower);
-}
-
-
 function calculateMidijob() {
-  // 1️⃣ Read & validate input
-  const brutto = Number(document.getElementById("brutto")?.value);
-
-  if (isNaN(brutto)) {
-    alert("Ungültiges Bruttogehalt");
-    return;
-  }
+  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  const dob = document.getElementById("dob")?.value;
+  const age = calculateAge(dob);
+  const children = Number(document.getElementById("children")?.value || 0);
+  const state = document.getElementById("bundesland")?.value || "default";
+  const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
+  const kirchensteuerpflichtig =
+    document.getElementById("kirchensteuer")?.checked || false;
 
   if (brutto <= 538 || brutto > 2000) {
     alert("Brutto liegt nicht im Übergangsbereich (538,01 – 2.000 €)");
     return;
   }
 
-  // 2️⃣ Bases
-  const steuerpflichtigesBrutto = brutto; // FULL for tax
-  const beitragspflichtigesEntgelt = calculateMidijobSVBase(brutto);
+  const steuerpflichtigesBrutto = brutto;
 
-  // 3️⃣ Tax
-  let lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
-  const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-  lohnsteuer = adjustTaxBySteuerklasse(lohnsteuer, steuerklasse);
+  // ===== Midijob reduced AN base =====
+  const reductionFactor = 0.8; // simplified model
+  const svBaseAN = brutto * reductionFactor;
+  const { kvPvBase, rvAvBase } = applyBBG(brutto);
 
-  // 4️⃣ AN SV (reduced base)
-  const kvAN = beitragspflichtigesEntgelt * 0.073;
-  const rvAN = beitragspflichtigesEntgelt * 0.093;
-  const avAN = beitragspflichtigesEntgelt * 0.012;
-  const pvAN = beitragspflichtigesEntgelt * 0.018;
+  const sv = calculateSV({
+    brutto,
+    svBaseAN: Math.min(svBaseAN, kvPvBase),
+    svBaseAG: kvPvBase,
+    children,
+    age,
+    state
+  });
 
-  const sozialversicherungAN = kvAN + rvAN + avAN + pvAN;
+  // ===== Lohnsteuer (annualized) =====
+  const annualIncome = steuerpflichtigesBrutto * 12;
+  let annualTax = calculateAnnualProgressiveTax(annualIncome);
+  annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
 
-  // 5️⃣ Netto
-  const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN;
+  const lohnsteuer = annualTax / 12;
 
-  // 6️⃣ AG SV (FULL brutto)
-  const kvAG = brutto * 0.073;
-  const rvAG = brutto * 0.093;
-  const avAG = brutto * 0.013;
-  const pvAG = brutto * 0.018;
+  // ===== Kirchensteuer =====
+  let kirchensteuer = 0;
+  if (kirchensteuerpflichtig) {
+    const kirchensteuerRate =
+      ["BW", "BY"].includes(state) ? 0.08 : 0.09;
+    kirchensteuer = lohnsteuer * kirchensteuerRate;
+  }
 
-  const arbeitgeberGesamt = kvAG + rvAG + avAG + pvAG;
+  // ===== Netto =====
+  const netto =
+    steuerpflichtigesBrutto -
+    lohnsteuer -
+    kirchensteuer -
+    sv.anTotal;
 
-  // 7️⃣ Output (MUST be inside function)
+  const arbeitgeberGesamt = sv.agTotal;
+
+  // ===== Output =====
   const outputHTML = `
     <table border="1" cellpadding="5">
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
       <tr><td>Brutto (Midijob)</td><td>${brutto.toFixed(2)}</td></tr>
-      <tr><td>Steuerpflichtiges Brutto</td><td>${steuerpflichtigesBrutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
-      <tr><td>KV AN</td><td>${kvAN.toFixed(2)}</td></tr>
-      <tr><td>RV AN</td><td>${rvAN.toFixed(2)}</td></tr>
-      <tr><td>AV AN</td><td>${avAN.toFixed(2)}</td></tr>
-      <tr><td>PV AN</td><td>${pvAN.toFixed(2)}</td></tr>
-      <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+      <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
+
+      <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+      <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
+      <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
+      <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
+
+      <tr><td><strong>Netto</strong></td>
+          <td><strong>${netto.toFixed(2)}</strong></td></tr>
 
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>KV AG</td><td>${kvAG.toFixed(2)}</td></tr>
-      <tr><td>RV AG</td><td>${rvAG.toFixed(2)}</td></tr>
-      <tr><td>AV AG</td><td>${avAG.toFixed(2)}</td></tr>
-      <tr><td>PV AG</td><td>${pvAG.toFixed(2)}</td></tr>
-      <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
-      <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(brutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
+      <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
+      <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
+      <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
+
+      <tr><td><strong>AG Gesamt</strong></td>
+          <td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+
+      <tr><td><strong>Gesamtkosten AG</strong></td>
+          <td><strong>${(brutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
     </table>
   `;
 
@@ -576,6 +602,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
