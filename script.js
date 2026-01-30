@@ -67,7 +67,7 @@ function calculateSV({brutto, svBaseAN, svBaseAG, children, age, state, includeK
 
   if (state === "SN") {
     pvAGRate = 0.013;
-    pvANRate += 0.005;
+    pvANRate = pvANRate + 0.005;
   }
 
   if (includeKV) {
@@ -602,6 +602,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
