@@ -613,7 +613,7 @@ function calculatePraktikant() {
   if (state === "SN") pvANRate = 0.023; // example
   const pvAN = steuerpflichtigesBrutto * pvANRate;
       
-  const sozialversicherungAN = kvAN + rvAN + avAN + pvAN;
+
 
   // ===== Netto =====
   const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN;
@@ -660,6 +660,7 @@ document.getElementById("output").innerHTML = outputHTML;
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
