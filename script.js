@@ -52,7 +52,7 @@ function getPvRates(children, age) {
 
 // Progressive tax for annual taxable income
 
-const annualBrutto = steuerpflichtigesBrutto * 12;
+const annualIncome = steuerpflichtigesBrutto * 12;
 
 function calculateAnnualProgressiveTax(annualIncome) {
     let tax = 0;
@@ -76,6 +76,16 @@ function calculateAnnualProgressiveTax(annualIncome) {
 }
 
 const lohnsteuerMonat = calculateAnnualProgressiveTax(annualBrutto) / 12;
+const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false; 
+let kirchensteuer = 0;
+
+if (kirchensteuerpflichtig) {
+    const state = document.getElementById("bundesland")?.value || "default";
+
+    const kirchensteuerRate = ["BW", "BY"].includes(state) ? 0.08 : 0.09;
+    kirchensteuer = lohnsteuerMonat * kirchensteuerRate;
+}
+
 
 // Steuerklasse allowances
 function adjustTaxBySteuerklasse(tax, steuerklasse, children) {
@@ -146,6 +156,47 @@ function calculateMonthlyLohnsteuer(steuerpflichtigesBrutto, steuerklasse, svAN 
 }
 
 console.log("steuerklasse element:", steuerklasse);
+
+//Calculate SV 
+function calculateSV({brutto,svBaseAN,svBaseAG,children,age,state,includeKV = true,includeRV = true,includeAV = true,includePV = true}) {
+  let kvAN = 0, rvAN = 0, avAN = 0, pvAN = 0;
+  let kvAG = 0, rvAG = 0, avAG = 0, pvAG = 0;
+
+  let { pvANRate, pvAGRate } = getPvRates(children, age);
+
+  if (state === "SN") {
+    pvAGRate = 0.013;
+    pvANRate += 0.005;
+  }
+
+  if (includeKV) {
+    kvAN = svBaseAN * 0.073;
+    kvAG = svBaseAG * 0.073;
+  }
+
+  if (includeRV) {
+    rvAN = svBaseAN * 0.093;
+    rvAG = svBaseAG * 0.093;
+  }
+
+  if (includeAV) {
+    avAN = svBaseAN * 0.012;
+    avAG = svBaseAG * 0.013;
+  }
+
+  if (includePV) {
+    pvAN = svBaseAN * pvANRate;
+    pvAG = svBaseAG * pvAGRate;
+  }
+
+  return {
+    kvAN, rvAN, avAN, pvAN,
+    kvAG, rvAG, avAG, pvAG,
+    anTotal: kvAN + rvAN + avAN + pvAN,
+    agTotal: kvAG + rvAG + avAG + pvAG
+  };
+}
+
 
 
 function toggleEmployeeType() {
@@ -351,28 +402,13 @@ function calculateNormal() {
   const feiertag125 = Number(document.getElementById("feiertag125")?.value) || 0;
   const jobticket = Number(document.getElementById("jobticket")?.value) || 0;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
+  const sv = calculateSV({brutto,svBaseAN: applyBBG(brutto),svBaseAG: applyBBG(brutto),children,age,state});
+  const sozialversicherungAN = sv.totalAN;
 
 
   // PV & age/children
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
-
-  // Sachsen & state
-  const children = Number(document.getElementById("children")?.value || 0);
-  const state = document.getElementById("state")?.value || "default";
-  
-  let { pvANRate, pvAGRate } = getPvRates(children, age);
-  
-  if (state === "SN") {
-  pvAGRate = 0.013;
-
-  if (children === 0 && age >= 23) pvANRate = 0.029;
-  else if (children === 1) pvANRate = 0.023;
-  else if (children === 2) pvANRate = 0.0205;
-  else if (children === 3) pvANRate = 0.018;
-  else if (children === 4) pvANRate = 0.0155;
-  else if (children >= 5) pvANRate = 0.013;
-}
 
   // ===== Stundenlohn =====
 const grundlohn = brutto + vwl;
@@ -397,52 +433,37 @@ const steuerfreieZuschlaege =
   feiertagPay;
 
 // ===== Steuerpflichtiges Brutto (SV-Basis) =====
-const steuerpflichtigesBrutto =
-  grundlohn +
-  ueberstundenPay +
-  ueberstundenZuschlag;
+const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
+const annualIncome = steuerpflichtigesBrutto * 12;
+let annualTax = calculateAnnualProgressiveTax(annualIncome);
+  
+  // Steuerklasse adjustment (annual level)
+const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
+annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse);
 
-const kvPvBase = Math.min(steuerpflichtigesBrutto, BBG_KV_PV);
-const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
+// Back to monthly
+const lohnsteuer = annualTax / 12;
+
+// ===== Kirchensteuer =====
+const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
+let kirchensteuer = 0;
+let kirchensteuerRate = 0;
+
+if (kirchensteuerpflichtig) {
+  const state = document.getElementById("bundesland")?.value || "default";
+
+  const states8Percent = ["BW", "BY"];
+  kirchensteuerRate = states8Percent.includes(state) ? 0.08 : 0.09;
+
+  kirchensteuer = lohnsteuer * kirchensteuerRate;
+}
+
+   // ===== Netto =====
+const netto = steuerpflichtigesBrutto - lohnsteuer -  kirchensteuer - sv.totalAN - jobticket + steuerfreieZuschlaege;
 
   
-  // ===== Steuerklasse logic =====
-  let steuersatz = 0.20;
-  switch (steuerklasse) {
-    case "2": steuersatz = 0.18; break;
-    case "3": steuersatz = 0.12; break;
-    case "5": steuersatz = 0.26; break;
-    case "6": steuersatz = 0.30; break;
-  }
 
-  let lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
-  lohnsteuer = adjustTaxBySteuerklasse(lohnsteuer, steuerklasse, children);
  
- 
-  // ===== Sozialversicherung =====
-  const kv = kvPvBase * 0.073;
-  const rv = rvAvBase * 0.093;
-  const av = rvAvBase * 0.012;
-
-
-  const pvAN = kvPvBase * pvANRate;
-  const pvAG = kvPvBase * pvAGRate;
-  const sozialversicherungAN = kv + rv + av + pvAN;
-
-  console.log("STATE:", state, "CHILDREN:", children, "AGE:", age, "PV AN RATE:", pvANRate);
-  
-  // ===== Kirchensteuer =====
-  const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
-  let kirchensteuer = 0;
-  let kirchensteuerRate = 0;
-  if (kirchensteuerpflichtig) {
-    kirchensteuerRate = ["Bayern", "Baden-Württemberg"].includes(state) ? 0.08 : 0.09;
-    kirchensteuer = lohnsteuer * kirchensteuerRate;
-  }
-
-  // ===== Netto =====
-  const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN - jobticket - kirchensteuer + steuerfreieZuschlaege;
-
   // ===== Arbeitgeberanteile =====
   const ag_kv = kvPvBase * 0.073;
   const ag_rv = rvAvBase * 0.093;
@@ -467,13 +488,13 @@ const rvAvBase = Math.min(steuerpflichtigesBrutto, BBG_RV_AV);
       <tr><td><strong>Gesamtbrutto</strong></td><td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege).toFixed(2)}</strong></td></tr>
       <tr><th colspan="2">Abzüge Arbeitnehmer</th></tr>
       <tr><td>Lohnsteuer (${(steuersatz * 100).toFixed(0)}%)</td><td>${lohnsteuer.toFixed(2)}</td></tr>
-      <tr><td>Kirchensteuer (${(kirchensteuerRate*100).toFixed(0)}%)</td><td>${kirchensteuer.toFixed(2)}</td></tr>
-      <tr><td>KV</td><td>${kv.toFixed(2)}</td></tr>
-      <tr><td>RV</td><td>${rv.toFixed(2)}</td></tr>
-      <tr><td>AV</td><td>${av.toFixed(2)}</td></tr>
-      <tr><td>PV AN</td><td>${pvAN.toFixed(2)}</td></tr>
+      <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
+      ${sv.kvAN.toFixed(2)}
+      ${sv.rvAN.toFixed(2)}
+      ${sv.pvAN.toFixed(2)}
       <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+      
 
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
       <tr><td>KV AG</td><td>${ag_kv.toFixed(2)}</td></tr>
@@ -500,7 +521,9 @@ function calculatePraktikant() {
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("bundesland")?.value || "default";
-
+  const svBase = applyBBG(brutto);
+  const sv = calculateSV({brutto,svBaseAN: svBase,svBaseAG: svBase,children,age,state});
+  
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
 
@@ -510,16 +533,8 @@ function calculatePraktikant() {
     lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
   }
 
-  // ===== Sozialversicherung =====
-  const kv = steuerpflichtigesBrutto * 0.073; // example, adjust if exempt
-  const rv = steuerpflichtigesBrutto * 0.093; // may be reduced or 0
-  const av = steuerpflichtigesBrutto * 0.012; // may be 0
-  let { pvANRate, pvAGRate } = getPvRates(children, age);
-  if (state === "SN") pvANRate = 0.023; // example
-  const pvAN = steuerpflichtigesBrutto * pvANRate;
-  const pvAG = steuerpflichtigesBrutto * pvAGRate;
-  const sozialversicherungAN = kv + rv + av + pvAN;
 
+ 
   // ===== Netto =====
   const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN;
 
@@ -532,12 +547,16 @@ function calculatePraktikant() {
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
       <tr><td>Brutto (Praktikant)</td><td>${brutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
-      <tr><td>KV</td><td>${kv.toFixed(2)}</td></tr>
-      <tr><td>RV</td><td>${rv.toFixed(2)}</td></tr>
-      <tr><td>AV</td><td>${av.toFixed(2)}</td></tr>
-      <tr><td>PV AN</td><td>${pvAN.toFixed(2)}</td></tr>
+      <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+      <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
+      <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
+      <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
-      <tr><td>PV AG</td><td>${pvAG.toFixed(2)}</td></tr>
+      
+      <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
+      <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
+      <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
       <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
     </table>
   `;
@@ -545,18 +564,24 @@ function calculatePraktikant() {
   document.getElementById("output").innerHTML = outputHTML;
 }
 
-  
-  
+
+//Calculate Azubi
+
   function calculateAzubi() {
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("bundesland")?.value || "default";
+  
 
   // ===== Steuerpflichtiges Brutto =====
+  const svBase = applyBBG(brutto);
   const steuerpflichtigesBrutto = brutto;
-
+  const sv = calculateSV({brutto,svBaseAN: svBase,svBaseAG: svBase,children,age,state});
+  const sozialversicherungAN = sv.totalAN;
+  const arbeitgeberGesamt = sv.totalAG;
+    
   // ===== Lohnsteuer =====
   let lohnsteuer = 0;
   if (steuerpflichtigesBrutto > 1200) {
@@ -594,20 +619,17 @@ const outputHTML = `
     <tr><td>Brutto (Azubi)</td><td>${brutto.toFixed(2)}</td></tr>
     <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
 
-    <tr><td>KV AN</td><td>${kvAN.toFixed(2)}</td></tr>
-    <tr><td>RV AN</td><td>${rvAN.toFixed(2)}</td></tr>
-    <tr><td>AV AN</td><td>${avAN.toFixed(2)}</td></tr>
-    <tr><td>PV AN</td><td>${pvAN.toFixed(2)}</td></tr>
-
-    <tr><td><strong>Netto</strong></td>
-    <td><strong>${netto.toFixed(2)}</strong></td></tr>
+    <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+    <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
+    <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
+    <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
+    <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
 
     <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-
-    <tr><td>KV AG</td><td>${kvAG.toFixed(2)}</td></tr>
-    <tr><td>RV AG</td><td>${rvAG.toFixed(2)}</td></tr>
-    <tr><td>AV AG</td><td>${avAG.toFixed(2)}</td></tr>
-    <tr><td>PV AG</td><td>${pvAG.toFixed(2)}</td></tr>
+    <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+    <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
+    <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
+    <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
 
     <tr><td><strong>AG Gesamt</strong></td>
         <td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
@@ -621,6 +643,7 @@ document.getElementById("output").innerHTML = outputHTML;
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
