@@ -209,8 +209,8 @@ function calculateNetto() {
 function calculateMinijob() {
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
 
-  if (brutto > 538) {
-    alert("Minijob darf 538€ nicht überschreiten.");
+  if (brutto > 603) {
+    alert("Minijob darf 603€ nicht überschreiten.");
     return;
   }
 
@@ -602,6 +602,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
