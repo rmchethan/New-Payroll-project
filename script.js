@@ -240,7 +240,7 @@ function calculateMinijob() {
   document.getElementById("output").innerHTML = outputHTML;
   return; // Important to stop execution
 }
-}
+
 
 // Calculate for Midijob
 
@@ -607,6 +607,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
