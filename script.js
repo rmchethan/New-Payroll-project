@@ -533,48 +533,72 @@ function calculateNormal() {
   //Calcullate Praktikant
   
 function calculatePraktikant() {
+
+  // ===== INPUTS =====
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
+
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
-  const children = Number(document.getElementById("children")?.value || 0);
+  const children = Number(document.getElementById("children")?.value) || 0;
   const state = document.getElementById("bundesland")?.value || "default";
-  const svBase = applyBBG(brutto);
-  const sv = calculateSV({brutto,svBaseAN: svBase,svBaseAG: svBase,children,age,state});
-  
+
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
 
-  // ===== Lohnsteuer =====
-  let lohnsteuer = 0;
-  if (steuerpflichtigesBrutto > 1200) {
-    lohnsteuer = calculateProgressiveTax(steuerpflichtigesBrutto);
-  }
+  // ===== Jahreshochrechnung =====
+  const annualIncome = steuerpflichtigesBrutto * 12;
+  let annualTax = calculateAnnualProgressiveTax(annualIncome);
+  annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse);
+  const lohnsteuer = annualTax / 12;
 
+  // ===== Sozialversicherung (central engine) =====
+  const bbg = applyBBG(steuerpflichtigesBrutto);
 
- 
+  const sv = calculateSV({
+    brutto: steuerpflichtigesBrutto,
+    svBaseAN: bbg,
+    svBaseAG: bbg,
+    children,
+    age,
+    state
+  });
+
   // ===== Netto =====
-  const netto = steuerpflichtigesBrutto - lohnsteuer - sozialversicherungAN;
+  const netto =
+    steuerpflichtigesBrutto
+    - lohnsteuer
+    - sv.totalAN;
 
   // ===== Arbeitgeberanteile =====
-  const arbeitgeberGesamt = kv + rv + av + pvAG;
+  const arbeitgeberGesamt = sv.totalAG;
 
   // ===== Output =====
   const outputHTML = `
     <table border="1" cellpadding="5">
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
+
       <tr><td>Brutto (Praktikant)</td><td>${brutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
+
+      <tr><th colspan="2">Abzüge Arbeitnehmer</th></tr>
       <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
       <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
       <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
       <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
-      <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
-      
+      <tr><td><strong>Netto</strong></td>
+          <td><strong>${netto.toFixed(2)}</strong></td></tr>
+
+      <tr><th colspan="2">Arbeitgeberanteile</th></tr>
       <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
       <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
       <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
       <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
-      <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+
+      <tr><td><strong>AG Gesamt</strong></td>
+          <td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+      <tr><td><strong>Gesamtkosten AG</strong></td>
+          <td><strong>${(brutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
     </table>
   `;
 
@@ -660,6 +684,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
