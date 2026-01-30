@@ -326,93 +326,74 @@ function calculateMidijob() {
 
 
  // Calculate for Normal AN
+// ===== Calculate Normal Employee =====
 function calculateNormal() {
-
-  // ===== INPUTS =====
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
-  const ueberstunden = Number(document.getElementById("ueberstunden")?.value) || 0;
-  const vwl = Number(document.getElementById("vwl")?.value) || 0;
-  const nacht25 = Number(document.getElementById("nacht25")?.value) || 0;
-  const nacht40 = Number(document.getElementById("nacht40")?.value) || 0;
-  const sonntag50 = Number(document.getElementById("sonntag50")?.value) || 0;
-  const feiertag125 = Number(document.getElementById("feiertag125")?.value) || 0;
-  const jobticket = Number(document.getElementById("jobticket")?.value) || 0;
-  const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
-  const children = Number(document.getElementById("children")?.value) || 0;
+  const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("bundesland")?.value || "default";
+  const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
 
-  // ===== Stundenlohn =====
+  // Additional components
+  const ueberstunden = Number(document.getElementById("ueberstunden")?.value || 0);
+  const vwl = Number(document.getElementById("vwl")?.value || 0);
+  const nacht25 = Number(document.getElementById("nacht25")?.value || 0);
+  const nacht40 = Number(document.getElementById("nacht40")?.value || 0);
+  const sonntag50 = Number(document.getElementById("sonntag50")?.value || 0);
+  const feiertag125 = Number(document.getElementById("feiertag125")?.value || 0);
+  const jobticket = Number(document.getElementById("jobticket")?.value || 0);
+
+  // ===== Stundenlohn & Zuschläge =====
   const grundlohn = brutto + vwl;
   const monatlicheStunden = 160;
   const stundenlohn = grundlohn / monatlicheStunden;
 
-  // ===== Überstunden =====
   const ueberstundenPay = ueberstunden * stundenlohn;
   const ueberstundenZuschlag = ueberstundenPay * 0.25;
 
-  // ===== Steuerfreie Zuschläge =====
-  const nacht25Pay  = nacht25     * stundenlohn * 0.25;
-  const nacht40Pay  = nacht40     * stundenlohn * 0.40;
-  const sonntagPay  = sonntag50   * stundenlohn * 0.50;
+  const nacht25Pay  = nacht25 * stundenlohn * 0.25;
+  const nacht40Pay  = nacht40 * stundenlohn * 0.40;
+  const sonntagPay  = sonntag50 * stundenlohn * 0.50;
   const feiertagPay = feiertag125 * stundenlohn * 1.25;
 
-  const steuerfreieZuschlaege =
-    nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
+  const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
 
   // ===== Steuerpflichtiges Brutto =====
-  const steuerpflichtigesBrutto =
-    grundlohn + ueberstundenPay + ueberstundenZuschlag;
+  const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
 
-  // ===== Jahreshochrechnung =====
-  const annualIncome = steuerpflichtigesBrutto * 12;
-  let annualTax = calculateAnnualProgressiveTax(annualIncome);
-  annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse);
-  const lohnsteuer = annualTax / 12;
-
-  // ===== Kirchensteuer =====
-  const kirchensteuerpflichtig =
-    document.getElementById("kirchensteuer")?.checked || false;
-
-  let kirchensteuer = 0;
-  if (kirchensteuerpflichtig) {
-    const states8Percent = ["BW", "BY"];
-    const rate = states8Percent.includes(state) ? 0.08 : 0.09;
-    kirchensteuer = lohnsteuer * rate;
-  }
-
-  // ===== SV (Central Engine) =====
-  const bbg = applyBBG(steuerpflichtigesBrutto);
-
+  // SV calculation
+  const svBase = applyBBG(steuerpflichtigesBrutto);
   const sv = calculateSV({
     brutto: steuerpflichtigesBrutto,
-    svBaseAN: bbg,
-    svBaseAG: bbg,
+    svBaseAN: svBase.kvPvBase,
+    svBaseAG: svBase.kvPvBase,
     children,
     age,
     state
   });
 
-  // ===== Netto =====
-  const netto =
-    steuerpflichtigesBrutto
-    - lohnsteuer
-    - kirchensteuer
-    - sv.totalAN
-    - jobticket
-    + steuerfreieZuschlaege;
+  // Jahreshochrechnung & Steuerklasse
+  const annualIncome = steuerpflichtigesBrutto * 12;
+  let annualTax = calculateAnnualProgressiveTax(annualIncome);
+  annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
+  const lohnsteuer = annualTax / 12;
 
-  // ===== Arbeitgeberanteile =====
-  const umlage1 = steuerpflichtigesBrutto * 0.028;
-  const umlage2 = steuerpflichtigesBrutto * 0.0075;
-  const insolvenzgeld = steuerpflichtigesBrutto * 0.006;
+  // Kirchensteuer
+  const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
+  let kirchensteuer = 0;
+  if (kirchensteuerpflichtig) {
+    const kirchensteuerRate = ["BW", "BY"].includes(state) ? 0.08 : 0.09;
+    kirchensteuer = lohnsteuer * kirchensteuerRate;
+  }
 
-  const arbeitgeberGesamt =
-    sv.totalAG + umlage1 + umlage2 + insolvenzgeld;
+  // Netto
+  const netto = steuerpflichtigesBrutto - lohnsteuer - kirchensteuer - sv.totalAN - jobticket + steuerfreieZuschlaege;
 
-  // ===== OUTPUT =====
+  // Arbeitgeberanteile
+  const arbeitgeberGesamt = sv.totalAG;
+
+  // ===== Output =====
   const outputHTML = `
     <table border="1" cellpadding="5">
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
@@ -423,8 +404,7 @@ function calculateNormal() {
       <tr><td>Nacht 40%</td><td>${nacht40Pay.toFixed(2)}</td></tr>
       <tr><td>Sonntag 50%</td><td>${sonntagPay.toFixed(2)}</td></tr>
       <tr><td>Feiertag 125%</td><td>${feiertagPay.toFixed(2)}</td></tr>
-      <tr><td><strong>Gesamtbrutto</strong></td>
-      <td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege).toFixed(2)}</strong></td></tr>
+      <tr><td><strong>Gesamtbrutto</strong></td><td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege).toFixed(2)}</strong></td></tr>
 
       <tr><th colspan="2">Abzüge Arbeitnehmer</th></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
@@ -441,17 +421,14 @@ function calculateNormal() {
       <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
       <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
       <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
-      <tr><td>Umlage 1</td><td>${umlage1.toFixed(2)}</td></tr>
-      <tr><td>Umlage 2</td><td>${umlage2.toFixed(2)}</td></tr>
-      <tr><td>Insolvenzgeld</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
       <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
-      <tr><td><strong>Gesamtkosten AG</strong></td>
-      <td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
+      <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
     </table>
   `;
 
   document.getElementById("output").innerHTML = outputHTML;
 }
+
 
   //Calcullate Praktikant
   
@@ -607,6 +584,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
