@@ -72,7 +72,7 @@ function calculateAnnualProgressiveTax(annualIncome) {
     return tax;
 }
 
-const lohnsteuerMonat = calculateAnnualProgressiveTax(annualBrutto) / 12;
+const lohnsteuerMonat = calculateAnnualProgressiveTax(annualIncome) / 12;
 const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false; 
 let kirchensteuer = 0;
 
@@ -682,6 +682,7 @@ function calculatePraktikant() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
