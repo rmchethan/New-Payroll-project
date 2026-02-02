@@ -543,15 +543,19 @@ function calculatePraktikant() {
   const steuerpflichtigesBrutto = brutto;
 
   // ===== SV calculation (Praktikant may exclude AV) =====
-  const svBase = applyBBG(steuerpflichtigesBrutto);
+  
+  // ===== SV calculation =====
+const svBase = applyBBG(steuerpflichtigesBrutto);
+
+const sv = calculateSV({
   brutto: steuerpflichtigesBrutto,
-    svBaseAN: svBase,     // MUST be object
-    svBaseAG: svBase,     // MUST be object
-    children,
-    age,
-    state,
-    includeAV: false
-  });
+  svBaseAN: svBase,
+  svBaseAG: svBase,
+  children,
+  age,
+  state,
+  includeAV: false
+});
 
   // ===== Jahreshochrechnung & Steuerklasse =====
   const annualIncome = steuerpflichtigesBrutto * 12;
@@ -676,6 +680,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
