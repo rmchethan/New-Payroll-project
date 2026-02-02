@@ -118,6 +118,11 @@ function calculateSV({
     pvANRate = pvANRate + 0.005;
   }
 
+  // ===== DECLARE VARIABLES =====
+  let kvAN = 0, kvZusatzAN = 0, rvAN = 0, avAN = 0, pvAN = 0;
+  let kvAG = 0, kvZusatzAG = 0, rvAG = 0, avAG = 0, pvAG = 0;
+
+
   // ===== KV =====
   if (includeKV) {
     kvAN = kvPvBase * 0.073;
@@ -163,7 +168,7 @@ function calculateSV({
 
   totalAN: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
   totalAG: kvAG + kvZusatzAG + rvAG + avAG + pvAG
-}
+  }
 }
 
 // ===== Progressive Tax Functions =====
@@ -683,6 +688,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
