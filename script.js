@@ -58,66 +58,80 @@ function applyBBG(brutto) {
   };
 }
 
-// Calculate Social Insurance contributions
-function calculateSV({brutto, svBaseAN, svBaseAG, children, age, state, includeKV=true, includeRV=true, includeAV=true, includePV=true}) {
+// ===== Calculate Social Insurance contributions =====
+function calculateSV({
+  brutto,
+  svBaseAN,
+  svBaseAG,
+  children,
+  age,
+  state,
+  includeKV = true,
+  includeRV = true,
+  includeAV = true,
+  includePV = true
+}) {
+
   let kvAN = 0, rvAN = 0, avAN = 0, pvAN = 0;
   let kvAG = 0, rvAG = 0, avAG = 0, pvAG = 0;
 
+  let kvZusatzAN = 0;
+  let kvZusatzAG = 0;
+
+  const KV_ZUSATZ = 0.029;        // 2.9% average 2026
+  const KV_ZUSATZ_HALF = KV_ZUSATZ / 2;
+
   let { pvANRate, pvAGRate } = getPvRates(children, age);
 
+  // Sachsen special rule
   if (state === "SN") {
     pvAGRate = 0.013;
     pvANRate = pvANRate + 0.005;
   }
 
+  // ===== Krankenversicherung =====
   if (includeKV) {
     kvAN = svBaseAN * 0.073;
     kvAG = svBaseAG * 0.073;
+
+    kvZusatzAN = svBaseAN * KV_ZUSATZ_HALF;
+    kvZusatzAG = svBaseAG * KV_ZUSATZ_HALF;
   }
+
+  // ===== Rentenversicherung =====
   if (includeRV) {
     rvAN = svBaseAN * 0.093;
     rvAG = svBaseAG * 0.093;
   }
+
+  // ===== Arbeitslosenversicherung =====
   if (includeAV) {
     avAN = svBaseAN * 0.012;
     avAG = svBaseAG * 0.013;
   }
+
+  // ===== Pflegeversicherung =====
   if (includePV) {
     pvAN = svBaseAN * pvANRate;
     pvAG = svBaseAG * pvAGRate;
   }
 
-const KV_ZUSATZ = 0.029; // 2.9% average 2026
-const KV_ZUSATZ_HALF = KV_ZUSATZ / 2;
-
-let kvZusatzAN = 0;
-let kvZusatzAG = 0;
-
-if (includeKV) {
-  kvAN = svBaseAN * 0.073;
-  kvAG = svBaseAG * 0.073;
-
-  kvZusatzAN = svBaseAN * KV_ZUSATZ_HALF;
-  kvZusatzAG = svBaseAG * KV_ZUSATZ_HALF;
-}
-
   return {
-  kvAN,
-  kvZusatzAN,
-  rvAN,
-  avAN,
-  pvAN,
+    kvAN,
+    kvZusatzAN,
+    rvAN,
+    avAN,
+    pvAN,
 
-  kvAG,
-  kvZusatzAG,
-  rvAG,
-  avAG,
-  pvAG,
+    kvAG,
+    kvZusatzAG,
+    rvAG,
+    avAG,
+    pvAG,
 
-  anTotal: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
-  agTotal: kvAG + kvZusatzAG + rvAG + avAG + pvAG
-};
-
+    totalAN: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
+    totalAG: kvAG + kvZusatzAG + rvAG + avAG + pvAG
+  };
 }
 
 // ===== Progressive Tax Functions =====
@@ -416,16 +430,19 @@ function calculateNormal() {
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
 
-  // SV calculation
-  const svBase = applyBBG(steuerpflichtigesBrutto);
-  const sv = calculateSV({
-    brutto: steuerpflichtigesBrutto,
-    svBaseAN: svBase.kvPvBase,
-    svBaseAG: svBase.kvPvBase,
-    children,
-    age,
-    state
-  });
+  // ===== BBG =====
+const bbg = applyBBG(steuerpflichtigesBrutto);
+
+// ===== SV =====
+const sv = calculateSV({
+  brutto: steuerpflichtigesBrutto,
+  svBaseAN: bbg.kvPvBase,
+  svBaseAG: bbg.kvPvBase,
+  children,
+  age,
+  state
+});
+
 
   // Jahreshochrechnung & Steuerklasse
   const annualIncome = steuerpflichtigesBrutto * 12;
@@ -463,16 +480,17 @@ function calculateNormal() {
       <tr><th colspan="2">Abzüge Arbeitnehmer</th></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
       <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
-      <tr><td>KV AG (7,3%)</td><td>${sv.kvAG.toFixed(2)}</td></tr>
-      <tr><td>KV Zusatz AG</td><td>${sv.kvZusatzAG.toFixed(2)}</td></tr>
+      <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+      <tr><td>KV Zusatz AN</td><td>${sv.kvZusatzAN.toFixed(2)}</td></tr>
       <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
       <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
       <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
+
       <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
 
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>KV AG (7,3%)</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
       <tr><td>KV Zusatz AG</td><td>${sv.kvZusatzAG.toFixed(2)}</td></tr>
       <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
       <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
@@ -636,6 +654,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
