@@ -58,7 +58,23 @@ function applyBBG(brutto) {
   };
 }
 
-
+// ✅ ADD IT HERE
+function createZeroSV() {
+  return {
+    kvAN: 0,
+    kvZusatzAN: 0,
+    rvAN: 0,
+    avAN: 0,
+    pvAN: 0,
+    kvAG: 0,
+    kvZusatzAG: 0,
+    rvAG: 0,
+    avAG: 0,
+    pvAG: 0,
+    totalAN: 0,
+    totalAG: 0
+  };
+}
 
 // ===== Calculate Social Insurance contributions =====
 function calculateSV({
@@ -74,12 +90,21 @@ function calculateSV({
   includePV = true
 }) {
 
-  let kvAN = 0, rvAN = 0, avAN = 0, pvAN = 0;
-  let kvAG = 0, rvAG = 0, avAG = 0, pvAG = 0;
-  let kvZusatzAN = 0, kvZusatzAG = 0;
+  if (!svBaseAN || typeof svBaseAN !== "object") {
+    console.error("Invalid svBaseAN:", svBaseAN);
+    return createZeroSV();
+  }
 
-  const { kvPvBase, rvAvBase } = svBaseAN;
-  const { kvPvBase: kvPvBaseAG, rvAvBase: rvAvBaseAG } = svBaseAG;
+  if (!svBaseAG || typeof svBaseAG !== "object") {
+    console.error("Invalid svBaseAG:", svBaseAG);
+    return createZeroSV();
+  }
+
+  const kvPvBase = Number(svBaseAN.kvPvBase) || 0;
+  const rvAvBase = Number(svBaseAN.rvAvBase) || 0;
+
+  const kvPvBaseAG = Number(svBaseAG.kvPvBase) || 0;
+  const rvAvBaseAG = Number(svBaseAG.rvAvBase) || 0;
 
   let { pvANRate, pvAGRate } = getPvRates(children, age);
 
@@ -436,13 +461,15 @@ function calculateNormal() {
   
   const sv = calculateSV({
   brutto: steuerpflichtigesBrutto,
-  svBaseAN: svBase,
-  svBaseAG: svBase,
-    children,
-    age,
-    state
-  });
+  svBaseAN: bbg,
+  svBaseAG: bbg,
+  children,
+  age,
+  state
+});
 
+
+  
   // ===== Jahreshochrechnung & Steuerklasse =====
   const annualIncome = steuerpflichtigesBrutto * 12;
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
@@ -648,6 +675,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
