@@ -1,8 +1,6 @@
-console.log("SV Base Praktikant:", svBase);
+
 
 // ===== Global Setup =====
-console.log("Progressive tax function exists:", typeof calculateProgressiveTax);
-window.onload = toggleEmployeeType;
 
 // Fields to disable for certain employee types
 const disabledFields = [
@@ -15,6 +13,10 @@ const disabledFields = [
   "feiertag125",
   "jobticket"
 ];
+
+console.log("Progressive tax function exists:", typeof calculateProgressiveTax);
+window.onload = toggleEmployeeType;
+
 
 // ===== Utility Functions =====
 
@@ -556,6 +558,8 @@ const sv = calculateSV({
   includeAV: false
 });
 
+  console.log("SV Base Praktikant:", svBase);
+
   // ===== Jahreshochrechnung & Steuerklasse =====
   const annualIncome = steuerpflichtigesBrutto * 12;
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
@@ -679,6 +683,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
