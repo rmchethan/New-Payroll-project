@@ -1,3 +1,5 @@
+console.log("SV Base Praktikant:", svBase);
+
 // ===== Global Setup =====
 console.log("Progressive tax function exists:", typeof calculateProgressiveTax);
 window.onload = toggleEmployeeType;
@@ -674,6 +676,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
