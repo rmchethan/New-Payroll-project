@@ -74,41 +74,66 @@ function calculateSV({
 
   let kvAN = 0, rvAN = 0, avAN = 0, pvAN = 0;
   let kvAG = 0, rvAG = 0, avAG = 0, pvAG = 0;
+  let kvZusatzAN = 0, kvZusatzAG = 0;
 
-  let kvZusatzAN = 0;
-  let kvZusatzAG = 0;
-
-  const KV_ZUSATZ = 0.029;        // 2.9% average 2026
-  const KV_ZUSATZ_HALF = KV_ZUSATZ / 2;
+  const { kvPvBase, rvAvBase } = svBaseAN;
+  const { kvPvBase: kvPvBaseAG, rvAvBase: rvAvBaseAG } = svBaseAG;
 
   let { pvANRate, pvAGRate } = getPvRates(children, age);
 
-  // Sachsen special rule
+  // Sachsen adjustment
   if (state === "SN") {
     pvAGRate = 0.013;
     pvANRate = pvANRate + 0.005;
   }
 
-  // ===== Krankenversicherung =====
+  // ===== KV =====
   if (includeKV) {
-    kvAN = svBaseAN * 0.073;
-    kvAG = svBaseAG * 0.073;
+    kvAN = kvPvBase * 0.073;
+    kvAG = kvPvBaseAG * 0.073;
 
-    kvZusatzAN = svBaseAN * KV_ZUSATZ_HALF;
-    kvZusatzAG = svBaseAG * KV_ZUSATZ_HALF;
+    const KV_ZUSATZ = 0.029; // 2.9%
+    const KV_ZUSATZ_HALF = KV_ZUSATZ / 2;
+
+    kvZusatzAN = kvPvBase * KV_ZUSATZ_HALF;
+    kvZusatzAG = kvPvBaseAG * KV_ZUSATZ_HALF;
   }
 
-  // ===== Rentenversicherung =====
+  // ===== RV =====
   if (includeRV) {
-    rvAN = svBaseAN * 0.093;
-    rvAG = svBaseAG * 0.093;
+    rvAN = rvAvBase * 0.093;
+    rvAG = rvAvBaseAG * 0.093;
   }
 
-  // ===== Arbeitslosenversicherung =====
+  // ===== AV =====
   if (includeAV) {
-    avAN = svBaseAN * 0.012;
-    avAG = svBaseAG * 0.013;
+    avAN = rvAvBase * 0.012;
+    avAG = rvAvBaseAG * 0.013;
   }
+
+  // ===== PV =====
+  if (includePV) {
+    pvAN = kvPvBase * pvANRate;
+    pvAG = kvPvBaseAG * pvAGRate;
+  }
+
+  return {
+    kvAN,
+    kvZusatzAN,
+    rvAN,
+    avAN,
+    pvAN,
+
+    kvAG,
+    kvZusatzAG,
+    rvAG,
+    avAG,
+    pvAG,
+
+    anTotal: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
+    agTotal: kvAG + kvZusatzAG + rvAG + avAG + pvAG
+  };
+}
 
   // ===== Pflegeversicherung =====
   if (includePV) {
@@ -433,15 +458,16 @@ function calculateNormal() {
   // ===== BBG =====
 const bbg = applyBBG(steuerpflichtigesBrutto);
 
-// ===== SV =====
+  //SV
 const sv = calculateSV({
   brutto: steuerpflichtigesBrutto,
-  svBaseAN: bbg.kvPvBase,
-  svBaseAG: bbg.kvPvBase,
+  svBaseAN: bbg,
+  svBaseAG: bbg,
   children,
   age,
   state
 });
+
 
 
   // Jahreshochrechnung & Steuerklasse
@@ -654,6 +680,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
