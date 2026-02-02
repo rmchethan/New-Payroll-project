@@ -58,6 +58,8 @@ function applyBBG(brutto) {
   };
 }
 
+
+
 // ===== Calculate Social Insurance contributions =====
 function calculateSV({
   brutto,
@@ -92,7 +94,7 @@ function calculateSV({
     kvAN = kvPvBase * 0.073;
     kvAG = kvPvBaseAG * 0.073;
 
-    const KV_ZUSATZ = 0.029; // 2.9%
+    const KV_ZUSATZ = 0.029;
     const KV_ZUSATZ_HALF = KV_ZUSATZ / 2;
 
     kvZusatzAN = kvPvBase * KV_ZUSATZ_HALF;
@@ -132,30 +134,6 @@ function calculateSV({
 
     anTotal: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
     agTotal: kvAG + kvZusatzAG + rvAG + avAG + pvAG
-  };
-}
-
-  // ===== Pflegeversicherung =====
-  if (includePV) {
-    pvAN = svBaseAN * pvANRate;
-    pvAG = svBaseAG * pvAGRate;
-  }
-
-  return {
-    kvAN,
-    kvZusatzAN,
-    rvAN,
-    avAN,
-    pvAN,
-
-    kvAG,
-    kvZusatzAG,
-    rvAG,
-    avAG,
-    pvAG,
-
-    totalAN: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
-    totalAG: kvAG + kvZusatzAG + rvAG + avAG + pvAG
   };
 }
 
@@ -680,6 +658,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
