@@ -394,8 +394,6 @@ function calculateMidijob() {
   document.getElementById("output").innerHTML = outputHTML;
 }
 
-
-
  // Calculate for Normal AN
 // ===== Calculate Normal Employee =====
 function calculateNormal() {
@@ -676,6 +674,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
