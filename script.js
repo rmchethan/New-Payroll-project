@@ -120,21 +120,21 @@ function calculateSV({
   }
 
   return {
-    kvAN,
-    kvZusatzAN,
-    rvAN,
-    avAN,
-    pvAN,
+  kvAN,
+  kvZusatzAN,
+  rvAN,
+  avAN,
+  pvAN,
 
-    kvAG,
-    kvZusatzAG,
-    rvAG,
-    avAG,
-    pvAG,
+  kvAG,
+  kvZusatzAG,
+  rvAG,
+  avAG,
+  pvAG,
 
-    anTotal: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
-    agTotal: kvAG + kvZusatzAG + rvAG + avAG + pvAG
-  };
+  totalAN: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
+  totalAG: kvAG + kvZusatzAG + rvAG + avAG + pvAG
+}
 }
 
 // ===== Progressive Tax Functions =====
@@ -674,6 +674,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
