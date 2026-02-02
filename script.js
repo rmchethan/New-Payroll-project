@@ -542,10 +542,9 @@ function calculatePraktikant() {
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
 
-  // ===== SV calculation (Praktikant may exclude AV) =====
-  
+   
   // ===== SV calculation =====
-const svBase = applyBBG(steuerpflichtigesBrutto);
+  const svBase = applyBBG(steuerpflichtigesBrutto);
 
 const sv = calculateSV({
   brutto: steuerpflichtigesBrutto,
@@ -680,6 +679,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
