@@ -87,12 +87,37 @@ function calculateSV({brutto, svBaseAN, svBaseAG, children, age, state, includeK
     pvAG = svBaseAG * pvAGRate;
   }
 
+const KV_ZUSATZ = 0.029; // 2.9% average 2026
+const KV_ZUSATZ_HALF = KV_ZUSATZ / 2;
+
+let kvZusatzAN = 0;
+let kvZusatzAG = 0;
+
+if (includeKV) {
+  kvAN = svBaseAN * 0.073;
+  kvAG = svBaseAG * 0.073;
+
+  kvZusatzAN = svBaseAN * KV_ZUSATZ_HALF;
+  kvZusatzAG = svBaseAG * KV_ZUSATZ_HALF;
+}
+
   return {
-    kvAN, rvAN, avAN, pvAN,
-    kvAG, rvAG, avAG, pvAG,
-    totalAN: kvAN + rvAN + avAN + pvAN,
-    totalAG: kvAG + rvAG + avAG + pvAG
-  };
+  kvAN,
+  kvZusatzAN,
+  rvAN,
+  avAN,
+  pvAN,
+
+  kvAG,
+  kvZusatzAG,
+  rvAG,
+  avAG,
+  pvAG,
+
+  anTotal: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
+  agTotal: kvAG + kvZusatzAG + rvAG + avAG + pvAG
+};
+
 }
 
 // ===== Progressive Tax Functions =====
@@ -242,7 +267,8 @@ function calculateMinijob() {
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
 
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>KV AG (13%)</td><td>${kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV AG (13% pauschal, kein Zusatzbeitrag)</td>
+      <td>${kvAG.toFixed(2)}</td></tr>
       <tr><td>RV AG (15%)</td><td>${rvAG.toFixed(2)}</td></tr>
       <tr><td>Pauschsteuer (2%)</td><td>${pauschsteuer.toFixed(2)}</td></tr>
       <tr><td>Umlage 1</td><td>${umlage1.toFixed(2)}</td></tr>
@@ -324,7 +350,8 @@ function calculateMidijob() {
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
       <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
 
-      <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+      <tr><td>KV (7,3%)</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+      <tr><td>KV Zusatzbeitrag</td><td>${sv.kvZusatzAN.toFixed(2)}</td></tr>
       <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
       <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
       <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
@@ -333,7 +360,8 @@ function calculateMidijob() {
           <td><strong>${netto.toFixed(2)}</strong></td></tr>
 
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV AG (7,3%)</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV Zusatz AG</td><td>${sv.kvZusatzAG.toFixed(2)}</td></tr>
       <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
       <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
       <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
@@ -435,7 +463,8 @@ function calculateNormal() {
       <tr><th colspan="2">Abzüge Arbeitnehmer</th></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
       <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
-      <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+      <tr><td>KV AG (7,3%)</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV Zusatz AG</td><td>${sv.kvZusatzAG.toFixed(2)}</td></tr>
       <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
       <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
       <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
@@ -443,7 +472,8 @@ function calculateNormal() {
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
 
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV AG (7,3%)</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV Zusatz AG</td><td>${sv.kvZusatzAG.toFixed(2)}</td></tr>
       <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
       <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
       <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
@@ -508,14 +538,16 @@ function calculatePraktikant() {
       <tr><td>Brutto (Praktikant)</td><td>${brutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
       <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
-      <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+      <tr><td>KV (7,3%)</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+      <tr><td>KV Zusatzbeitrag</td><td>${sv.kvZusatzAN.toFixed(2)}</td></tr>
       <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
       <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
       <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
       
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV AG (7,3%)</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV Zusatz AG</td><td>${sv.kvZusatzAG.toFixed(2)}</td></tr>
       <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
       <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
       <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
@@ -580,14 +612,16 @@ function calculateAzubi() {
       <tr><td>Brutto (Azubi)</td><td>${brutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
       <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
-      <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+      <tr><td>KV (7,3%)</td><td>${sv.kvAN.toFixed(2)}</td></tr>
+      <tr><td>KV Zusatzbeitrag</td><td>${sv.kvZusatzAN.toFixed(2)}</td></tr>
       <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
       <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
       <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
       
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV AG (7,3%)</td><td>${sv.kvAG.toFixed(2)}</td></tr>
+      <tr><td>KV Zusatz AG</td><td>${sv.kvZusatzAG.toFixed(2)}</td></tr>
       <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
       <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
       <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
@@ -602,6 +636,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
