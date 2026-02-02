@@ -406,7 +406,7 @@ function calculateNormal() {
   const state = document.getElementById("bundesland")?.value || "default";
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
 
-  // Additional components
+  // ===== Additional components =====
   const ueberstunden = Number(document.getElementById("ueberstunden")?.value || 0);
   const vwl = Number(document.getElementById("vwl")?.value || 0);
   const nacht25 = Number(document.getElementById("nacht25")?.value || 0);
@@ -428,44 +428,59 @@ function calculateNormal() {
   const sonntagPay  = sonntag50 * stundenlohn * 0.50;
   const feiertagPay = feiertag125 * stundenlohn * 1.25;
 
-  const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
+  const steuerfreieZuschlaege =
+    nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
 
   // ===== Steuerpflichtiges Brutto =====
-  const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
+  const steuerpflichtigesBrutto =
+    grundlohn + ueberstundenPay + ueberstundenZuschlag;
 
   // ===== BBG =====
-const bbg = applyBBG(steuerpflichtigesBrutto);
+  const bbg = applyBBG(steuerpflichtigesBrutto);
 
-  //SV
-const sv = calculateSV({
-  brutto: steuerpflichtigesBrutto,
-  svBaseAN: bbg,
-  svBaseAG: bbg,
-  children,
-  age,
-  state
-});
+  // ===== Social Insurance =====
+  const sv = calculateSV({
+    brutto: steuerpflichtigesBrutto,
+    svBaseAN: bbg,
+    svBaseAG: bbg,
+    children,
+    age,
+    state
+  });
 
+  // SAFETY CHECK
+  if (!sv) {
+    console.error("SV calculation failed");
+    return;
+  }
 
-
-  // Jahreshochrechnung & Steuerklasse
+  // ===== Jahreshochrechnung =====
   const annualIncome = steuerpflichtigesBrutto * 12;
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
   annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
   const lohnsteuer = annualTax / 12;
 
-  // Kirchensteuer
-  const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
+  // ===== Kirchensteuer =====
+  const kirchensteuerpflichtig =
+    document.getElementById("kirchensteuer")?.checked || false;
+
   let kirchensteuer = 0;
   if (kirchensteuerpflichtig) {
-    const kirchensteuerRate = ["BW", "BY"].includes(state) ? 0.08 : 0.09;
+    const kirchensteuerRate =
+      ["BW", "BY"].includes(state) ? 0.08 : 0.09;
     kirchensteuer = lohnsteuer * kirchensteuerRate;
   }
 
-  // Netto
-  const netto = steuerpflichtigesBrutto - lohnsteuer - kirchensteuer - sv.totalAN - jobticket + steuerfreieZuschlaege;
+  // ===== Netto =====
+  const netto =
+    steuerpflichtigesBrutto
+    - lohnsteuer
+    - kirchensteuer
+    - sv.totalAN
+    - jobticket
+    + steuerfreieZuschlaege;
 
-  // Arbeitgeberanteile
+  // ===== Arbeitgeberanteile =====
   const arbeitgeberGesamt = sv.totalAG;
 
   // ===== Output =====
@@ -479,7 +494,8 @@ const sv = calculateSV({
       <tr><td>Nacht 40%</td><td>${nacht40Pay.toFixed(2)}</td></tr>
       <tr><td>Sonntag 50%</td><td>${sonntagPay.toFixed(2)}</td></tr>
       <tr><td>Feiertag 125%</td><td>${feiertagPay.toFixed(2)}</td></tr>
-      <tr><td><strong>Gesamtbrutto</strong></td><td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege).toFixed(2)}</strong></td></tr>
+      <tr><td><strong>Gesamtbrutto</strong></td>
+          <td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege).toFixed(2)}</strong></td></tr>
 
       <tr><th colspan="2">Abzüge Arbeitnehmer</th></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
@@ -489,9 +505,9 @@ const sv = calculateSV({
       <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
       <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
       <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
-
       <tr><td>Jobticket</td><td>${jobticket.toFixed(2)}</td></tr>
-      <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
+      <tr><td><strong>Netto</strong></td>
+          <td><strong>${netto.toFixed(2)}</strong></td></tr>
 
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
       <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
@@ -499,8 +515,10 @@ const sv = calculateSV({
       <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
       <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
       <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
-      <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
-      <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
+      <tr><td><strong>AG Gesamt</strong></td>
+          <td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
+      <tr><td><strong>Gesamtkosten AG</strong></td>
+          <td><strong>${(steuerpflichtigesBrutto + steuerfreieZuschlaege + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
     </table>
   `;
 
@@ -658,6 +676,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
