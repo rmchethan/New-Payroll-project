@@ -433,8 +433,7 @@ function calculateNormal() {
 
   // ===== BBG & SV =====
   const bbg = applyBBG(steuerpflichtigesBrutto);
-  const bbg = applyBBG(steuerpflichtigesBrutto);
-
+  
   const sv = calculateSV({
   brutto: steuerpflichtigesBrutto,
   svBaseAN: svBase,
@@ -649,6 +648,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
