@@ -322,14 +322,18 @@ function calculateMidijob() {
   const steuerpflichtigesBrutto = brutto;
 
   // ===== Midijob reduced AN base =====
-  const reductionFactor = 0.8; // simplified model
-  const svBaseAN = brutto * reductionFactor;
-  const { kvPvBase, rvAvBase } = applyBBG(brutto);
+  const reductionFactor = 0.8;
+const bbg = applyBBG(brutto);
 
-  const sv = calculateSV({
-    brutto,
-    svBaseAN: Math.min(svBaseAN, kvPvBase),
-    svBaseAG: kvPvBase,
+const svBaseAN = {
+  kvPvBase: Math.min(brutto * reductionFactor, bbg.kvPvBase),
+  rvAvBase: Math.min(brutto * reductionFactor, bbg.rvAvBase)
+};
+const svBaseAG = bbg;
+const sv = calculateSV({
+  brutto,
+  svBaseAN,
+  svBaseAG,
     children,
     age,
     state
@@ -355,9 +359,9 @@ function calculateMidijob() {
     steuerpflichtigesBrutto -
     lohnsteuer -
     kirchensteuer -
-    sv.anTotal;
+    sv.totalAN;
 
-  const arbeitgeberGesamt = sv.agTotal;
+  const arbeitgeberGesamt = sv.totalAG;
 
   // ===== Output =====
   const outputHTML = `
@@ -429,10 +433,12 @@ function calculateNormal() {
 
   // ===== BBG & SV =====
   const bbg = applyBBG(steuerpflichtigesBrutto);
+  const bbg = applyBBG(steuerpflichtigesBrutto);
+
   const sv = calculateSV({
-    brutto: steuerpflichtigesBrutto,
-    svBaseAN: bbg.kvPvBase,
-    svBaseAG: bbg.kvPvBase,
+  brutto: steuerpflichtigesBrutto,
+  svBaseAN: svBase,
+  svBaseAG: svBase,
     children,
     age,
     state
@@ -585,8 +591,8 @@ function calculateAzubi() {
   const svBase = applyBBG(steuerpflichtigesBrutto);
   const sv = calculateSV({
     brutto: steuerpflichtigesBrutto,
-    svBaseAN: svBase.kvPvBase,
-    svBaseAG: svBase.kvPvBase,
+    svBaseAN: svBase,
+    svBaseAG: svBase,
     children,
     age,
     state
@@ -643,6 +649,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
