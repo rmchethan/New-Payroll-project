@@ -502,10 +502,6 @@ function calculateNormal() {
   const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
   const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
 
-  annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
-  const lohnsteuer = annualTax / 12;
-  const annualSoli = calculateSoli(annualTax, steuerklasse);
-  const soli = annualSoli / 12;
 
   // ===== BBG & SV =====
   const bbg = applyBBG(steuerpflichtigesBrutto);
@@ -526,6 +522,10 @@ function calculateNormal() {
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
   annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
 
+  //Soli 
+  const lohnsteuer = annualTax / 12;
+  const annualSoli = calculateSoli(annualTax, steuerklasse);
+  const soli = annualSoli / 12;
 
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
@@ -737,6 +737,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
