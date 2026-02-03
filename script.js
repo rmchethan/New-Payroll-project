@@ -524,9 +524,7 @@ function calculateNormal() {
   const annualIncome = steuerpflichtigesBrutto * 12;
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
   annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
-  const lohnsteuer = annualTax / 12;
-  const annualSoli = calculateSoli(annualTax, steuerklasse);
-  const soli = annualSoli / 12;
+
 
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
@@ -738,6 +736,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
