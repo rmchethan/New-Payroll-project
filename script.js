@@ -135,11 +135,25 @@ function calculateSV({
     kvZusatzAG = kvPvBaseAG * KV_ZUSATZ_HALF;
   }
 
-  // ===== RV =====
-  if (includeRV) {
+    // ===== RV =====
+if (includeRV) {
+  if (employeeType === "minijob") {
+    if (minijobRVExempt) {
+      // Employee is exempt → pays 0%
+      rvAN = 0;
+    } else {
+      // Employee not exempt → pays 3.6%
+      rvAN = rvAvBase * 0.036;
+    }
+    // Employer always 15%
+    rvAG = rvAvBaseAG * 0.15;
+  } else {
+    // Normal employees
     rvAN = rvAvBase * 0.093;
     rvAG = rvAvBaseAG * 0.093;
   }
+}
+  
 
   // ===== AV =====
   if (includeAV) {
@@ -754,6 +768,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
