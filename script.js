@@ -219,6 +219,38 @@ function calculateAnnualProgressiveTax(annualIncome) {
   return tax;
 }
 
+// ===== Solidaritätszuschlag (2025 simplified model) =====
+function calculateSoli(annualTax, steuerklasse) {
+  if (!annualTax || annualTax <= 0) return 0;
+
+  // Freigrenze depending on Steuerklasse
+  let freigrenze = 18130;
+
+  if (steuerklasse === "3") {
+    freigrenze = 18130 * 2;
+  }
+
+  // Upper limit for full 5.5%
+  const upperLimit = freigrenze + 15800; 
+  // simplified Milderungszone width
+
+  // 1️⃣ Below Freigrenze → no Soli
+  if (annualTax <= freigrenze) {
+    return 0;
+  }
+
+  // 2️⃣ Milderungszone
+  if (annualTax > freigrenze && annualTax <= upperLimit) {
+    return (annualTax - freigrenze) * 0.119;
+    // smooth transition factor (demo approximation)
+  }
+
+  // 3️⃣ Full Soli
+  return annualTax * 0.055;
+}
+
+
+
 // Steuerklasse allowances
 function adjustTaxBySteuerklasse(tax, steuerklasse, children) {
   switch(steuerklasse) {
@@ -348,6 +380,7 @@ function calculateMidijob() {
   const kirchensteuerpflichtig =
     document.getElementById("kirchensteuer")?.checked || false;
 
+
   if (brutto <= 603 || brutto > 2000) {
     alert("Brutto liegt nicht im Übergangsbereich (603,01 – 2.000 €)");
     return;
@@ -379,6 +412,8 @@ const sv = calculateSV({
   annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
 
   const lohnsteuer = annualTax / 12;
+  const annualSoli = calculateSoli(annualTax, steuerklasse);
+  const soli = annualSoli / 12;
 
   // ===== Kirchensteuer =====
   let kirchensteuer = 0;
@@ -392,6 +427,7 @@ const sv = calculateSV({
   const netto =
     steuerpflichtigesBrutto -
     lohnsteuer -
+    soli -
     kirchensteuer -
     sv.totalAN;
 
@@ -403,6 +439,7 @@ const sv = calculateSV({
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
       <tr><td>Brutto (Midijob)</td><td>${brutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
+      <tr><td>Solidaritätszuschlag</td><td>${soli.toFixed(2)}</td></tr>
       <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
 
       <tr><td>KV (7,3%)</td><td>${sv.kvAN.toFixed(2)}</td></tr>
@@ -465,6 +502,10 @@ function calculateNormal() {
   const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
   const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
 
+  const lohnsteuer = annualTax / 12;
+  const annualSoli = calculateSoli(annualTax, steuerklasse);
+  const soli = annualSoli / 12;
+
   // ===== BBG & SV =====
   const bbg = applyBBG(steuerpflichtigesBrutto);
   
@@ -484,6 +525,8 @@ function calculateNormal() {
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
   annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
   const lohnsteuer = annualTax / 12;
+  const annualSoli = calculateSoli(annualTax, steuerklasse);
+  const soli = annualSoli / 12;
 
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
@@ -494,7 +537,7 @@ function calculateNormal() {
   }
 
   // ===== Netto =====
-  const netto = steuerpflichtigesBrutto - lohnsteuer - kirchensteuer - sv.totalAN - jobticket + steuerfreieZuschlaege;
+  const netto = steuerpflichtigesBrutto - lohnsteuer - soli - kirchensteuer - sv.totalAN - jobticket + steuerfreieZuschlaege;
 
   // ===== Arbeitgeberanteile =====
   const arbeitgeberGesamt = sv.totalAG;
@@ -514,6 +557,7 @@ function calculateNormal() {
 
       <tr><th colspan="2">Abzüge Arbeitnehmer</th></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
+      <tr><td>Solidaritätszuschlag</td><td>${soli.toFixed(2)}</td></tr>
       <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
       <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
       <tr><td>KV Zusatz AN</td><td>${sv.kvZusatzAN.toFixed(2)}</td></tr>
@@ -570,6 +614,8 @@ const sv = calculateSV({
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
   annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
   const lohnsteuer = annualTax / 12;
+  const annualSoli = calculateSoli(annualTax, steuerklasse);
+  const soli = annualSoli / 12;
 
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
@@ -580,7 +626,7 @@ const sv = calculateSV({
   }
 
   // ===== Netto =====
-  const netto = steuerpflichtigesBrutto - lohnsteuer - kirchensteuer - sv.totalAN;
+  const netto = steuerpflichtigesBrutto - soli - lohnsteuer - kirchensteuer - sv.totalAN;
 
   // ===== AG contributions =====
   const arbeitgeberGesamt = sv.totalAG;
@@ -591,6 +637,7 @@ const sv = calculateSV({
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
       <tr><td>Brutto (Praktikant)</td><td>${brutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
+      <tr><td>Solidaritätszuschlag</td><td>${soli.toFixed(2)}</td></tr>
       <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
       <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
       <tr><td>KV Zusatzbeitrag</td><td>${sv.kvZusatzAN.toFixed(2)}</td></tr>
@@ -642,6 +689,8 @@ function calculateAzubi() {
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
   annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
   const lohnsteuer = annualTax / 12;
+  const annualSoli = calculateSoli(annualTax, steuerklasse);
+  const soli = annualSoli / 12;
 
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
@@ -652,7 +701,7 @@ function calculateAzubi() {
   }
 
   // ===== Netto =====
-  const netto = steuerpflichtigesBrutto - lohnsteuer - kirchensteuer - sv.totalAN;
+  const netto = steuerpflichtigesBrutto - soli - lohnsteuer - kirchensteuer - sv.totalAN;
 
   // ===== AG contributions =====
   const arbeitgeberGesamt = sv.totalAG;
@@ -663,6 +712,7 @@ function calculateAzubi() {
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
       <tr><td>Brutto (Azubi)</td><td>${brutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
+      <tr><td>Solidaritätszuschlag</td><td>${soli.toFixed(2)}</td></tr>
       <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
       <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
       <tr><td>KV Zusatzbeitrag</td><td>${sv.kvZusatzAN.toFixed(2)}</td></tr>
@@ -688,6 +738,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
