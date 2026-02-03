@@ -136,6 +136,7 @@ function calculateSV({
   }
 
     // ===== RV =====
+  const minijobRVExempt = document.getElementById("minijobRVExempt")?.checked || false;
 if (includeRV) {
   if (employeeType === "minijob") {
     if (minijobRVExempt) {
@@ -768,6 +769,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
