@@ -269,6 +269,9 @@ function calculateChildAllowance(tax, numChildren) {
   return perChildReduction * numChildren;
 }
 
+
+//Toggle employee
+
 function toggleEmployeeType() {
   const employeeType = document.getElementById("employeeType")?.value;
   const brutto = document.getElementById("brutto");
@@ -751,6 +754,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
