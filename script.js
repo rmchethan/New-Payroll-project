@@ -269,7 +269,6 @@ function calculateChildAllowance(tax, numChildren) {
   return perChildReduction * numChildren;
 }
 
-// Employee type toggle (disables irrelevant fields)
 function toggleEmployeeType() {
   const employeeType = document.getElementById("employeeType")?.value;
   const brutto = document.getElementById("brutto");
@@ -278,27 +277,42 @@ function toggleEmployeeType() {
 
   // Reset all fields
   brutto.disabled = false;
+
   disabledFields.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.disabled = false;
   });
+
   if (minijobRVBlock) minijobRVBlock.style.display = "none";
 
+  // ===== MINIJOB =====
   if (employeeType === "minijob") {
     brutto.value = 603;
     brutto.disabled = true;
-    disabledFields.forEach(id => { const el = document.getElementById(id); if(el) el.disabled=true; });
+
+    disabledFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = true;
+    });
+
     if (minijobRVBlock) minijobRVBlock.style.display = "block";
+
+    steuerklasse.disabled = true;   // ONLY here disabled
+    return;
   }
 
+  // ===== Midijob / Praktikant / Azubi =====
   if (employeeType === "midijob" || employeeType === "praktikant" || employeeType === "azubi") {
-    disabledFields.forEach(id => { const el = document.getElementById(id); if(el) el.disabled=true; });
+    disabledFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = true;
+    });
   }
 
-  if (employeeType === "midijob") {
-    steuerklasse.disabled = false; // Steuerklasse still relevant for Midijob
-  }
+  // For ALL non-minijob types → Steuerklasse enabled
+  steuerklasse.disabled = false;
 }
+
 
 // Main calculate function
 function calculateNetto() {
@@ -737,6 +751,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
