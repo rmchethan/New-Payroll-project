@@ -356,14 +356,20 @@ function calculateMinijob() {
 
   const steuerpflichtigesBrutto = brutto;
 
+  // ===== RV Exemption checkbox =====
+  const minijobRVExempt = document.getElementById("minijobRVExempt")?.checked ?? true;
+
   // ===== Arbeitnehmer =====
-  const lohnsteuer = 0;
-  const sozialversicherungAN = 0;
-  const netto = brutto;
+  // If exempt -> AN pays 0; if not exempt -> 3.6% RV
+  const rvAN = minijobRVExempt ? 0 : brutto * 0.036;
+
+  const sozialversicherungAN = rvAN;
+  const lohnsteuer = 0; // always 0 for Minijob
+  const netto = brutto - sozialversicherungAN;
 
   // ===== Arbeitgeber (pauschal) =====
   const kvAG = brutto * 0.13;      // 13% KV
-  const rvAG = brutto * 0.15;      // 15% RV
+  const rvAG = brutto * 0.15;      // 15% RV (AG always pays)
   const pauschsteuer = brutto * 0.02; // 2% pauschal
   const umlage1 = brutto * 0.028;
   const umlage2 = brutto * 0.0075;
@@ -378,7 +384,7 @@ function calculateMinijob() {
       <tr><th>Komponente</th><th>Betrag (€)</th></tr>
       <tr><td>Brutto (Minijob)</td><td>${brutto.toFixed(2)}</td></tr>
       <tr><td>Lohnsteuer</td><td>0.00</td></tr>
-      <tr><td>Sozialversicherung AN</td><td>0.00</td></tr>
+      <tr><td>Sozialversicherung AN</td><td>${sozialversicherungAN.toFixed(2)}</td></tr>
       <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
 
       <tr><th colspan="2">Arbeitgeberanteile</th></tr>
@@ -769,6 +775,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
