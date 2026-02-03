@@ -502,6 +502,7 @@ function calculateNormal() {
   const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
   const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
 
+  annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
   const lohnsteuer = annualTax / 12;
   const annualSoli = calculateSoli(annualTax, steuerklasse);
   const soli = annualSoli / 12;
@@ -736,6 +737,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
