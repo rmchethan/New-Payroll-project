@@ -347,13 +347,12 @@ function calculateNetto() {
 
 // Calculate for Minijob
 function calculateMinijob() {
-  const brutto = safeBrutto(document.getElementById("brutto")?.value);
+  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  // Prevent negative or zero Brutto
   if (brutto <= 0) {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
-    return; // stop calculation
-}
-const safeBrutto = (n) => Math.max(0, Number(n || 0));
-
+    return; // Stop the calculation
+  }
   
   if (brutto > 603) {
     alert("Minijob darf 603€ nicht überschreiten.");
@@ -416,6 +415,13 @@ const safeBrutto = (n) => Math.max(0, Number(n || 0));
 
 function calculateMidijob() {
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  
+  // Prevent negative or zero Brutto
+  if (brutto <= 0) {
+    alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
+    return; // Stop the calculation
+  }
+  
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
@@ -517,6 +523,12 @@ const sv = calculateSV({
 // ===== Calculate Normal Employee =====
 function calculateNormal() {
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  // Prevent negative or zero Brutto
+  if (brutto <= 0) {
+    alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
+    return; // Stop the calculation
+  }
+  
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
@@ -627,6 +639,11 @@ function calculateNormal() {
  // ===== Calculate Praktikant =====
 function calculatePraktikant() {
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  // Prevent negative or zero Brutto
+  if (brutto <= 0) {
+    alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
+    return; // Stop the calculation
+  }
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
@@ -707,6 +724,11 @@ const sv = calculateSV({
 // ===== Calculate Azubi =====
 function calculateAzubi() {
   const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  // Prevent negative or zero Brutto
+  if (brutto <= 0) {
+    alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
+    return; // Stop the calculation
+  }
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
@@ -781,6 +803,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
