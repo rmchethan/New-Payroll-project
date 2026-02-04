@@ -107,7 +107,7 @@ const kirchensteuerConfig = {
 };
 
 function getKirchensteuerRate(state) {
-  return kirchensteuerConfig[state] || 0;
+  return kirchensteuerConfig[state] ?? 0;
 }
 
 
@@ -564,9 +564,10 @@ const sv = calculateSV({
   
   // ===== Kirchensteuer =====
   let kirchensteuer = 0;
-  if (kirchensteuerpflichtig) {
-    const kirchensteuerRate = getKirchensteuerRate(state);
-    kirchensteuer = lohnsteuer * kirchensteuerRate;
+
+if (kirchensteuerpflichtig && lohnsteuer > 0) {
+  const kirchensteuerRate = getKirchensteuerRate(state);
+  kirchensteuer = lohnsteuer * kirchensteuerRate;
 }
 
 console.log("State:", state);
@@ -684,10 +685,11 @@ function calculateNormal() {
 
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
+  
   let kirchensteuer = 0;
-  if (kirchensteuerpflichtig) {
-    const kirchensteuerRate = getKirchensteuerRate(state);
-    kirchensteuer = lohnsteuer * kirchensteuerRate;
+if (kirchensteuerpflichtig && lohnsteuer > 0) {
+  const kirchensteuerRate = getKirchensteuerRate(state);
+  kirchensteuer = lohnsteuer * kirchensteuerRate;
 }
 
   // ===== Netto =====
@@ -779,9 +781,9 @@ const sv = calculateSV({
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
   let kirchensteuer = 0;
-  if (kirchensteuerpflichtig) {
-    const kirchensteuerRate = getKirchensteuerRate(state);
-    kirchensteuer = lohnsteuer * kirchensteuerRate;
+ if (kirchensteuerpflichtig && lohnsteuer > 0) {
+  const kirchensteuerRate = getKirchensteuerRate(state);
+  kirchensteuer = lohnsteuer * kirchensteuerRate;
 }
 
   // ===== Netto =====
@@ -859,9 +861,9 @@ function calculateAzubi() {
   // ===== Kirchensteuer =====
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
   let kirchensteuer = 0;
-  if (kirchensteuerpflichtig) {
-    const kirchensteuerRate = getKirchensteuerRate(state);
-    kirchensteuer = lohnsteuer * kirchensteuerRate;
+  if (kirchensteuerpflichtig && lohnsteuer > 0) {
+  const kirchensteuerRate = getKirchensteuerRate(state);
+  kirchensteuer = lohnsteuer * kirchensteuerRate;
 }
 
   // ===== Netto =====
@@ -902,6 +904,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
