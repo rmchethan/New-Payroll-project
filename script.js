@@ -465,23 +465,38 @@ function calculateMidijob() {
 
   const steuerpflichtigesBrutto = brutto;
 
-  // ===== Midijob reduced AN base =====
-  const reductionFactor = 0.8;
-const bbg = applyBBG(brutto);
+  // Midijob SV bases for 2026
+const MIDIJOB_MIN = 603.01;
+const MIDIJOB_MAX = 2000;
+const F2026 = 0.6619; // from 28 / 42.30
 
-const svBaseAN = {
-  kvPvBase: Math.min(brutto * reductionFactor, bbg.kvPvBase),
-  rvAvBase: Math.min(brutto * reductionFactor, bbg.rvAvBase)
-};
-const svBaseAG = bbg;
+  let svBaseAN, svBaseAG;
+
+  // Case: midijob range
+if (brutto > MIDIJOB_MIN && brutto <= MIDIJOB_MAX) {
+  const G = MIDIJOB_MIN;
+  // employee contribution base
+  svBaseAN = (MIDIJOB_MAX / (MIDIJOB_MAX - G)) * (brutto - G);
+
+  // total social base
+  svBaseAG = F2026 * G
+      + ((MIDIJOB_MAX / (MIDIJOB_MAX - G)) - (G / (MIDIJOB_MAX - G) * F2026)) * (brutto - G);
+
+} else {
+  // normal (no reduction)
+  svBaseAN = brutto;
+  svBaseAG = brutto;
+}
+
+  // then pass to calculateSV
 const sv = calculateSV({
   brutto,
-  svBaseAN,
-  svBaseAG,
-    children,
-    age,
-    state
-  });
+  svBaseAN: applyBBG(svBaseAN),
+  svBaseAG: applyBBG(svBaseAG),
+  children,
+  age,
+  state
+});
 
   // ===== Lohnsteuer (annualized) =====
   const annualIncome = steuerpflichtigesBrutto * 12;
@@ -834,6 +849,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
