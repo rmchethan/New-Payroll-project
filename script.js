@@ -35,6 +35,33 @@ function calculateAge(dob) {
   return age;
 }
 
+// ===== Kirchensteuer Configuration =====
+const kirchensteuerConfig = {
+  BW: 0.08,
+  BY: 0.08,
+
+  BE: 0.09,
+  BB: 0.09,
+  HB: 0.09,
+  HH: 0.09,
+  HE: 0.09,
+  MV: 0.09,
+  NI: 0.09,
+  NW: 0.09,
+  RP: 0.09,
+  SL: 0.09,
+  SN: 0.09,
+  ST: 0.09,
+  SH: 0.09,
+  TH: 0.09
+};
+
+function getKirchensteuerRate(state) {
+  return kirchensteuerConfig[state] || 0;
+}
+
+
+
 // Get PV rates depending on children and age
 function getPvRates(children, age) {
   const pvAGRate = 0.018;
@@ -468,11 +495,10 @@ const sv = calculateSV({
   // ===== Kirchensteuer =====
   let kirchensteuer = 0;
   if (kirchensteuerpflichtig) {
-    const kirchensteuerRate =
-      ["BW", "BY"].includes(state) ? 0.08 : 0.09;
+    const kirchensteuerRate = getKirchensteuerRate(state);
     kirchensteuer = lohnsteuer * kirchensteuerRate;
-  }
-
+}
+  
   // ===== Netto =====
   const netto =
     steuerpflichtigesBrutto -
@@ -587,9 +613,9 @@ function calculateNormal() {
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
   let kirchensteuer = 0;
   if (kirchensteuerpflichtig) {
-    const kirchensteuerRate = ["BW", "BY"].includes(state) ? 0.08 : 0.09;
+    const kirchensteuerRate = getKirchensteuerRate(state);
     kirchensteuer = lohnsteuer * kirchensteuerRate;
-  }
+}
 
   // ===== Netto =====
   const netto = steuerpflichtigesBrutto - lohnsteuer - soli - kirchensteuer - sv.totalAN - jobticket + steuerfreieZuschlaege;
@@ -681,9 +707,9 @@ const sv = calculateSV({
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
   let kirchensteuer = 0;
   if (kirchensteuerpflichtig) {
-    const kirchensteuerRate = ["BW", "BY"].includes(state) ? 0.08 : 0.09;
+    const kirchensteuerRate = getKirchensteuerRate(state);
     kirchensteuer = lohnsteuer * kirchensteuerRate;
-  }
+}
 
   // ===== Netto =====
   const netto = steuerpflichtigesBrutto - soli - lohnsteuer - kirchensteuer - sv.totalAN;
@@ -761,9 +787,9 @@ function calculateAzubi() {
   const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
   let kirchensteuer = 0;
   if (kirchensteuerpflichtig) {
-    const kirchensteuerRate = ["BW", "BY"].includes(state) ? 0.08 : 0.09;
+    const kirchensteuerRate = getKirchensteuerRate(state);
     kirchensteuer = lohnsteuer * kirchensteuerRate;
-  }
+}
 
   // ===== Netto =====
   const netto = steuerpflichtigesBrutto - soli - lohnsteuer - kirchensteuer - sv.totalAN;
@@ -803,6 +829,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
