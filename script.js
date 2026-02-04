@@ -1,4 +1,54 @@
 
+// ===== Utility Helpers =====
+function safeNumber(value) {
+  const num = Number(value);
+  return isNaN(num) ? 0 : num;
+}
+// Central Input Validation Function
+function validateInputs() {
+  const brutto = safeNumber(document.getElementById("brutto")?.value);
+  const dob = document.getElementById("dob")?.value;
+
+  // 1️⃣ Negative brutto
+  if (brutto < 0) {
+    alert("Bruttogehalt darf nicht negativ sein.");
+    return false;
+  }
+
+  // 2️⃣ DOB validation
+  if (dob) {
+    const birthDate = new Date(dob);
+    const today = new Date();
+
+    if (birthDate > today) {
+      alert("Geburtsdatum kann nicht in der Zukunft liegen.");
+      return false;
+    }
+  }
+
+  // 3️⃣ Validate numeric fields (no negatives)
+  const numericFields = [
+    "ueberstunden",
+    "vwl",
+    "nacht25",
+    "nacht40",
+    "sonntag50",
+    "feiertag125",
+    "jobticket"
+  ];
+
+  for (let id of numericFields) {
+    const value = safeNumber(document.getElementById(id)?.value);
+    if (value < 0) {
+      alert("Negative Werte sind nicht erlaubt.");
+      return false;
+    }
+  }
+
+  return true;
+}
+
+
 
 // ===== Global Setup =====
 
@@ -361,8 +411,12 @@ function toggleEmployeeType() {
 
 // Main calculate function
 function calculateNetto() {
-  const employeeType = document.getElementById("employeeType")?.value || "normal";
+if (!validateInputs()) {
+    return;
+  }
 
+  const employeeType = document.getElementById("employeeType")?.value;
+  
   if (employeeType === "normal") calculateNormal();
   else if (employeeType === "praktikant") calculatePraktikant();
   else if (employeeType === "minijob") calculateMinijob();
@@ -374,7 +428,7 @@ function calculateNetto() {
 
 // Calculate for Minijob
 function calculateMinijob() {
-  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
@@ -441,7 +495,7 @@ function calculateMinijob() {
 // Calculate for Midijob
 
 function calculateMidijob() {
-  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  const brutto = safeNumber(document.getElementById("brutto")?.value);
   
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
@@ -568,7 +622,7 @@ console.log("Lohnsteuer:", lohnsteuer);
  // Calculate for Normal AN
 // ===== Calculate Normal Employee =====
 function calculateNormal() {
-  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
@@ -591,11 +645,10 @@ function calculateNormal() {
 
   const grundlohn = brutto + vwl;
   const monatlicheStunden = 160;
-  const stundenlohn = grundlohn / monatlicheStunden;
-
+  const stundenlohn = monatlicheStunden > 0 ? grundlohn / monatlicheStunden : 0;
+  
   const ueberstundenPay = ueberstunden * stundenlohn;
   const ueberstundenZuschlag = ueberstundenPay * 0.25;
-
   const nacht25Pay  = nacht25 * stundenlohn * 0.25;
   const nacht40Pay  = nacht40 * stundenlohn * 0.40;
   const sonntagPay  = sonntag50 * stundenlohn * 0.50;
@@ -684,7 +737,7 @@ function calculateNormal() {
 
  // ===== Calculate Praktikant =====
 function calculatePraktikant() {
-  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
@@ -769,7 +822,7 @@ const sv = calculateSV({
 
 // ===== Calculate Azubi =====
 function calculateAzubi() {
-  const brutto = Number(document.getElementById("brutto")?.value) || 0;
+  const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
@@ -849,6 +902,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
