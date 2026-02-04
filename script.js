@@ -492,12 +492,17 @@ const sv = calculateSV({
   const annualSoli = calculateSoli(annualTax, steuerklasse);
   const soli = annualSoli / 12;
 
+  
   // ===== Kirchensteuer =====
   let kirchensteuer = 0;
   if (kirchensteuerpflichtig) {
     const kirchensteuerRate = getKirchensteuerRate(state);
     kirchensteuer = lohnsteuer * kirchensteuerRate;
 }
+
+console.log("State:", state);
+console.log("Kirchensteuer checked:", kirchensteuerpflichtig);
+console.log("Lohnsteuer:", lohnsteuer);
   
   // ===== Netto =====
   const netto =
@@ -829,6 +834,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
