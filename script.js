@@ -452,7 +452,7 @@ function calculateMidijob() {
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
-  const state = document.getElementById("bundesland")?.value || "default";
+  const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
   const kirchensteuerpflichtig =
     document.getElementById("kirchensteuer")?.checked || false;
@@ -563,7 +563,7 @@ function calculateNormal() {
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
-  const state = document.getElementById("bundesland")?.value || "default";
+  const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
 
   const ueberstunden = Number(document.getElementById("ueberstunden")?.value || 0);
@@ -678,7 +678,7 @@ function calculatePraktikant() {
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
-  const state = document.getElementById("bundesland")?.value || "default";
+  const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
 
   // ===== Steuerpflichtiges Brutto =====
@@ -763,7 +763,7 @@ function calculateAzubi() {
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
-  const state = document.getElementById("bundesland")?.value || "default";
+  const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
 
   // ===== Steuerpflichtiges Brutto =====
@@ -834,6 +834,7 @@ function calculateAzubi() {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
