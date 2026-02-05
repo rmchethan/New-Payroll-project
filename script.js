@@ -1,4 +1,23 @@
 
+  // ===== Explanation Content =====
+const explanationContent = {
+  normal: `
+    <h3>Normaler Arbeitnehmer</h3>
+    <p><strong>Lohnsteuer:</strong> Jahreshochrechnung mit progressivem Tarif (§32a EStG – Demo-Modell).</p>
+
+    <p><strong>Sozialversicherung:</strong></p>
+    <ul>
+      <li>KV: 14.6% + Zusatzbeitrag</li>
+      <li>RV: 18.6%</li>
+      <li>AV: 2.6%</li>
+      <li>PV: abhängig von Alter & Kinder</li>
+    </ul>
+
+    <p>Beitragsbemessungsgrenzen werden berücksichtigt.</p>
+  `
+};
+
+
 // ===== Utility Helpers =====
 function safeNumber(value) {
   const num = Number(value);
@@ -28,23 +47,7 @@ function validateInputs() {
     }
   }
 
-  // ===== Explanation Content =====
-const explanationContent = {
-  normal: `
-    <h3>Normaler Arbeitnehmer</h3>
-    <p><strong>Lohnsteuer:</strong> Jahreshochrechnung mit progressivem Tarif (§32a EStG – Demo-Modell).</p>
 
-    <p><strong>Sozialversicherung:</strong></p>
-    <ul>
-      <li>KV: 14.6% + Zusatzbeitrag</li>
-      <li>RV: 18.6%</li>
-      <li>AV: 2.6%</li>
-      <li>PV: abhängig von Alter & Kinder</li>
-    </ul>
-
-    <p>Beitragsbemessungsgrenzen werden berücksichtigt.</p>
-  `
-};
 
 
   // 3️⃣ Validate numeric fields (no negatives)
@@ -995,6 +998,7 @@ const infoContent = {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
