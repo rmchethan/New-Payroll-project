@@ -454,15 +454,8 @@ if (!validateInputs()) {
   else if (employeeType === "azubi") calculateAzubi();
 
  
-// 👇 ADD THIS BELOW CALCULATION
-  const explanationWrapper = document.getElementById("explanationWrapper");
-
-  if (employeeType === "normal") {
-    explanationWrapper.style.display = "block";
-    document.getElementById("expContent").innerHTML = explanationContent.normal;
-  } else {
-    explanationWrapper.style.display = "none";
-  }
+// ===== Update the explanation panel (do NOT force display) =====
+  updateExplanation(employeeType);
 }
 
 
@@ -996,15 +989,31 @@ const infoContent = {
 };
 
 // ===== Toggle collapsible explanation panel =====
-function toggleExplanation() {
-  const wrapper = document.getElementById("explanationWrapper");
-  if (!wrapper) return;
-  wrapper.style.display = wrapper.style.display === "none" ? "block" : "none";
+// Update explanation content only, do not touch display
+function updateExplanation(employeeType) {
+  const explanationWrapper = document.getElementById("explanationWrapper");
+  const expContent = document.getElementById("expContent");
+  if (!explanationWrapper || !expContent) return;
+
+  // Only update content
+  if (explanationContent[employeeType]) {
+    expContent.innerHTML = explanationContent[employeeType];
+    // Show panel **only if hidden**
+    if (explanationWrapper.style.display === "none") {
+      explanationWrapper.style.display = "block";
+    }
+  } else {
+    // Hide panel if no content
+    explanationWrapper.style.display = "none";
+  }
 }
+
+
 
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
