@@ -4,6 +4,8 @@ function safeNumber(value) {
   const num = Number(value);
   return isNaN(num) ? 0 : num;
 }
+
+
 // Central Input Validation Function
 function validateInputs() {
   const brutto = safeNumber(document.getElementById("brutto")?.value);
@@ -25,6 +27,25 @@ function validateInputs() {
       return false;
     }
   }
+
+  // ===== Explanation Content =====
+const explanationContent = {
+  normal: `
+    <h3>Normaler Arbeitnehmer</h3>
+    <p><strong>Lohnsteuer:</strong> Jahreshochrechnung mit progressivem Tarif (§32a EStG – Demo-Modell).</p>
+
+    <p><strong>Sozialversicherung:</strong></p>
+    <ul>
+      <li>KV: 14.6% + Zusatzbeitrag</li>
+      <li>RV: 18.6%</li>
+      <li>AV: 2.6%</li>
+      <li>PV: abhängig von Alter & Kinder</li>
+    </ul>
+
+    <p>Beitragsbemessungsgrenzen werden berücksichtigt.</p>
+  `
+};
+
 
   // 3️⃣ Validate numeric fields (no negatives)
   const numericFields = [
@@ -974,6 +995,7 @@ const infoContent = {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
