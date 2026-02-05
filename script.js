@@ -429,7 +429,17 @@ if (!validateInputs()) {
   else if (employeeType === "midijob") calculateMidijob();
   else if (employeeType === "azubi") calculateAzubi();
 }
+ 
+// 👇 ADD THIS BELOW CALCULATION
+  const explanationWrapper = document.getElementById("explanationWrapper");
 
+  if (employeeType === "normal") {
+    explanationWrapper.style.display = "block";
+    document.getElementById("expContent").innerHTML = explanationContent.normal;
+  } else {
+    explanationWrapper.style.display = "none";
+  }
+}
 
 
 // Calculate for Minijob
@@ -664,16 +674,7 @@ function calculateNormal() {
   const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
   const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
 
-  //Explanation Wrapper
-  const explanationWrapper = document.getElementById("explanationWrapper");
-
-  if (employeeType === "normal") {
-  explanationWrapper.style.display = "block";
-  document.getElementById("expContent").innerHTML = explanationContent.normal;
-  } else {
-  explanationWrapper.style.display = "none";
-  }
-
+  
 
   // ===== BBG & SV =====
   const bbg = applyBBG(steuerpflichtigesBrutto);
@@ -973,6 +974,7 @@ const infoContent = {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
