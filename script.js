@@ -439,7 +439,7 @@ if (!validateInputs()) {
   } else {
     explanationWrapper.style.display = "none";
   }
-}
+
 
 
 // Calculate for Minijob
@@ -974,6 +974,7 @@ const infoContent = {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
