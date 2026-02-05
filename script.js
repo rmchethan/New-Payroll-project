@@ -428,7 +428,7 @@ if (!validateInputs()) {
   else if (employeeType === "minijob") calculateMinijob();
   else if (employeeType === "midijob") calculateMidijob();
   else if (employeeType === "azubi") calculateAzubi();
-}
+
  
 // 👇 ADD THIS BELOW CALCULATION
   const explanationWrapper = document.getElementById("explanationWrapper");
@@ -439,7 +439,7 @@ if (!validateInputs()) {
   } else {
     explanationWrapper.style.display = "none";
   }
-
+}
 
 
 // Calculate for Minijob
@@ -974,6 +974,7 @@ const infoContent = {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
