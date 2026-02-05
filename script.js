@@ -396,6 +396,12 @@ function toggleEmployeeType() {
     return;
   }
 
+  function toggleExplanation() {
+  const panel = document.getElementById("explanationPanel");
+  panel.style.display = panel.style.display === "none" ? "block" : "none";
+  }
+
+
   // ===== Midijob / Praktikant / Azubi =====
   if (employeeType === "midijob" || employeeType === "praktikant" || employeeType === "azubi") {
     disabledFields.forEach(id => {
@@ -657,6 +663,16 @@ function calculateNormal() {
 
   const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
   const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
+
+  //Explanation Wrapper
+  const explanationWrapper = document.getElementById("explanationWrapper");
+
+  if (employeeType === "normal") {
+  explanationWrapper.style.display = "block";
+  document.getElementById("expContent").innerHTML = explanationContent.normal;
+  } else {
+  explanationWrapper.style.display = "none";
+  }
 
 
   // ===== BBG & SV =====
@@ -957,6 +973,7 @@ const infoContent = {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
