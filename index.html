@@ -167,7 +167,19 @@
 
 <h2>Ergebnis</h2>
 <p id="output">Bitte Werte eingeben</p>
+<div id="explanationWrapper" style="display:none; margin-top:20px;">
+  <button id="toggleExplanationBtn" onclick="toggleExplanation()" 
+          style="width:100%; padding:10px; font-weight:bold;">
+    📘 Berechnungslogik anzeigen
+  </button>
 
+  <div id="explanationPanel" 
+       style="display:none; padding:15px; border:1px solid #ccc; margin-top:5px; background:#fafafa;">
+    <div id="expContent"></div>
+  </div>
+</div>
+
+  
 <p>
   <small>
     Hinweis: Dies ist ein Lern- und Demonstrationstool.
@@ -187,6 +199,7 @@
   
 </body>
 </html>
+
 
 
 
