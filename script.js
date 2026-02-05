@@ -901,9 +901,63 @@ function calculateAzubi() {
   document.getElementById("output").innerHTML = outputHTML;
 }
 
+function openModal(content) {
+  document.getElementById("modalBody").innerHTML = content;
+  document.getElementById("infoModal").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("infoModal").style.display = "none";
+}
+
+// Close when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById("infoModal");
+  if (event.target === modal) {
+    closeModal();
+  }
+};
+
+
+const infoContent = {
+  ueberstunden: `
+    <h3>Überstunden</h3>
+    <div class="highlight highlight-green">
+      Zuschläge können steuerfrei sein (§3b EStG).
+    </div>
+    <div class="highlight highlight-yellow">
+      Steuerfreiheit gilt nur bei bestimmtem Grundlohn.
+    </div>
+    <div class="highlight highlight-red">
+      Sozialversicherungspflicht kann trotzdem bestehen.
+    </div>
+  `,
+
+  soli: `
+    <h3>Solidaritätszuschlag</h3>
+    <div class="highlight highlight-green">
+      Fällt für die meisten Arbeitnehmer nicht mehr an.
+    </div>
+    <div class="highlight highlight-yellow">
+      Greift erst oberhalb der Freigrenze.
+    </div>
+  `,
+
+  sv: `
+    <h3>Sozialversicherung</h3>
+    <div class="highlight highlight-yellow">
+      Beiträge richten sich nach Beitragsbemessungsgrenzen.
+    </div>
+    <div class="highlight highlight-red">
+      Sachsen hat abweichende Pflegeversicherung.
+    </div>
+  `
+};
+
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
