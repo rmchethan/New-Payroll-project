@@ -420,10 +420,17 @@ function toggleEmployeeType() {
     return;
   }
 
-  function toggleExplanation() {
-  const panel = document.getElementById("explanationPanel");
-  panel.style.display = panel.style.display === "none" ? "block" : "none";
+  // Toggle the explanation panel open/closed
+function toggleExplanation() {
+  const wrapper = document.getElementById("explanationWrapper");
+  if (!wrapper) return;
+
+  if (wrapper.style.display === "none" || wrapper.style.display === "") {
+    wrapper.style.display = "block";
+  } else {
+    wrapper.style.display = "none";
   }
+}
 
 
   // ===== Midijob / Praktikant / Azubi =====
@@ -1013,6 +1020,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
