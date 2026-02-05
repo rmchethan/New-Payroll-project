@@ -995,9 +995,17 @@ const infoContent = {
   `
 };
 
+// ===== Toggle collapsible explanation panel =====
+function toggleExplanation() {
+  const wrapper = document.getElementById("explanationWrapper");
+  if (!wrapper) return;
+  wrapper.style.display = wrapper.style.display === "none" ? "block" : "none";
+}
+
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
