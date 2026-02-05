@@ -10,7 +10,6 @@
 <h1>German Payroll Calculator</h1>
 
 <table id="inputTable">
-
   <!-- Employee type -->
   <tr>
     <td><label for="employeeType">Beschäftigungsart</label></td>
@@ -18,24 +17,23 @@
       <select id="employeeType" onchange="toggleEmployeeType()">
         <option value="normal">Normaler Arbeitnehmer</option>
         <option value="midijob">Übergangsbereich (Midijob)</option>
-         <option value="minijob">Minijob</option>
+        <option value="minijob">Minijob</option>
         <option value="praktikant">Praktikant</option>
         <option value="azubi">Azubi</option>
-       </select>
+      </select>
     </td>
   </tr>
 
   <!-- Minijob RV -->
-  <!-- Minijob RV -->
-<tr id="minijobRVBlock" style="display:none">
-  <td colspan="2">
-    <label>
-      <input type="checkbox" id="minijobRVExempt" checked>
-      RV-Befreiung (Arbeitnehmer zahlt keine 3.6% RV)
-    </label>
-  </td>
-</tr>
-  
+  <tr id="minijobRVBlock" style="display:none">
+    <td colspan="2">
+      <label>
+        <input type="checkbox" id="minijobRVExempt" checked>
+        RV-Befreiung (Arbeitnehmer zahlt keine 3.6% RV)
+      </label>
+    </td>
+  </tr>
+
   <!-- Brutto -->
   <tr>
     <td><label for="brutto">Bruttogehalt (€)</label></td>
@@ -57,130 +55,93 @@
     </td>
   </tr>
 
+  <!-- Bundesland -->
   <tr>
-  <td>Bundesland</td>
-  <td>
-    <select id="state">
-      <option value="BW">Baden-Württemberg</option>
-      <option value="BY">Bayern</option>
-      <option value="BE">Berlin</option>
-      <option value="BB">Brandenburg</option>
-      <option value="HB">Bremen</option>
-      <option value="HH">Hamburg</option>
-      <option value="HE">Hessen</option>
-      <option value="MV">Mecklenburg-Vorpommern</option>
-      <option value="NI">Niedersachsen</option>
-      <option value="NW">Nordrhein-Westfalen</option>
-      <option value="RP">Rheinland-Pfalz</option>
-      <option value="SL">Saarland</option>
-      <option value="SN">Sachsen</option>
-      <option value="ST">Sachsen-Anhalt</option>
-      <option value="SH">Schleswig-Holstein</option>
-      <option value="TH">Thüringen</option>
-      <!-- others can be added later -->
-    </select>
-  </td>
-</tr>
-
-  <tr>
-  <td>Kirchensteuerpflichtig</td>
-  <td>
-    <input type="checkbox" id="kirchensteuer">
-  </td>
-</tr>
-
-  <tr>
-  <td>Geburtsdatum</td>
-  <td>
-    <input type="date" id="dob">
-  </td>
-</tr>
-
-  <tr>
-  <td>Anzahl Kinder</td>
-  <td>
-    <select id="children">
-      <option value="0">0</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5 oder mehr</option>
-    </select>
-  </td>
-</tr>
-
-  <tr>
-    <td><label for="ueberstunden">Überstunden (Stunden)</label></td>
-    <td><input type="number" id="ueberstunden" value="0"></td>
-  </tr>
-  <label for="ueberstunden">
-  Überstunden 
-  <span onclick="openModal(infoContent.ueberstunden)" style="cursor:pointer;">ℹ</span>
-  </label>
-
-  <tr>
-    <td><label for="vwl">VWL AG Zuschuss (€)</label></td>
-    <td><input type="number" id="vwl" value="0"></td>
-  </tr>
-
-  <tr>
-    <td><label for="nacht25">Nachtstunden 25%</label></td>
-    <td><input type="number" id="nacht25" value="0"></td>
-  </tr>
-
-  <tr>
-    <td><label for="nacht40">Nachtstunden 40%</label></td>
-    <td><input type="number" id="nacht40" value="0"></td>
-  </tr>
-
-  <tr>
-    <td><label for="sonntag50">Sonntagstunden 50%</label></td>
-    <td><input type="number" id="sonntag50" value="0"></td>
-  </tr>
-
-  <tr>
-    <td><label for="feiertag125">Feiertagstunden 125%</label></td>
-    <td><input type="number" id="feiertag125" value="0"></td>
-  </tr>
-
-  <tr>
-    <td><label for="jobticket">Jobticket (€)</label></td>
-    <td><input type="number" id="jobticket" value="0"></td>
-  </tr>
-
-  <tr>
-    <td colspan="2" style="text-align:center">
-      <button onclick="calculateNetto()">Berechnen</button>
+    <td>Bundesland</td>
+    <td>
+      <select id="state">
+        <option value="BW">Baden-Württemberg</option>
+        <option value="BY">Bayern</option>
+        <option value="BE">Berlin</option>
+        <option value="BB">Brandenburg</option>
+        <option value="HB">Bremen</option>
+        <option value="HH">Hamburg</option>
+        <option value="HE">Hessen</option>
+        <option value="MV">Mecklenburg-Vorpommern</option>
+        <option value="NI">Niedersachsen</option>
+        <option value="NW">Nordrhein-Westfalen</option>
+        <option value="RP">Rheinland-Pfalz</option>
+        <option value="SL">Saarland</option>
+        <option value="SN">Sachsen</option>
+        <option value="ST">Sachsen-Anhalt</option>
+        <option value="SH">Schleswig-Holstein</option>
+        <option value="TH">Thüringen</option>
+      </select>
     </td>
   </tr>
 
+  <!-- Kirchensteuer -->
   <tr>
-  <td>
-    Sozialversicherung 
-    <span onclick="openModal(infoContent.sv)" style="cursor:pointer;">ℹ</span>
-  </td>
-  <td>...</td>
-</tr>
+    <td>Kirchensteuerpflichtig</td>
+    <td><input type="checkbox" id="kirchensteuer"></td>
+  </tr>
 
- </table>
+  <!-- Geburtsdatum -->
+  <tr>
+    <td>Geburtsdatum</td>
+    <td><input type="date" id="dob"></td>
+  </tr>
 
-   <h2>Ergebnis</h2>
+  <!-- Kinder -->
+  <tr>
+    <td>Anzahl Kinder</td>
+    <td>
+      <select id="children">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5 oder mehr</option>
+      </select>
+    </td>
+  </tr>
+
+  <!-- Other fields example with ℹ icon -->
+  <tr>
+    <td>
+      Überstunden (Stunden) 
+      <span onclick="openModal(infoContent.ueberstunden)" style="cursor:pointer;">ℹ</span>
+    </td>
+    <td><input type="number" id="ueberstunden" value="0"></td>
+  </tr>
+</table>
+
+<!-- Calculate Button -->
+<button onclick="calculateNetto()">Berechnen</button>
+
+<!-- Output -->
+<h2>Ergebnis</h2>
 <p id="output">Bitte Werte eingeben</p>
-<div id="explanationWrapper" style="display:none; margin-top:20px;">
-  <button id="toggleExplanationBtn" onclick="toggleExplanation()" 
-          style="width:100%; padding:10px; font-weight:bold;">
-    📘 Berechnungslogik anzeigen
-  </button>
 
-  <div id="explanationPanel" 
-       style="display:none; padding:15px; border:1px solid #ccc; margin-top:5px; background:#fafafa;">
-    <div id="expContent"></div>
+<!-- Collapsible Explanation Panel -->
+<button id="toggleExplanationBtn" onclick="toggleExplanation()" 
+        style="width:100%; padding:10px; font-weight:bold;">
+  📘 Berechnungslogik anzeigen
+</button>
+
+<div id="explanationWrapper" style="display:none; border:1px solid #ccc; padding:10px; margin-top:10px;">
+  <div id="expContent"></div>
+</div>
+
+<!-- Modal for ℹ info -->
+<div id="infoModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <div id="modalBody"></div>
   </div>
 </div>
 
-
-  
 <p>
   <small>
     Hinweis: Dies ist ein Lern- und Demonstrationstool.
@@ -189,17 +150,10 @@
 </p>
 
 <script src="script.js"></script>
-
-  <!-- Info Modal -->
-<div id="infoModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <div id="modalBody"></div>
-  </div>
-</div>
-  
 </body>
 </html>
+
+
 
 
 
