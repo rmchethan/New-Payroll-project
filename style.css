@@ -1,7 +1,8 @@
 /* Input table */
 #inputTable {
   border-collapse: collapse;
-  width: 400px;
+  width: 100%;
+  max-width: 500px;
   margin: 10px auto;
   font-family: Arial, sans-serif;
   font-size: 14px;
@@ -22,12 +23,15 @@
   font-weight: bold;
   cursor: pointer;
 }
-
+input, select, button {
+  font-size: 16px;
+}
 /* Output table */
 #output table {
   border-collapse: collapse;
   table-layout: fixed;
-  width: 400px;
+  width: 100%;
+  max-width: 500px;
   margin: 10px auto;
   font-family: Arial, sans-serif;
   font-size: 14px;
@@ -112,4 +116,5 @@
 #output th:last-child, #output td:last-child {
   width: 150px;
 }
+
 
