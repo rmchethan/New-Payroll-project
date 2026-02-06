@@ -117,4 +117,99 @@
       <span onclick="openModal(infoContent.ueberstunden)" style="cursor:pointer;">ℹ</span>
     </td>
     <td><input type="number" id="ueberstunden" value="0"></td>
-  </tr
+  </tr>
+
+  <!-- VWL -->
+  <tr>
+    <td>
+      VWL AG Zuschuss (€)
+      <span onclick="openModal(infoContent.vwl)" style="cursor:pointer;">ℹ</span>
+    </td>
+    <td><input type="number" id="vwl" value="0"></td>
+  </tr>
+
+  <!-- Nacht 25% -->
+  <tr>
+    <td>
+      Nachtstunden 25%
+      <span onclick="openModal(infoContent.nacht25)" style="cursor:pointer;">ℹ</span>
+    </td>
+    <td><input type="number" id="nacht25" value="0"></td>
+  </tr>
+
+  <!-- Nacht 40% -->
+  <tr>
+    <td>
+      Nachtstunden 40%
+      <span onclick="openModal(infoContent.nacht40)" style="cursor:pointer;">ℹ</span>
+    </td>
+    <td><input type="number" id="nacht40" value="0"></td>
+  </tr>
+
+  <!-- Sonntag 50% -->
+  <tr>
+    <td>
+      Sonntagstunden 50%
+      <span onclick="openModal(infoContent.sonntag50)" style="cursor:pointer;">ℹ</span>
+    </td>
+    <td><input type="number" id="sonntag50" value="0"></td>
+  </tr>
+
+  <!-- Feiertag 125% -->
+  <tr>
+    <td>
+      Feiertagstunden 125%
+      <span onclick="openModal(infoContent.feiertag125)" style="cursor:pointer;">ℹ</span>
+    </td>
+    <td><input type="number" id="feiertag125" value="0"></td>
+  </tr>
+
+  <!-- Jobticket -->
+  <tr>
+    <td>
+      Jobticket (€)
+      <span onclick="openModal(infoContent.jobticket)" style="cursor:pointer;">ℹ</span>
+    </td>
+    <td><input type="number" id="jobticket" value="0"></td>
+  </tr>
+
+</table>
+
+<!-- Calculate Button -->
+<div style="text-align:center; margin-top:15px;">
+  <button onclick="calculateNetto()">Berechnen</button>
+</div>
+
+<!-- Output -->
+<h2>Ergebnis</h2>
+<p id="output">Bitte Werte eingeben</p>
+
+<!-- Collapsible Explanation Panel -->
+<button id="toggleExplanationBtn" onclick="toggleExplanation()" 
+        style="width:100%; padding:10px; font-weight:bold; margin-top:15px;">
+  📘 Berechnungslogik anzeigen
+</button>
+
+<div id="explanationWrapper" style="display:none; border:1px solid #ccc; padding:10px; margin-top:10px;">
+  <div id="expContent"></div>
+</div>
+
+<!-- Modal -->
+<div id="infoModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<p>
+  <small>
+    Hinweis: Dies ist ein Lern- und Demonstrationstool.
+    Alle Berechnungen sind vereinfacht und nicht rechtsverbindlich.
+  </small>
+</p>
+
+<script src="script.js"></script>
+
+</body>
+</html>
