@@ -1,3 +1,8 @@
+input, select, button {
+  font-size: 16px;
+}
+
+
 /* Input table */
 #inputTable {
   border-collapse: collapse;
@@ -143,6 +148,7 @@ input, select, button {
   }
 
 }
+
 
 
 
