@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-   <meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>German Payroll Calculator</title>
   <link rel="stylesheet" href="style.css">
 </head>
-  
+
 <body>
 
 <h1>German Payroll Calculator</h1>
 
 <table id="inputTable">
+
   <!-- Employee type -->
   <tr>
     <td><label for="employeeType">Beschäftigungsart</label></td>
@@ -109,63 +110,11 @@
     </td>
   </tr>
 
-  <!-- Other fields example with ℹ icon -->
+  <!-- Überstunden -->
   <tr>
     <td>
-      Überstunden (Stunden) 
+      Überstunden (Stunden)
       <span onclick="openModal(infoContent.ueberstunden)" style="cursor:pointer;">ℹ</span>
     </td>
     <td><input type="number" id="ueberstunden" value="0"></td>
-  </tr>
-</table>
-
-<!-- Calculate Button -->
-<button onclick="calculateNetto()">Berechnen</button>
-
-<!-- Output -->
-<h2>Ergebnis</h2>
-<p id="output">Bitte Werte eingeben</p>
-
-<!-- Collapsible Explanation Panel -->
-<button id="toggleExplanationBtn" onclick="toggleExplanation()" 
-        style="width:100%; padding:10px; font-weight:bold;">
-  📘 Berechnungslogik anzeigen
-</button>
-
-<div id="explanationWrapper" style="display:none; border:1px solid #ccc; padding:10px; margin-top:10px;">
-  <div id="expContent"></div>
-</div>
-
-<!-- Modal for ℹ info -->
-<div id="infoModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <div id="modalBody"></div>
-  </div>
-</div>
-
-<p>
-  <small>
-    Hinweis: Dies ist ein Lern- und Demonstrationstool.
-    Alle Berechnungen sind vereinfacht und nicht rechtsverbindlich.
-  </small>
-</p>
-
-<script src="script.js"></script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  </tr
