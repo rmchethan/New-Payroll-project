@@ -124,31 +124,23 @@ input, select, button {
 
 @media (max-width: 600px) {
 
-  body {
-    padding: 10px;
+  #inputTable {
+    width: 100%;
+    font-size: 15px;
   }
 
   #inputTable td {
-    display: block;
+    padding: 8px 4px;
+  }
+
+  #inputTable input,
+  #inputTable select {
+    font-size: 16px;
+  }
+
+  #inputTable button {
     width: 100%;
-    padding: 8px 0;
-  }
-
-  #inputTable tr {
-    display: block;
-    margin-bottom: 12px;
-  }
-
-  #output table {
-    font-size: 13px;
-  }
-
-  button {
-    width: 100%;
+    margin-top: 10px;
   }
 
 }
-
-
-
-
