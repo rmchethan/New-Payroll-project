@@ -117,4 +117,32 @@ input, select, button {
   width: 150px;
 }
 
+@media (max-width: 600px) {
+
+  body {
+    padding: 10px;
+  }
+
+  #inputTable td {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+  }
+
+  #inputTable tr {
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  #output table {
+    font-size: 13px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+}
+
+
 
