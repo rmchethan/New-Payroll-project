@@ -813,6 +813,10 @@ function calculateNormal() {
 
   const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
   const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
+// ===== Umlagen (Arbeitgeber only) =====
+const umlage1 = steuerpflichtigesBrutto * 0.028;      // U1 (2.8%)
+const umlage2 = steuerpflichtigesBrutto * 0.0075;     // U2 (0.75%)
+const insolvenzgeld = steuerpflichtigesBrutto * 0.006; // Insolvenzgeld (0.6%)
 
   
 
@@ -853,7 +857,11 @@ if (kirchensteuerpflichtig && lohnsteuer > 0) {
   const netto = steuerpflichtigesBrutto - lohnsteuer - soli - kirchensteuer - sv.totalAN - jobticket + steuerfreieZuschlaege;
 
   // ===== Arbeitgeberanteile =====
-  const arbeitgeberGesamt = sv.totalAG;
+  const arbeitgeberGesamt =
+  sv.totalAG +
+  umlage1 +
+  umlage2 +
+  insolvenzgeld;
 
   // ===== Output =====
 const gesamtBrutto = steuerpflichtigesBrutto + steuerfreieZuschlaege;
@@ -966,7 +974,21 @@ const outputHTML = `
     <td>PV AG</td>
     <td>${formatCurrency(sv.pvAG)}</td>
   </tr>
-
+  <tr>
+  <th colspan="2">Umlagen & Sonstige AG-Kosten</th>
+</tr>
+<tr>
+  <td>Umlage U1</td>
+  <td>${formatCurrency(umlage1)}</td>
+</tr>
+<tr>
+  <td>Umlage U2</td>
+  <td>${formatCurrency(umlage2)}</td>
+</tr>
+<tr>
+  <td>Insolvenzgeldumlage</td>
+  <td>${formatCurrency(insolvenzgeld)}</td>
+</tr>
   <tr>
     <th>AG Gesamt</th>
     <th>${formatCurrency(arbeitgeberGesamt)}</th>
@@ -1223,6 +1245,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
