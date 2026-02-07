@@ -533,7 +533,7 @@ const outputHTML = `
     <td>${formatCurrency(0)}</td>
   </tr>
   <tr>
-    <td>Rentenversicherung AN</td>
+    <td>Rentenversicherung AN ${sozialversicherungAN > 0 ? "(3,6%)" : "(befreit)"}</td>
     <td>${formatCurrency(sozialversicherungAN)}</td>
   </tr>
 
@@ -1161,6 +1161,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
