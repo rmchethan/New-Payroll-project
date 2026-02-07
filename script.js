@@ -866,7 +866,7 @@ const outputHTML = `
 `;
 
 document.getElementById("output").innerHTML = outputHTML;
-
+ }
 
  // ===== Calculate Praktikant =====
 function calculatePraktikant() {
@@ -1110,6 +1110,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
