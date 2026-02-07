@@ -66,43 +66,34 @@ button[onclick="calculateNetto()"] {
 /* OUTPUT TABLE */
 /* ============================= */
 
-#output {
-  width: 100%;
-  overflow-x: auto;
-}
-
 #output table {
-  border-collapse: collapse;
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
   margin: 15px auto;
+  border-collapse: collapse;
   font-size: 14px;
-  background: #ffffff;
-  table-layout: fixed;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-#output th,
-#output td {
-  border: 1px solid #ddd;
-  padding: 6px 8px;
-  word-wrap: break-word;
 }
 
 #output th {
-  background-color: #f0f0f0;
+  background: #f4f6f8;
   text-align: left;
+  padding: 8px;
+  font-weight: bold;
 }
 
 #output td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#output td:last-child {
   text-align: right;
+  font-weight: 500;
 }
 
 #output tr:last-child td {
   font-weight: bold;
-  background-color: #e6f4ff;
+  background: #e8f5e9;
 }
 
 /* ============================= */
@@ -197,3 +188,4 @@ button[onclick="calculateNetto()"] {
     font-size: 13px;
   }
 }
+
