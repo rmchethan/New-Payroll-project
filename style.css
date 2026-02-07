@@ -1,67 +1,153 @@
-input, select, button {
-  font-size: 16px;
+/* ============================= */
+/* GENERAL PAGE STYLING */
+/* ============================= */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 15px;
+  background-color: #f7f9fb;
 }
 
+h1, h2 {
+  text-align: center;
+}
 
-/* Input table */
+/* ============================= */
+/* INPUT TABLE */
+/* ============================= */
+
 #inputTable {
   border-collapse: collapse;
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   margin: 10px auto;
-  font-family: Arial, sans-serif;
   font-size: 14px;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
+
 #inputTable td {
-  padding: 5px 10px;
+  padding: 8px 10px;
+  vertical-align: middle;
 }
+
 #inputTable label {
   font-weight: bold;
 }
-#inputTable input, #inputTable select {
+
+#inputTable input,
+#inputTable select {
   width: 100%;
   box-sizing: border-box;
-  padding: 4px;
+  padding: 6px;
+  font-size: 14px;
 }
+
 #inputTable button {
-  padding: 6px 12px;
+  padding: 8px 14px;
   font-weight: bold;
   cursor: pointer;
 }
-input, select, button {
-  font-size: 16px;
+
+/* Center calculate button */
+button[onclick="calculateNetto()"] {
+  display: block;
+  margin: 15px auto;
+  max-width: 600px;
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
 }
-/* Output table */
+
+/* ============================= */
+/* OUTPUT TABLE */
+/* ============================= */
+
+#output {
+  width: 100%;
+  overflow-x: auto;
+}
+
 #output table {
   border-collapse: collapse;
-  table-layout: fixed;
   width: 100%;
-  max-width: 500px;
-  margin: 10px auto;
-  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 15px auto;
   font-size: 14px;
-}
-#output th, #output td {
-  border: 1px solid #666;
-  padding: 5px 8px;
+  background: #ffffff;
+  table-layout: fixed;
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
+
+#output th,
+#output td {
+  border: 1px solid #ddd;
+  padding: 6px 8px;
+  word-wrap: break-word;
+}
+
 #output th {
   background-color: #f0f0f0;
   text-align: left;
 }
+
 #output td {
   text-align: right;
 }
+
 #output tr:last-child td {
   font-weight: bold;
-  background-color: #e0f7fa;
-}
-#output th:first-child, #output td:first-child {
-  width: 250px;
+  background-color: #e6f4ff;
 }
 
-/* Modal background */
+/* ============================= */
+/* COLLAPSIBLE EXPLANATION */
+/* ============================= */
+
+#toggleExplanationBtn {
+  display: block;
+  margin: 15px auto;
+  max-width: 600px;
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#explanationWrapper {
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+  padding: 15px;
+  border: 1px solid #ccc;
+  background: #ffffff;
+  border-radius: 8px;
+  display: none;
+}
+
+/* ============================= */
+/* INFO ICON */
+/* ============================= */
+
+.info-icon {
+  margin-left: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #0077cc;
+}
+
+.info-icon:hover {
+  color: #005999;
+}
+
+/* ============================= */
+/* MODAL */
+/* ============================= */
+
 .modal {
   display: none;
   position: fixed;
@@ -74,73 +160,40 @@ input, select, button {
   backdrop-filter: blur(2px);
 }
 
-/* Modal box */
 .modal-content {
   background-color: #ffffff;
-  margin: 8% auto;
+  margin: 10% auto;
   padding: 20px;
   width: 90%;
-  max-width: 500px;
+  max-width: 420px;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   animation: fadeIn 0.2s ease-out;
 }
 
-/* Close button */
 .close-btn {
   float: right;
   font-size: 22px;
   cursor: pointer;
 }
 
-/* Highlight blocks */
-.highlight {
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.highlight-green {
-  background-color: #e8f7ee;
-}
-
-.highlight-yellow {
-  background-color: #fff8e1;
-}
-
-.highlight-red {
-  background-color: #fdecea;
-}
-
-/* Soft animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.97); }
   to { opacity: 1; transform: scale(1); }
 }
-#output th:last-child, #output td:last-child {
-  width: 150px;
-}
+
+/* ============================= */
+/* MOBILE OPTIMIZATION */
+/* ============================= */
 
 @media (max-width: 600px) {
-
-  #inputTable {
-    width: 100%;
-    font-size: 15px;
+  body {
+    padding: 10px;
   }
 
-  #inputTable td {
-    padding: 8px 4px;
+  #inputTable td,
+  #output th,
+  #output td {
+    font-size: 13px;
   }
-
-  #inputTable input,
-  #inputTable select {
-    font-size: 16px;
-  }
-
-  #inputTable button {
-    width: 100%;
-    margin-top: 10px;
-  }
-
 }
