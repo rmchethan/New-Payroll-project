@@ -47,6 +47,15 @@ function validateInputs() {
     }
   }
 
+  // Currency Formatter
+  function formatCurrency(value) {
+  return new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR'
+  }).format(value || 0);
+}
+
+
 
 
 
@@ -1020,6 +1029,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
