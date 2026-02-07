@@ -508,32 +508,83 @@ function calculateMinijob() {
     kvAG + rvAG + pauschsteuer + umlage1 + umlage2 + insolvenzgeld;
 
   // ===== Output =====
-  const outputHTML = `
-    <table border="1" cellpadding="5">
-      <tr><th>Komponente</th><th>Betrag (€)</th></tr>
-      <tr><td>Brutto (Minijob)</td><td>${brutto.toFixed(2)}</td></tr>
-      <tr><td>Lohnsteuer</td><td>0.00</td></tr>
-      <tr><td>Sozialversicherung AN</td><td>${sozialversicherungAN.toFixed(2)}</td></tr>
-      <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
 
-      <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>KV AG (13% pauschal, kein Zusatzbeitrag)</td>
-      <td>${kvAG.toFixed(2)}</td></tr>
-      <tr><td>RV AG (15%)</td><td>${rvAG.toFixed(2)}</td></tr>
-      <tr><td>Pauschsteuer (2%)</td><td>${pauschsteuer.toFixed(2)}</td></tr>
-      <tr><td>Umlage 1</td><td>${umlage1.toFixed(2)}</td></tr>
-      <tr><td>Umlage 2</td><td>${umlage2.toFixed(2)}</td></tr>
-      <tr><td>Insolvenzgeld</td><td>${insolvenzgeld.toFixed(2)}</td></tr>
-      <tr><td><strong>AG Gesamt</strong></td>
-          <td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
-      <tr><td><strong>Gesamtkosten AG</strong></td>
-          <td><strong>${(brutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
-    </table>
-  `;
+const gesamtBrutto = brutto;
+const gesamtKostenAG = brutto + arbeitgeberGesamt;
 
-  document.getElementById("output").innerHTML = outputHTML;
+const outputHTML = `
+<table>
+
+  <!-- ================= BRUTTO ================= -->
+  <tr>
+    <th colspan="2">Brutto</th>
+  </tr>
+  <tr>
+    <td>Minijob Brutto</td>
+    <td>${formatCurrency(gesamtBrutto)}</td>
+  </tr>
+
+  <!-- ================= ABZÜGE AN ================= -->
+  <tr>
+    <th colspan="2">Abzüge Arbeitnehmer</th>
+  </tr>
+  <tr>
+    <td>Lohnsteuer</td>
+    <td>${formatCurrency(0)}</td>
+  </tr>
+  <tr>
+    <td>Rentenversicherung AN</td>
+    <td>${formatCurrency(sozialversicherungAN)}</td>
+  </tr>
+
+  <tr>
+    <th>Netto</th>
+    <th>${formatCurrency(netto)}</th>
+  </tr>
+
+  <!-- ================= ARBEITGEBER ================= -->
+  <tr>
+    <th colspan="2">Arbeitgeberanteile</th>
+  </tr>
+  <tr>
+    <td>KV AG (13% pauschal)</td>
+    <td>${formatCurrency(kvAG)}</td>
+  </tr>
+  <tr>
+    <td>RV AG (15%)</td>
+    <td>${formatCurrency(rvAG)}</td>
+  </tr>
+  <tr>
+    <td>Pauschsteuer (2%)</td>
+    <td>${formatCurrency(pauschsteuer)}</td>
+  </tr>
+  <tr>
+    <td>Umlage U1</td>
+    <td>${formatCurrency(umlage1)}</td>
+  </tr>
+  <tr>
+    <td>Umlage U2</td>
+    <td>${formatCurrency(umlage2)}</td>
+  </tr>
+  <tr>
+    <td>Insolvenzgeldumlage</td>
+    <td>${formatCurrency(insolvenzgeld)}</td>
+  </tr>
+
+  <tr>
+    <th>AG Gesamt</th>
+    <th>${formatCurrency(arbeitgeberGesamt)}</th>
+  </tr>
+  <tr>
+    <th>Gesamtkosten AG</th>
+    <th>${formatCurrency(gesamtKostenAG)}</th>
+  </tr>
+
+</table>
+`;
+
+document.getElementById("output").innerHTML = outputHTML;
 }
-
 
 // Calculate for Midijob
 
@@ -1110,6 +1161,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
