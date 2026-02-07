@@ -39,33 +39,39 @@
 
   <!-- Brutto -->
   <tr>
-    <td><label for="brutto">Bruttogehalt (€)</label></td>
-    <td><input type="number" id="brutto" min="0" step="0.01"></td>
-     <span class="info-icon"
-        onclick="openModal(infoContent.brutto)">ℹ</span>
-  </tr>
+  <td>
+    Bruttogehalt (€)
+    <span class="info-icon" onclick="openModal(infoContent.brutto)">ℹ</span>
+  </td>
+  <td>
+    <input type="number" id="brutto" min="0" step="0.01">
+  </td>
+</tr>
 
   <!-- Steuerklasse -->
   <tr>
-    <td><label for="steuerklasse">Steuerklasse</label></td>
-    <span onclick="openModal(infoContent.Steuerklasse)" style="cursor:pointer;">ℹ</span>
-    <td>
-      <select id="steuerklasse">
-        <option value="1">I</option>
-        <option value="2">II</option>
-        <option value="3">III</option>
-        <option value="4">IV</option>
-        <option value="5">V</option>
-        <option value="6">VI</option>
-      </select>
-    </td>
-  </tr>
+  <td>
+    Steuerklasse
+    <span class="info-icon" onclick="openModal(infoContent.steuerklasse)">ℹ</span>
+  </td>
+  <td>
+    <select id="steuerklasse">
+      <option value="1">I</option>
+      <option value="2">II</option>
+      <option value="3">III</option>
+      <option value="4">IV</option>
+      <option value="5">V</option>
+      <option value="6">VI</option>
+    </select>
+  </td>
+</tr>
 
-  <!-- Bundesland -->
   <tr>
-    <td>Bundesland</td>
-    <span onclick="openModal(infoContent.Bundesland)" style="cursor:pointer;">ℹ</span>
-    <td>
+  <td>
+    Bundesland
+    <span class="info-icon" onclick="openModal(infoContent.state)">ℹ</span>
+  </td>
+  <td>
       <select id="state">
         <option value="BW">Baden-Württemberg</option>
         <option value="BY">Bayern</option>
@@ -89,33 +95,45 @@
 
   <!-- Kirchensteuer -->
   <tr>
-    <td>Kirchensteuerpflichtig</td>
-    <span onclick="openModal(infoContent.Kirchensteuerpflichtig)" style="cursor:pointer;">ℹ</span>
-    <td><input type="checkbox" id="kirchensteuer"></td>
-  </tr>
+  <td>
+    Kirchensteuerpflichtig
+    <span class="info-icon" onclick="openModal(infoContent.kirchensteuer)">ℹ</span>
+  </td>
+  <td>
+    <input type="checkbox" id="kirchensteuer">
+  </td>
+</tr>
 
   <!-- Geburtsdatum -->
-  <tr>
-    <td>Geburtsdatum</td>
-    <span onclick="openModal(infoContent.Geburtsdatum)" style="cursor:pointer;">ℹ</span>
-    <td><input type="date" id="dob"></td>
-  </tr>
+ <tr>
+  <td>
+    Geburtsdatum
+    <span class="info-icon" onclick="openModal(infoContent.dob)">ℹ</span>
+  </td>
+  <td>
+    <input type="date" id="dob">
+  </td>
+</tr>
+
 
   <!-- Kinder -->
-  <tr>
-    <td>Anzahl Kinder</td>
-    <span onclick="openModal(infoContent.Kinder)" style="cursor:pointer;">ℹ</span>
-    <td>
-      <select id="children">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5 oder mehr</option>
-      </select>
-    </td>
-  </tr>
+ <tr>
+  <td>
+    Anzahl Kinder
+    <span class="info-icon" onclick="openModal(infoContent.children)">ℹ</span>
+  </td>
+  <td>
+    <select id="children">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5 oder mehr</option>
+    </select>
+  </td>
+</tr>
+
 
   <!-- Überstunden -->
   <tr>
@@ -220,5 +238,6 @@
 
 </body>
 </html>
+
 
 
