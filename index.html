@@ -46,6 +46,7 @@
   <!-- Steuerklasse -->
   <tr>
     <td><label for="steuerklasse">Steuerklasse</label></td>
+    <span onclick="openModal(infoContent.Steuerklasse)" style="cursor:pointer;">ℹ</span>
     <td>
       <select id="steuerklasse">
         <option value="1">I</option>
@@ -61,6 +62,7 @@
   <!-- Bundesland -->
   <tr>
     <td>Bundesland</td>
+    <span onclick="openModal(infoContent.Bundesland)" style="cursor:pointer;">ℹ</span>
     <td>
       <select id="state">
         <option value="BW">Baden-Württemberg</option>
@@ -86,18 +88,21 @@
   <!-- Kirchensteuer -->
   <tr>
     <td>Kirchensteuerpflichtig</td>
+    <span onclick="openModal(infoContent.Kirchensteuerpflichtig)" style="cursor:pointer;">ℹ</span>
     <td><input type="checkbox" id="kirchensteuer"></td>
   </tr>
 
   <!-- Geburtsdatum -->
   <tr>
     <td>Geburtsdatum</td>
+    <span onclick="openModal(infoContent.Geburtsdatum)" style="cursor:pointer;">ℹ</span>
     <td><input type="date" id="dob"></td>
   </tr>
 
   <!-- Kinder -->
   <tr>
     <td>Anzahl Kinder</td>
+    <span onclick="openModal(infoContent.Kinder)" style="cursor:pointer;">ℹ</span>
     <td>
       <select id="children">
         <option value="0">0</option>
@@ -213,3 +218,4 @@
 
 </body>
 </html>
+
