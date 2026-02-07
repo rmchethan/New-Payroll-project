@@ -47,18 +47,6 @@ function validateInputs() {
     }
   }
 
-  // Currency Formatter
-  function formatCurrency(value) {
-  return new Intl.NumberFormat('de-DE', {
-    style: 'currency',
-    currency: 'EUR'
-  }).format(value || 0);
-}
-
-
-
-
-
   // 3️⃣ Validate numeric fields (no negatives)
   const numericFields = [
     "ueberstunden",
@@ -81,7 +69,13 @@ function validateInputs() {
   return true;
 }
 
-
+ // Currency Formatter
+  function formatCurrency(value) {
+  return new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR'
+  }).format(value || 0);
+}
 
 // ===== Global Setup =====
 
@@ -1116,6 +1110,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
