@@ -895,7 +895,7 @@ const gesamtKostenAG = gesamtBrutto + arbeitgeberGesamt;
 const outputHTML = `
 <table>
   <tr>
-    <th colspan="2">Brutto Bestandteile</th>
+    <th> colspan="2">Brutto Bestandteile</th>
   </tr>
   <tr>
     <td>Grundgehalt + VWL</td>
@@ -1463,6 +1463,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
