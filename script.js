@@ -797,7 +797,9 @@ const outputHTML = `
     <th>Gesamtkosten AG</th>
     <th>${formatCurrency(gesamtKostenAG)}</th>
   </tr>
-
+</table>
+`;
+  
 document.getElementById("output").innerHTML = outputHTML;
  }
 
@@ -838,6 +840,7 @@ function calculateNormal() {
 
   const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
   const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
+  
 // ===== Umlagen (Arbeitgeber only) =====
 const umlage1 = steuerpflichtigesBrutto * 0.028;      // U1 (2.8%)
 const umlage2 = steuerpflichtigesBrutto * 0.0075;     // U2 (0.75%)
@@ -891,11 +894,10 @@ if (kirchensteuerpflichtig && lohnsteuer > 0) {
   // ===== Output =====
 const gesamtBrutto = steuerpflichtigesBrutto + steuerfreieZuschlaege;
 const gesamtKostenAG = gesamtBrutto + arbeitgeberGesamt;
-
 const outputHTML = `
 <table>
   <tr>
-    <th> colspan="2">Brutto Bestandteile</th>
+    <th colspan="2">Brutto Bestandteile</th>
   </tr>
   <tr>
     <td>Grundgehalt + VWL</td>
@@ -1463,6 +1465,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
