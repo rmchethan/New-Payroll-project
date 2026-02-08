@@ -667,6 +667,12 @@ if (kirchensteuerpflichtig && lohnsteuer > 0) {
 console.log("State:", state);
 console.log("Kirchensteuer checked:", kirchensteuerpflichtig);
 console.log("Lohnsteuer:", lohnsteuer);
+
+  // ===== Umlagen (Arbeitgeber only) =====
+const umlage1 = brutto * 0.028;        // U1 (2.8%)
+const umlage2 = brutto * 0.0075;       // U2 (0.75%)
+const insolvenzgeld = brutto * 0.006;  // Insolvenzgeld (0.6%)
+
   
   // ===== Netto =====
   const netto =
@@ -676,7 +682,12 @@ console.log("Lohnsteuer:", lohnsteuer);
     kirchensteuer -
     sv.totalAN;
 
-  const arbeitgeberGesamt = sv.totalAG;
+  const arbeitgeberGesamt =
+  sv.totalAG +
+  umlage1 +
+  umlage2 +
+  insolvenzgeld;
+
 
   // ===== Output =====
 const gesamtBrutto = brutto;
@@ -736,7 +747,7 @@ const outputHTML = `
     <th>${formatCurrency(netto)}</th>
   </tr>
 
-  <!-- ================= ARBEITGEBER ================= -->
+    <!-- ================= ARBEITGEBER ================= -->
   <tr>
     <th colspan="2">Arbeitgeberanteile</th>
   </tr>
@@ -761,6 +772,23 @@ const outputHTML = `
     <td>${formatCurrency(sv.pvAG)}</td>
   </tr>
 
+  <!-- ================= UMLAGEN ================= -->
+  <tr>
+    <th colspan="2">Umlagen & Sonstige AG-Kosten</th>
+  </tr>
+  <tr>
+    <td>Umlage U1</td>
+    <td>${formatCurrency(umlage1)}</td>
+  </tr>
+  <tr>
+    <td>Umlage U2</td>
+    <td>${formatCurrency(umlage2)}</td>
+  </tr>
+  <tr>
+    <td>Insolvenzgeldumlage</td>
+    <td>${formatCurrency(insolvenzgeld)}</td>
+  </tr>
+
   <tr>
     <th>AG Gesamt</th>
     <th>${formatCurrency(arbeitgeberGesamt)}</th>
@@ -769,9 +797,6 @@ const outputHTML = `
     <th>Gesamtkosten AG</th>
     <th>${formatCurrency(gesamtKostenAG)}</th>
   </tr>
-
-</table>
-`;
 
 document.getElementById("output").innerHTML = outputHTML;
  }
@@ -1245,6 +1270,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
