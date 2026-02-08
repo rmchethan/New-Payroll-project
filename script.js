@@ -1045,7 +1045,7 @@ function calculatePraktikant() {
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
 
-   
+  
   // ===== SV calculation =====
   const svBase = applyBBG(steuerpflichtigesBrutto);
 
@@ -1077,37 +1077,133 @@ const sv = calculateSV({
   kirchensteuer = lohnsteuer * kirchensteuerRate;
 }
 
+// ===== Umlagen (Arbeitgeber only) =====
+const umlage1 = brutto * 0.028;        // U1 (2.8%)
+const umlage2 = brutto * 0.0075;       // U2 (0.75%)
+const insolvenzgeld = brutto * 0.006;  // Insolvenzgeld (0.6%)
+
   // ===== Netto =====
   const netto = steuerpflichtigesBrutto - soli - lohnsteuer - kirchensteuer - sv.totalAN;
 
   // ===== AG contributions =====
-  const arbeitgeberGesamt = sv.totalAG;
+  const arbeitgeberGesamt =
+  sv.totalAG +
+  umlage1 +
+  umlage2 +
+  insolvenzgeld;
+
 
   // ===== Output =====
-  const outputHTML = `
-    <table border="1" cellpadding="5">
-      <tr><th>Komponente</th><th>Betrag (€)</th></tr>
-      <tr><td>Brutto (Praktikant)</td><td>${brutto.toFixed(2)}</td></tr>
-      <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
-      <tr><td>Solidaritätszuschlag</td><td>${soli.toFixed(2)}</td></tr>
-      <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
-      <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
-      <tr><td>KV Zusatzbeitrag</td><td>${sv.kvZusatzAN.toFixed(2)}</td></tr>
-      <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
-      <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
-      <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
-      <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
-      
-      <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
-      <tr><td>KV Zusatz AG</td><td>${sv.kvZusatzAG.toFixed(2)}</td></tr>
-      <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
-      <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
-      <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
-      <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
-      <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(steuerpflichtigesBrutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
-    </table>
-  `;
+ const gesamtBrutto = brutto;
+const gesamtKostenAG = brutto + arbeitgeberGesamt;
+
+const outputHTML = `
+<table>
+
+  <!-- ================= BRUTTO ================= -->
+  <tr>
+    <th colspan="2">Brutto</th>
+  </tr>
+  <tr>
+    <td>Praktikant</td>
+    <td>${formatCurrency(gesamtBrutto)}</td>
+  </tr>
+
+  <!-- ================= ABZÜGE AN ================= -->
+  <tr>
+    <th colspan="2">Abzüge Arbeitnehmer</th>
+  </tr>
+  <tr>
+    <td>Lohnsteuer</td>
+    <td>${formatCurrency(lohnsteuer)}</td>
+  </tr>
+  <tr>
+    <td>Solidaritätszuschlag</td>
+    <td>${formatCurrency(soli)}</td>
+  </tr>
+  <tr>
+    <td>Kirchensteuer</td>
+    <td>${formatCurrency(kirchensteuer)}</td>
+  </tr>
+  <tr>
+    <td>KV AN</td>
+    <td>${formatCurrency(sv.kvAN)}</td>
+  </tr>
+  <tr>
+    <td>KV Zusatz AN</td>
+    <td>${formatCurrency(sv.kvZusatzAN)}</td>
+  </tr>
+  <tr>
+    <td>RV AN</td>
+    <td>${formatCurrency(sv.rvAN)}</td>
+  </tr>
+  <tr>
+    <td>AV AN</td>
+    <td>${formatCurrency(sv.avAN)}</td>
+  </tr>
+  <tr>
+    <td>PV AN</td>
+    <td>${formatCurrency(sv.pvAN)}</td>
+  </tr>
+
+  <tr>
+    <th>Netto</th>
+    <th>${formatCurrency(netto)}</th>
+  </tr>
+
+  <!-- ================= ARBEITGEBER ================= -->
+  <tr>
+    <th colspan="2">Arbeitgeberanteile</th>
+  </tr>
+  <tr>
+    <td>KV AG</td>
+    <td>${formatCurrency(sv.kvAG)}</td>
+  </tr>
+  <tr>
+    <td>KV Zusatz AG</td>
+    <td>${formatCurrency(sv.kvZusatzAG)}</td>
+  </tr>
+  <tr>
+    <td>RV AG</td>
+    <td>${formatCurrency(sv.rvAG)}</td>
+  </tr>
+  <tr>
+    <td>AV AG</td>
+    <td>${formatCurrency(sv.avAG)}</td>
+  </tr>
+  <tr>
+    <td>PV AG</td>
+    <td>${formatCurrency(sv.pvAG)}</td>
+  </tr>
+
+  <!-- ================= UMLAGEN ================= -->
+  <tr>
+    <th colspan="2">Umlagen & Sonstige AG-Kosten</th>
+  </tr>
+  <tr>
+    <td>Umlage U1</td>
+    <td>${formatCurrency(umlage1)}</td>
+  </tr>
+  <tr>
+    <td>Umlage U2</td>
+    <td>${formatCurrency(umlage2)}</td>
+  </tr>
+  <tr>
+    <td>Insolvenzgeldumlage</td>
+    <td>${formatCurrency(insolvenzgeld)}</td>
+  </tr>
+
+  <tr>
+    <th>AG Gesamt</th>
+    <th>${formatCurrency(arbeitgeberGesamt)}</th>
+  </tr>
+  <tr>
+    <th>Gesamtkosten AG</th>
+    <th>${formatCurrency(gesamtKostenAG)}</th>
+  </tr>
+
+</table>
+`;
 
   document.getElementById("output").innerHTML = outputHTML;
 }
@@ -1157,37 +1253,134 @@ function calculateAzubi() {
   kirchensteuer = lohnsteuer * kirchensteuerRate;
 }
 
+// ===== Umlagen (Arbeitgeber only) =====
+const umlage1 = brutto * 0.028;
+const umlage2 = brutto * 0.0075;
+const insolvenzgeld = brutto * 0.006;
+
+
   // ===== Netto =====
   const netto = steuerpflichtigesBrutto - soli - lohnsteuer - kirchensteuer - sv.totalAN;
 
   // ===== AG contributions =====
-  const arbeitgeberGesamt = sv.totalAG;
+  const arbeitgeberGesamt =
+  sv.totalAG +
+  umlage1 +
+  umlage2 +
+  insolvenzgeld;
+
 
   // ===== Output =====
-  const outputHTML = `
-    <table border="1" cellpadding="5">
-      <tr><th>Komponente</th><th>Betrag (€)</th></tr>
-      <tr><td>Brutto (Azubi)</td><td>${brutto.toFixed(2)}</td></tr>
-      <tr><td>Lohnsteuer</td><td>${lohnsteuer.toFixed(2)}</td></tr>
-      <tr><td>Solidaritätszuschlag</td><td>${soli.toFixed(2)}</td></tr>
-      <tr><td>Kirchensteuer</td><td>${kirchensteuer.toFixed(2)}</td></tr>
-      <tr><td>KV AN</td><td>${sv.kvAN.toFixed(2)}</td></tr>
-      <tr><td>KV Zusatzbeitrag</td><td>${sv.kvZusatzAN.toFixed(2)}</td></tr>
-      <tr><td>RV AN</td><td>${sv.rvAN.toFixed(2)}</td></tr>
-      <tr><td>AV AN</td><td>${sv.avAN.toFixed(2)}</td></tr>
-      <tr><td>PV AN</td><td>${sv.pvAN.toFixed(2)}</td></tr>
-      <tr><td><strong>Netto</strong></td><td><strong>${netto.toFixed(2)}</strong></td></tr>
-      
-      <tr><th colspan="2">Arbeitgeberanteile</th></tr>
-      <tr><td>KV AG</td><td>${sv.kvAG.toFixed(2)}</td></tr>
-      <tr><td>KV Zusatz AG</td><td>${sv.kvZusatzAG.toFixed(2)}</td></tr>
-      <tr><td>RV AG</td><td>${sv.rvAG.toFixed(2)}</td></tr>
-      <tr><td>AV AG</td><td>${sv.avAG.toFixed(2)}</td></tr>
-      <tr><td>PV AG</td><td>${sv.pvAG.toFixed(2)}</td></tr>
-      <tr><td><strong>AG Gesamt</strong></td><td><strong>${arbeitgeberGesamt.toFixed(2)}</strong></td></tr>
-      <tr><td><strong>Gesamtkosten AG</strong></td><td><strong>${(steuerpflichtigesBrutto + arbeitgeberGesamt).toFixed(2)}</strong></td></tr>
-    </table>
-  `;
+  const gesamtBrutto = brutto;
+const gesamtKostenAG = brutto + arbeitgeberGesamt;
+
+const outputHTML = `
+<table>
+
+  <!-- ================= BRUTTO ================= -->
+  <tr>
+    <th colspan="2">Brutto</th>
+  </tr>
+  <tr>
+    <td>Azubi</td>
+    <td>${formatCurrency(gesamtBrutto)}</td>
+  </tr>
+
+  <!-- ================= ABZÜGE AN ================= -->
+  <tr>
+    <th colspan="2">Abzüge Arbeitnehmer</th>
+  </tr>
+  <tr>
+    <td>Lohnsteuer</td>
+    <td>${formatCurrency(lohnsteuer)}</td>
+  </tr>
+  <tr>
+    <td>Solidaritätszuschlag</td>
+    <td>${formatCurrency(soli)}</td>
+  </tr>
+  <tr>
+    <td>Kirchensteuer</td>
+    <td>${formatCurrency(kirchensteuer)}</td>
+  </tr>
+  <tr>
+    <td>KV AN</td>
+    <td>${formatCurrency(sv.kvAN)}</td>
+  </tr>
+  <tr>
+    <td>KV Zusatz AN</td>
+    <td>${formatCurrency(sv.kvZusatzAN)}</td>
+  </tr>
+  <tr>
+    <td>RV AN</td>
+    <td>${formatCurrency(sv.rvAN)}</td>
+  </tr>
+  <tr>
+    <td>AV AN</td>
+    <td>${formatCurrency(sv.avAN)}</td>
+  </tr>
+  <tr>
+    <td>PV AN</td>
+    <td>${formatCurrency(sv.pvAN)}</td>
+  </tr>
+
+  <tr>
+    <th>Netto</th>
+    <th>${formatCurrency(netto)}</th>
+  </tr>
+
+  <!-- ================= ARBEITGEBER ================= -->
+  <tr>
+    <th colspan="2">Arbeitgeberanteile</th>
+  </tr>
+  <tr>
+    <td>KV AG</td>
+    <td>${formatCurrency(sv.kvAG)}</td>
+  </tr>
+  <tr>
+    <td>KV Zusatz AG</td>
+    <td>${formatCurrency(sv.kvZusatzAG)}</td>
+  </tr>
+  <tr>
+    <td>RV AG</td>
+    <td>${formatCurrency(sv.rvAG)}</td>
+  </tr>
+  <tr>
+    <td>AV AG</td>
+    <td>${formatCurrency(sv.avAG)}</td>
+  </tr>
+  <tr>
+    <td>PV AG</td>
+    <td>${formatCurrency(sv.pvAG)}</td>
+  </tr>
+
+  <!-- ================= UMLAGEN ================= -->
+  <tr>
+    <th colspan="2">Umlagen & Sonstige AG-Kosten</th>
+  </tr>
+  <tr>
+    <td>Umlage U1</td>
+    <td>${formatCurrency(umlage1)}</td>
+  </tr>
+  <tr>
+    <td>Umlage U2</td>
+    <td>${formatCurrency(umlage2)}</td>
+  </tr>
+  <tr>
+    <td>Insolvenzgeldumlage</td>
+    <td>${formatCurrency(insolvenzgeld)}</td>
+  </tr>
+
+  <tr>
+    <th>AG Gesamt</th>
+    <th>${formatCurrency(arbeitgeberGesamt)}</th>
+  </tr>
+  <tr>
+    <th>Gesamtkosten AG</th>
+    <th>${formatCurrency(gesamtKostenAG)}</th>
+  </tr>
+
+</table>
+`;
 
   document.getElementById("output").innerHTML = outputHTML;
 }
@@ -1270,6 +1463,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
