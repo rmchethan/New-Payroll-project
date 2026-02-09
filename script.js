@@ -3,34 +3,68 @@
 const explanationContent = {
   normal: `
     <h3>Normaler Arbeitnehmer – Steuer- und Sozialversicherungsübersicht</h3>
-    
-    <p><strong>1. Steuerliche Behandlung:</strong> 
-      Grundlage: Einkommensteuergesetz (§ 38 EStG) und Lohnsteuerrichtlinien. 
-      Das Bruttogehalt unterliegt Lohnsteuer, Solidaritätszuschlag und ggf. Kirchensteuer. 
-      Steuerfreie Zuschläge (z. B. Nacht- und Feiertagszuschläge) erhöhen das Netto, nicht die Steuerlast.
-    </p>
-    
-    <p><strong>2. Sozialversicherung:</strong> Beiträge nach SGB IV & V:</p>
+
+    <h4>1️⃣ Steuerliche Behandlung (Einkommensteuerrecht)</h4>
+    <p><strong>Gesetzliche Grundlage:</strong></p>
     <ul>
-      <li>Krankenversicherung (KV): 14,6% AN/AG + Zusatzbeitrag ca. 1,6% (AN/AG)</li>
-      <li>Rentenversicherung (RV): 18,6% AN/AG</li>
-      <li>Arbeitslosenversicherung (AV): 2,4% AN/AG</li>
-      <li>Pflegeversicherung (PV): 3,4% AN/AG (+0,25% Zuschlag Kinderlose ab 23)</li>
-      <li>Beitragsbemessungsgrenze 2026: KV/RV €59.850 p.a., AV €85.200 p.a.</li>
+      <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
+      <li>§ 32a EStG – Einkommensteuertarif (Grund-/Splittingtarif)</li>
+      <li>§ 39 EStG – Steuerklassen</li>
+      <li>§ 3 SolzG – Solidaritätszuschlag</li>
+      <li>Kirchensteuergesetze der Länder</li>
     </ul>
-    
-    <p><strong>3. Umlagen & Sonstige Arbeitgeberkosten:</strong></p>
+    <p><strong>Steuerpflichtiges Brutto im Modell:</strong> Grundgehalt, VWL, Überstundenvergütung, Überstundenzuschläge.</p>
+    <p>Monatsbrutto wird gemäß § 39b EStG auf Jahresarbeitslohn hochgerechnet (×12) und nach § 32a EStG progressiv besteuert.</p>
+    <p>Lohnsteuer: progressiver Einkommensteuertarif, Steuerklasse I–VI, Kinderfreibeträge wirken über Steuerklassenanpassung.</p>
+    <p>Solidaritätszuschlag: 5,5 % der Lohnsteuer, Freigrenzen vereinfacht berücksichtigt (§ 3 SolzG).</p>
+    <p>Kirchensteuer: 8 % (Bayern, BW), 9 % (übrige Bundesländer), nur bei Kirchensteuerpflicht, Bemessungsgrundlage: Lohnsteuer.</p>
+
+    <h4>2️⃣ Sozialversicherung (SGB IV, V, VI, XI, III)</h4>
+    <p><strong>Gesetzliche Grundlage:</strong> § 14 SGB IV, SGB V, SGB VI, SGB III, SGB XI</p>
     <ul>
-      <li>Umlage U1 (Lohnfortzahlung im Krankheitsfall): 2,8% vom Brutto</li>
-      <li>Umlage U2 (Mutterschaft): 0,75% vom Brutto</li>
-      <li>Insolvenzgeldumlage: 0,6% vom Brutto</li>
+      <li>Krankenversicherung (KV): 14,6 % + Zusatzbeitrag 1,7 % → 16,3 % gesamt, Aufteilung 50 % AN / 50 % AG (§ 249 SGB V), BBG 2026 ≈ 5.175 €</li>
+      <li>Rentenversicherung (RV): 18,6 % gesamt, 9,3 % AN / 9,3 % AG (§ 158 SGB VI), BBG West 2026 ≈ 7.550 €</li>
+      <li>Arbeitslosenversicherung (AV): 2,6 % gesamt, 1,3 % AN / 1,3 % AG (§ 341 SGB III), BBG wie RV</li>
+      <li>Pflegeversicherung (PV): 3,4 % gesamt, 1,7 % AN / 1,7 % AG, Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI), BBG wie KV</li>
     </ul>
-    
-    <p><strong>4. Zuschläge & Zulagen:</strong> Nacht-, Sonn- und Feiertagszuschläge werden steuerfrei im Modell behandelt, erhöhen Netto, nicht Steuerbasis.</p>
-    
-    <p><strong>5. VWL / sonstige freiwillige Zuschüsse:</strong> Werden dem Brutto zugeschlagen, sind steuerpflichtig oder steuerfrei je nach Art.</p>
-    
-    <p>Diese Übersicht dient als Lern- und Demonstrationsmodell. In der Realität können geringfügige Unterschiede durch Arbeitgeberabrechnungen, Kassenbeiträge oder individuelle Steuerfreibeträge auftreten.</p>
+
+    <h4>3️⃣ Zuschläge für besondere Arbeitszeiten (§ 3b EStG)</h4>
+    <p>Im Modell berücksichtigt: Nachtarbeit 25 %, Nachtarbeit 40 %, Sonntagsarbeit 50 %, Feiertagsarbeit 125 %</p>
+    <p>Steuerlich: Zuschläge sind steuerfrei und erhöhen ausschließlich das Netto.</p>
+    <p>Sozialversicherungsfrei im Modell, gesetzliche Höchstgrenzen werden nicht geprüft.</p>
+
+    <h4>4️⃣ Umlagen (Arbeitgeberaufwendungen)</h4>
+    <p><strong>Gesetzliche Grundlage:</strong> AAG, § 358 SGB III (Insolvenzgeldumlage)</p>
+    <ul>
+      <li>Umlage U1: 2,8 % vom Brutto</li>
+      <li>Umlage U2: 0,75 % vom Brutto</li>
+      <li>Insolvenzgeldumlage: 0,6 % vom Brutto</li>
+    </ul>
+    <p>Nur vom Arbeitgeber getragen, erhöhen nicht das Netto.</p>
+
+    <h4>5️⃣ Beitragsbemessungsgrenzen (BBG) – Modellannahme 2026</h4>
+    <ul>
+      <li>KV / PV: ca. 5.175 € / Monat</li>
+      <li>RV / AV: ca. 7.550 € / Monat</li>
+      <li>Arbeitsentgelt oberhalb dieser Grenzen ist beitragsfrei</li>
+    </ul>
+
+    <h4>6️⃣ Nicht im Modell berücksichtigt (vereinfachte Darstellung)</h4>
+    <ul>
+      <li>Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
+      <li>Märzklausel (§ 23a SGB IV)</li>
+      <li>Einmalzahlungen mit SV-Splitting</li>
+      <li>ELStAM-Freibeträge (§ 39a EStG)</li>
+      <li>Sachbezüge (§ 8 EStG)</li>
+      <li>Pauschalversteuerungen (§ 40 EStG)</li>
+      <li>Altersteilzeit / Kurzarbeitergeld</li>
+      <li>Geringfügige Beschäftigung (§ 8 SGB IV)</li>
+      <li>Beitragsgruppenschlüssel / Personengruppenschlüssel</li>
+      <li>Umlagepflichtige Kleinbetriebsprüfung</li>
+    </ul>
+
+    <h4>7️⃣ Nettoermittlung im Modell</h4>
+    <p>Netto = steuerpflichtiges Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag – Kirchensteuer – AN-Anteile SV – sonstige Abzüge (z. B. Jobticket)</p>
   `
 };
 
@@ -1587,6 +1621,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
