@@ -281,4 +281,35 @@ button[onclick="calculateNetto()"] {
   }
 }
 
+.info-box {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #f9f9f9;
+}
+
+.info-box summary {
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.info-content {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.info-content h3 {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.info-content ul {
+  margin-left: 20px;
+}
+
+
+
 
