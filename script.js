@@ -101,7 +101,7 @@ Im Modell werden Beitragsabschläge für mehrere Kinder unter 25 vereinfacht ber
   <li>Nachtarbeit: <strong>40 %</strong></li>
   <li>Sonntagsarbeit: <strong>50 %</strong></li>
   <li>Feiertagsarbeit: <strong>125 %</strong></li>
-   <li>Feiertagsarbeit: <strong>150 %</strong></li>
+   <li>Feiertagsarbeit: <strong>150 % (Nicht)</strong></li>
 </ul>
 
 <h4>Steuerliche Behandlung</h4>
@@ -1713,6 +1713,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
