@@ -582,7 +582,29 @@ const outputHTML = `
 </table>
 `;
 
-document.getElementById("output").innerHTML = outputHTML;
+const summaryHTML = `
+<div class="summary-box">
+  <div class="summary-item">
+    <h4>Beschäftigungsart</h4>
+    <p>Normal</p>
+  </div>
+  <div class="summary-item">
+    <h4>Brutto</h4>
+    <p>${formatCurrency(gesamtBrutto)}</p>
+  </div>
+  <div class="summary-item">
+    <h4>Netto</h4>
+    <p>${formatCurrency(netto)}</p>
+  </div>
+  <div class="summary-item">
+    <h4>AG Gesamtkosten</h4>
+    <p>${formatCurrency(gesamtKostenAG)}</p>
+  </div>
+</div>
+`;
+
+document.getElementById("output").innerHTML = summaryHTML + outputHTML;
+
 }
 
 // Calculate for Midijob
@@ -795,7 +817,29 @@ const outputHTML = `
 </table>
 `;
   
-document.getElementById("output").innerHTML = outputHTML;
+const summaryHTML = `
+<div class="summary-box">
+  <div class="summary-item">
+    <h4>Beschäftigungsart</h4>
+    <p>Normal</p>
+  </div>
+  <div class="summary-item">
+    <h4>Brutto</h4>
+    <p>${formatCurrency(gesamtBrutto)}</p>
+  </div>
+  <div class="summary-item">
+    <h4>Netto</h4>
+    <p>${formatCurrency(netto)}</p>
+  </div>
+  <div class="summary-item">
+    <h4>AG Gesamtkosten</h4>
+    <p>${formatCurrency(gesamtKostenAG)}</p>
+  </div>
+</div>
+`;
+
+document.getElementById("output").innerHTML = summaryHTML + outputHTML;
+
  }
 
  // Calculate for Normal AN
@@ -1022,7 +1066,29 @@ const outputHTML = `
 </table>
 `;
 
-document.getElementById("output").innerHTML = outputHTML;
+const summaryHTML = `
+<div class="summary-box">
+  <div class="summary-item">
+    <h4>Beschäftigungsart</h4>
+    <p>Normal</p>
+  </div>
+  <div class="summary-item">
+    <h4>Brutto</h4>
+    <p>${formatCurrency(gesamtBrutto)}</p>
+  </div>
+  <div class="summary-item">
+    <h4>Netto</h4>
+    <p>${formatCurrency(netto)}</p>
+  </div>
+  <div class="summary-item">
+    <h4>AG Gesamtkosten</h4>
+    <p>${formatCurrency(gesamtKostenAG)}</p>
+  </div>
+</div>
+`;
+
+document.getElementById("output").innerHTML = summaryHTML + outputHTML;
+
  }
 
  // ===== Calculate Praktikant =====
@@ -1201,7 +1267,29 @@ const outputHTML = `
 </table>
 `;
 
-  document.getElementById("output").innerHTML = outputHTML;
+  const summaryHTML = `
+<div class="summary-box">
+  <div class="summary-item">
+    <h4>Beschäftigungsart</h4>
+    <p>Normal</p>
+  </div>
+  <div class="summary-item">
+    <h4>Brutto</h4>
+    <p>${formatCurrency(gesamtBrutto)}</p>
+  </div>
+  <div class="summary-item">
+    <h4>Netto</h4>
+    <p>${formatCurrency(netto)}</p>
+  </div>
+  <div class="summary-item">
+    <h4>AG Gesamtkosten</h4>
+    <p>${formatCurrency(gesamtKostenAG)}</p>
+  </div>
+</div>
+`;
+
+document.getElementById("output").innerHTML = summaryHTML + outputHTML;
+
 }
 
 
@@ -1378,7 +1466,29 @@ const outputHTML = `
 </table>
 `;
 
-  document.getElementById("output").innerHTML = outputHTML;
+  const summaryHTML = `
+<div class="summary-box">
+  <div class="summary-item">
+    <h4>Beschäftigungsart</h4>
+    <p>Normal</p>
+  </div>
+  <div class="summary-item">
+    <h4>Brutto</h4>
+    <p>${formatCurrency(gesamtBrutto)}</p>
+  </div>
+  <div class="summary-item">
+    <h4>Netto</h4>
+    <p>${formatCurrency(netto)}</p>
+  </div>
+  <div class="summary-item">
+    <h4>AG Gesamtkosten</h4>
+    <p>${formatCurrency(gesamtKostenAG)}</p>
+  </div>
+</div>
+`;
+
+document.getElementById("output").innerHTML = summaryHTML + outputHTML;
+
 }
 
 function openModal(content) {
@@ -1459,6 +1569,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
