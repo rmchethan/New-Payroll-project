@@ -20,13 +20,51 @@ const explanationContent = {
     <p>Kirchensteuer: 8 % (Bayern, BW), 9 % (übrige Bundesländer), nur bei Kirchensteuerpflicht, Bemessungsgrundlage: Lohnsteuer.</p>
 
     <h4>2️⃣ Sozialversicherung (SGB IV, V, VI, XI, III)</h4>
-    <p><strong>Gesetzliche Grundlage:</strong> § 14 SGB IV, SGB V, SGB VI, SGB III, SGB XI</p>
-    <ul>
-      <li>Krankenversicherung (KV): 14,6 % + Zusatzbeitrag 1,7 % → 16,3 % gesamt, Aufteilung 50 % AN / 50 % AG (§ 249 SGB V), BBG 2026 ≈ 5.175 €</li>
-      <li>Rentenversicherung (RV): 18,6 % gesamt, 9,3 % AN / 9,3 % AG (§ 158 SGB VI), BBG West 2026 ≈ 7.550 €</li>
-      <li>Arbeitslosenversicherung (AV): 2,6 % gesamt, 1,3 % AN / 1,3 % AG (§ 341 SGB III), BBG wie RV</li>
-      <li>Pflegeversicherung (PV): 3,4 % gesamt, 1,7 % AN / 1,7 % AG, Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI), BBG wie KV</li>
-    </ul>
+<p><strong>Gesetzliche Grundlage:</strong> § 14 SGB IV, SGB V, SGB VI, SGB III, SGB XI</p>
+
+<table border="1" cellpadding="5" style="border-collapse:collapse; width:100%; margin-top:5px;">
+  <tr>
+    <th>Versicherung</th>
+    <th>Beitragssatz gesamt</th>
+    <th>Aufteilung AN / AG</th>
+    <th>BBG 2026 (Modell)</th>
+    <th>Gesetzliche Referenz</th>
+    <th>Besonderheiten</th>
+  </tr>
+  <tr>
+    <td>Krankenversicherung (KV)</td>
+    <td>14,6 % + Zusatzbeitrag 1,7 % → 16,3 %</td>
+    <td>50 % / 50 %</td>
+    <td>≈ 5.175 € / Monat</td>
+    <td>§ 249 SGB V</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Rentenversicherung (RV)</td>
+    <td>18,6 %</td>
+    <td>9,3 % / 9,3 %</td>
+    <td>≈ 7.550 € / Monat (West)</td>
+    <td>§ 158 SGB VI</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Arbeitslosenversicherung (AV)</td>
+    <td>2,6 %</td>
+    <td>1,3 % / 1,3 %</td>
+    <td>≈ 7.550 € / Monat</td>
+    <td>§ 341 SGB III</td>
+    <td>BBG entspricht RV-BBG</td>
+  </tr>
+  <tr>
+    <td>Pflegeversicherung (PV)</td>
+    <td>3,4 %</td>
+    <td>1,7 % / 1,7 %</td>
+    <td>≈ 5.175 € / Monat</td>
+    <td>§ 55 SGB XI</td>
+    <td>Kinderlosenzuschlag +0,6 % AN</td>
+  </tr>
+</table>
+
 
     <h4>3️⃣ Zuschläge für besondere Arbeitszeiten (§ 3b EStG)</h4>
     <p>Im Modell berücksichtigt: Nachtarbeit 25 %, Nachtarbeit 40 %, Sonntagsarbeit 50 %, Feiertagsarbeit 125 %</p>
@@ -1621,6 +1659,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
