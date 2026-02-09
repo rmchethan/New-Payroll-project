@@ -2,20 +2,38 @@
   // ===== Explanation Content =====
 const explanationContent = {
   normal: `
-    <h3>Normaler Arbeitnehmer</h3>
-    <p><strong>Lohnsteuer:</strong> Jahreshochrechnung mit progressivem Tarif (§32a EStG – Demo-Modell).</p>
-
-    <p><strong>Sozialversicherung:</strong></p>
+    <h3>Normaler Arbeitnehmer – Steuer- und Sozialversicherungsübersicht</h3>
+    
+    <p><strong>1. Steuerliche Behandlung:</strong> 
+      Grundlage: Einkommensteuergesetz (§ 38 EStG) und Lohnsteuerrichtlinien. 
+      Das Bruttogehalt unterliegt Lohnsteuer, Solidaritätszuschlag und ggf. Kirchensteuer. 
+      Steuerfreie Zuschläge (z. B. Nacht- und Feiertagszuschläge) erhöhen das Netto, nicht die Steuerlast.
+    </p>
+    
+    <p><strong>2. Sozialversicherung:</strong> Beiträge nach SGB IV & V:</p>
     <ul>
-      <li>KV: 14.6% + Zusatzbeitrag</li>
-      <li>RV: 18.6%</li>
-      <li>AV: 2.6%</li>
-      <li>PV: abhängig von Alter & Kinder</li>
+      <li>Krankenversicherung (KV): 14,6% AN/AG + Zusatzbeitrag ca. 1,6% (AN/AG)</li>
+      <li>Rentenversicherung (RV): 18,6% AN/AG</li>
+      <li>Arbeitslosenversicherung (AV): 2,4% AN/AG</li>
+      <li>Pflegeversicherung (PV): 3,4% AN/AG (+0,25% Zuschlag Kinderlose ab 23)</li>
+      <li>Beitragsbemessungsgrenze 2026: KV/RV €59.850 p.a., AV €85.200 p.a.</li>
     </ul>
-
-    <p>Beitragsbemessungsgrenzen werden berücksichtigt.</p>
+    
+    <p><strong>3. Umlagen & Sonstige Arbeitgeberkosten:</strong></p>
+    <ul>
+      <li>Umlage U1 (Lohnfortzahlung im Krankheitsfall): 2,8% vom Brutto</li>
+      <li>Umlage U2 (Mutterschaft): 0,75% vom Brutto</li>
+      <li>Insolvenzgeldumlage: 0,6% vom Brutto</li>
+    </ul>
+    
+    <p><strong>4. Zuschläge & Zulagen:</strong> Nacht-, Sonn- und Feiertagszuschläge werden steuerfrei im Modell behandelt, erhöhen Netto, nicht Steuerbasis.</p>
+    
+    <p><strong>5. VWL / sonstige freiwillige Zuschüsse:</strong> Werden dem Brutto zugeschlagen, sind steuerpflichtig oder steuerfrei je nach Art.</p>
+    
+    <p>Diese Übersicht dient als Lern- und Demonstrationsmodell. In der Realität können geringfügige Unterschiede durch Arbeitgeberabrechnungen, Kassenbeiträge oder individuelle Steuerfreibeträge auftreten.</p>
   `
 };
+
 
 
 // ===== Utility Helpers =====
@@ -1569,6 +1587,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
