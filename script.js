@@ -91,7 +91,6 @@ const disabledFields = [
   "jobticket"
 ];
 
-console.log("Progressive tax function exists:", typeof calculateProgressiveTax);
 window.onload = toggleEmployeeType;
 
 
@@ -664,10 +663,6 @@ if (kirchensteuerpflichtig && lohnsteuer > 0) {
   kirchensteuer = lohnsteuer * kirchensteuerRate;
 }
 
-console.log("State:", state);
-console.log("Kirchensteuer checked:", kirchensteuerpflichtig);
-console.log("Lohnsteuer:", lohnsteuer);
-
   // ===== Umlagen (Arbeitgeber only) =====
 const umlage1 = brutto * 0.028;        // U1 (2.8%)
 const umlage2 = brutto * 0.0075;       // U2 (0.75%)
@@ -1061,8 +1056,7 @@ const sv = calculateSV({
   includeAV: false
 });
 
-  console.log("SV Base Praktikant:", svBase);
-
+  
   // ===== Jahreshochrechnung & Steuerklasse =====
   const annualIncome = steuerpflichtigesBrutto * 12;
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
@@ -1465,6 +1459,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
