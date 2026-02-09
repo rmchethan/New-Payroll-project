@@ -65,26 +65,55 @@ Im Modell wird das sozialversicherungspflichtige Entgelt bis zur jeweiligen
 Im Modell werden Beitragsabschläge für mehrere Kinder unter 25 vereinfacht berücksichtigt.
 </p>
 
-    <h4>3️⃣ Zuschläge für besondere Arbeitszeiten (§ 3b EStG)</h4>
-    <p>Im Modell berücksichtigt: Nachtarbeit 25 %, Nachtarbeit 40 %, Sonntagsarbeit 50 %, Feiertagsarbeit 125 %</p>
-    <p>Steuerlich: Zuschläge sind steuerfrei und erhöhen ausschließlich das Netto.</p>
-    <p>Sozialversicherungsfrei im Modell, gesetzliche Höchstgrenzen werden nicht geprüft.</p>
+    <h3>3️⃣ Zuschläge für besondere Arbeitszeiten (§ 3b EStG)</h3>
+
+<p><strong>Gesetzliche Grundlage:</strong> § 3b EStG</p>
+
+<h4>Im Modell berücksichtigt</h4>
+<ul>
+  <li>Nachtarbeit: <strong>25 %</strong></li>
+  <li>Nachtarbeit: <strong>40 %</strong></li>
+  <li>Sonntagsarbeit: <strong>50 %</strong></li>
+  <li>Feiertagsarbeit: <strong>125 %</strong></li>
+   <li>Feiertagsarbeit: <strong>150 %</strong></li>
+</ul>
+
+<h4>Steuerliche Behandlung</h4>
+<ul>
+  <li>Steuerfrei bei zusätzlicher Zahlung zum Grundlohn</li>
+  <li>Steuerfreiheit nur bis gesetzliche Höchstgrenzen</li>
+  <li>Grundlohn ≤ <strong>50 € je Stunde</strong></li>
+</ul>
+
+<h4>Behandlung im Modell</h4>
+<ul>
+  <li>Zuschläge steuerfrei</li>
+  <li>Zuschläge sozialversicherungsfrei</li>
+  <li>Erhöhen ausschließlich das Netto</li>
+  <li>Gesetzliche Höchstgrenzen werden nicht gesondert geprüft</li>
+</ul>
+
 
     <h4>4️⃣ Umlagen (Arbeitgeberaufwendungen)</h4>
     <p><strong>Gesetzliche Grundlage:</strong> AAG, § 358 SGB III (Insolvenzgeldumlage)</p>
     <ul>
-      <li>Umlage U1: 2,8 % vom Brutto</li>
-      <li>Umlage U2: 0,75 % vom Brutto</li>
-      <li>Insolvenzgeldumlage: 0,6 % vom Brutto</li>
-    </ul>
-    <p>Nur vom Arbeitgeber getragen, erhöhen nicht das Netto.</p>
+  <li>Umlage U1: <strong>2,8 %</strong></li>
+  <li>Umlage U2: <strong>0,75 %</strong></li>
+  <li>Insolvenzgeldumlage: <strong>0,6 %</strong></li>
+</ul>
+<p>
+Diese Umlagen werden ausschließlich vom Arbeitgeber getragen und erhöhen nicht das Netto des Arbeitnehmers.
+</p>
 
     <h4>5️⃣ Beitragsbemessungsgrenzen (BBG) – Modellannahme 2026</h4>
-    <ul>
-      <li>KV / PV: ca. 5.175 € / Monat</li>
-      <li>RV / AV: ca. 7.550 € / Monat</li>
-      <li>Arbeitsentgelt oberhalb dieser Grenzen ist beitragsfrei</li>
-    </ul>
+   <ul>
+  <li>KV / PV BBG 2026: <strong>≈ 5.175 € monatlich</strong></li>
+  <li>RV / AV BBG 2026: <strong>≈ 7.550 € monatlich</strong></li>
+</ul>
+
+<p>
+Arbeitsentgelt oberhalb dieser Grenzen ist beitragsfrei.
+</p>
 
     <h4>6️⃣ Nicht im Modell berücksichtigt (vereinfachte Darstellung)</h4>
     <ul>
@@ -1658,6 +1687,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
