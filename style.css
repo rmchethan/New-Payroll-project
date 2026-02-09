@@ -189,3 +189,96 @@ button[onclick="calculateNetto()"] {
   }
 }
 
+/* ===== Output Container ===== */
+#output {
+  margin-top: 30px;
+  font-family: Arial, sans-serif;
+}
+
+/* ===== Summary Box ===== */
+.summary-box {
+  background: #f4f6f8;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.summary-item {
+  flex: 1;
+  min-width: 150px;
+}
+
+.summary-item h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.summary-item p {
+  margin: 5px 0 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* ===== Table Styling ===== */
+#output table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#output th {
+  text-align: left;
+  padding: 12px;
+  background: #1f2937;
+  color: white;
+  font-weight: 600;
+}
+
+#output td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#output tr:last-child td {
+  border-bottom: none;
+}
+
+/* Section headers */
+#output tr th[colspan="2"] {
+  background: #374151;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Highlight important rows */
+#output tr:nth-last-child(2) th,
+#output tr:nth-last-child(1) th {
+  background: #111827;
+}
+
+/* Netto row highlight */
+#output tr th:contains("Netto") {
+  background: #065f46;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .summary-box {
+    flex-direction: column;
+  }
+
+  .summary-item {
+    width: 100%;
+  }
+}
+
+
