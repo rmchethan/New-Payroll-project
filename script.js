@@ -120,7 +120,7 @@ Im Modell werden Beitragsabschläge für mehrere Kinder unter 25 vereinfacht ber
 </ul>
 
 
-    <h4>4️⃣ Umlagen (Arbeitgeberaufwendungen)</h4>
+    <h3>4️⃣ Umlagen (Arbeitgeberaufwendungen)</h3>
     <p><strong>Gesetzliche Grundlage:</strong> AAG, § 358 SGB III (Insolvenzgeldumlage)</p>
     <ul>
   <li>Umlage U1: <strong>2,8 %</strong></li>
@@ -131,7 +131,7 @@ Im Modell werden Beitragsabschläge für mehrere Kinder unter 25 vereinfacht ber
 Diese Umlagen werden ausschließlich vom Arbeitgeber getragen und erhöhen nicht das Netto des Arbeitnehmers.
 </p>
 
-    <h4>5️⃣ Beitragsbemessungsgrenzen (BBG) – Modellannahme 2026</h4>
+    <h3>5️⃣ Beitragsbemessungsgrenzen (BBG) – Modellannahme 2026</h3>
    <ul>
   <li>KV / PV BBG 2026: <strong>≈ 5.175 € monatlich</strong></li>
   <li>RV / AV BBG 2026: <strong>≈ 7.550 € monatlich</strong></li>
@@ -141,7 +141,7 @@ Diese Umlagen werden ausschließlich vom Arbeitgeber getragen und erhöhen nicht
 Arbeitsentgelt oberhalb dieser Grenzen ist beitragsfrei.
 </p>
 
-    <h4>6️⃣ Nicht im Modell berücksichtigt (vereinfachte Darstellung)</h4>
+    <h3>6️⃣ Nicht im Modell berücksichtigt (vereinfachte Darstellung)</h3>
     <ul>
       <li>Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
       <li>Märzklausel (§ 23a SGB IV)</li>
@@ -155,7 +155,7 @@ Arbeitsentgelt oberhalb dieser Grenzen ist beitragsfrei.
       <li>Umlagepflichtige Kleinbetriebsprüfung</li>
     </ul>
 
-    <h4>7️⃣ Nettoermittlung im Modell</h4>
+    <h3>7️⃣ Nettoermittlung im Modell</h3>
     <p>Netto = steuerpflichtiges Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag – Kirchensteuer – AN-Anteile SV – sonstige Abzüge (z. B. Jobticket)</p>
   `
 };
@@ -1713,6 +1713,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
