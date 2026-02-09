@@ -4,20 +4,47 @@ const explanationContent = {
   normal: `
     <h3>Normaler Arbeitnehmer – Steuer- und Sozialversicherungsübersicht</h3>
 
-    <h4>1️⃣ Steuerliche Behandlung (Einkommensteuerrecht)</h4>
-    <p><strong>Gesetzliche Grundlage:</strong></p>
-    <ul>
-      <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
-      <li>§ 32a EStG – Einkommensteuertarif (Grund-/Splittingtarif)</li>
-      <li>§ 39 EStG – Steuerklassen</li>
-      <li>§ 3 SolzG – Solidaritätszuschlag</li>
-      <li>Kirchensteuergesetze der Länder</li>
-    </ul>
-    <p><strong>Steuerpflichtiges Brutto im Modell:</strong> Grundgehalt, VWL, Überstundenvergütung, Überstundenzuschläge.</p>
-    <p>Monatsbrutto wird gemäß § 39b EStG auf Jahresarbeitslohn hochgerechnet (×12) und nach § 32a EStG progressiv besteuert.</p>
-    <p>Lohnsteuer: progressiver Einkommensteuertarif, Steuerklasse I–VI, Kinderfreibeträge wirken über Steuerklassenanpassung.</p>
-    <p>Solidaritätszuschlag: 5,5 % der Lohnsteuer, Freigrenzen vereinfacht berücksichtigt (§ 3 SolzG).</p>
-    <p>Kirchensteuer: 8 % (Bayern, BW), 9 % (übrige Bundesländer), nur bei Kirchensteuerpflicht, Bemessungsgrundlage: Lohnsteuer.</p>
+    <h3>1️⃣ Steuerliche Behandlung (Einkommensteuerrecht)</h3>
+
+<h4>Gesetzliche Grundlage</h4>
+<ul>
+  <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
+  <li>§ 32a EStG – Einkommensteuertarif (Grund-/Splittingtarif)</li>
+  <li>§ 39 EStG – Steuerklassen</li>
+  <li>§ 39b EStG – Jahreshochrechnung / Lohnsteuerberechnung</li>
+  <li>§ 3 SolzG – Solidaritätszuschlag</li>
+  <li>Kirchensteuergesetze der Länder</li>
+</ul>
+
+<h4>Steuerpflichtiger Arbeitslohn im Modell</h4>
+<ul>
+  <li>Grundgehalt</li>
+  <li>Vermögenswirksame Leistungen (VWL)</li>
+  <li>Überstundenvergütung</li>
+  <li>Überstundenzuschläge (steuerpflichtig)</li>
+</ul>
+
+<h4>Lohnsteuer</h4>
+<ul>
+  <li>Monatsbrutto wird gemäß <strong>§ 39b EStG</strong> auf Jahresarbeitslohn hochgerechnet (× 12)</li>
+  <li>Besteuerung nach progressivem Tarif gemäß <strong>§ 32a EStG</strong></li>
+  <li>Berücksichtigung der Steuerklasse I–VI gemäß <strong>§ 39 EStG</strong></li>
+</ul>
+
+<h4>Solidaritätszuschlag</h4>
+<ul>
+  <li><strong>5,5 %</strong> der festgesetzten Lohnsteuer (§ 3 SolzG)</li>
+  <li>Freigrenzen im Modell vereinfacht berücksichtigt</li>
+</ul>
+
+<h4>Kirchensteuer</h4>
+<ul>
+  <li><strong>8 %</strong> (Bayern, Baden-Württemberg)</li>
+  <li><strong>9 %</strong> (übrige Bundesländer)</li>
+  <li>Bemessungsgrundlage: Lohnsteuer</li>
+  <li>Nur bei bestehender Kirchensteuerpflicht</li>
+</ul>
+
 
 <h3>2️⃣ Sozialversicherung</h3>
 <p><strong>Gesetzliche Grundlage:</strong><br>
@@ -65,8 +92,7 @@ Im Modell wird das sozialversicherungspflichtige Entgelt bis zur jeweiligen
 Im Modell werden Beitragsabschläge für mehrere Kinder unter 25 vereinfacht berücksichtigt.
 </p>
 
-    <h3>3️⃣ Zuschläge für besondere Arbeitszeiten (§ 3b EStG)</h3>
-
+<h3>3️⃣ Zuschläge für besondere Arbeitszeiten (§ 3b EStG)</h3>
 <p><strong>Gesetzliche Grundlage:</strong> § 3b EStG</p>
 
 <h4>Im Modell berücksichtigt</h4>
@@ -1687,6 +1713,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
