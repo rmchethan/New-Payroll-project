@@ -19,52 +19,51 @@ const explanationContent = {
     <p>Solidaritätszuschlag: 5,5 % der Lohnsteuer, Freigrenzen vereinfacht berücksichtigt (§ 3 SolzG).</p>
     <p>Kirchensteuer: 8 % (Bayern, BW), 9 % (übrige Bundesländer), nur bei Kirchensteuerpflicht, Bemessungsgrundlage: Lohnsteuer.</p>
 
-    <h4>2️⃣ Sozialversicherung (SGB IV, V, VI, XI, III)</h4>
-<p><strong>Gesetzliche Grundlage:</strong> § 14 SGB IV, SGB V, SGB VI, SGB III, SGB XI</p>
+<h3>2️⃣ Sozialversicherung</h3>
+<p><strong>Gesetzliche Grundlage:</strong><br>
+§ 14 SGB IV (Arbeitsentgeltbegriff)<br>
+SGB V (KV) · SGB VI (RV) · SGB III (AV) · SGB XI (PV)
+</p>
 
-<table border="1" cellpadding="5" style="border-collapse:collapse; width:100%; margin-top:5px;">
-  <tr>
-    <th>Versicherung</th>
-    <th>Beitragssatz gesamt</th>
-    <th>Aufteilung AN / AG</th>
-    <th>BBG 2026 (Modell)</th>
-    <th>Gesetzliche Referenz</th>
-    <th>Besonderheiten</th>
-  </tr>
-  <tr>
-    <td>Krankenversicherung (KV)</td>
-    <td>14,6 % + Zusatzbeitrag 1,7 % → 16,3 %</td>
-    <td>50 % / 50 %</td>
-    <td>≈ 5.175 € / Monat</td>
-    <td>§ 249 SGB V</td>
-    <td>-</td>
-  </tr>
-  <tr>
-    <td>Rentenversicherung (RV)</td>
-    <td>18,6 %</td>
-    <td>9,3 % / 9,3 %</td>
-    <td>≈ 7.550 € / Monat (West)</td>
-    <td>§ 158 SGB VI</td>
-    <td>-</td>
-  </tr>
-  <tr>
-    <td>Arbeitslosenversicherung (AV)</td>
-    <td>2,6 %</td>
-    <td>1,3 % / 1,3 %</td>
-    <td>≈ 7.550 € / Monat</td>
-    <td>§ 341 SGB III</td>
-    <td>BBG entspricht RV-BBG</td>
-  </tr>
-  <tr>
-    <td>Pflegeversicherung (PV)</td>
-    <td>3,4 %</td>
-    <td>1,7 % / 1,7 %</td>
-    <td>≈ 5.175 € / Monat</td>
-    <td>§ 55 SGB XI</td>
-    <td>Kinderlosenzuschlag +0,6 % AN</td>
-  </tr>
-</table>
+<p>
+Im Modell wird das sozialversicherungspflichtige Entgelt bis zur jeweiligen 
+<strong>Beitragsbemessungsgrenze (BBG)</strong> berücksichtigt.
+</p>
 
+<h4>🏥 Krankenversicherung (KV)</h4>
+<ul>
+  <li>Allgemeiner Beitragssatz: 14,6 % (§ 241 SGB V)</li>
+  <li>Durchschnittlicher Zusatzbeitrag: ca. 1,7 % (§ 242 SGB V)</li>
+  <li>Gesamt: ca. 16,3 %</li>
+  <li>Aufteilung: 50 % Arbeitnehmer / 50 % Arbeitgeber (§ 249 SGB V)</li>
+  <li>BBG 2026 (Modellannahme): ca. 5.175 € monatlich</li>
+</ul>
+
+<h4>👴 Rentenversicherung (RV)</h4>
+<ul>
+  <li>Beitragssatz: 18,6 % (§ 158 SGB VI)</li>
+  <li>Aufteilung: 9,3 % Arbeitnehmer / 9,3 % Arbeitgeber</li>
+  <li>BBG West 2026 (Modellannahme): ca. 7.550 € monatlich</li>
+</ul>
+
+<h4>📉 Arbeitslosenversicherung (AV)</h4>
+<ul>
+  <li>Beitragssatz: 2,6 % (§ 341 SGB III)</li>
+  <li>Aufteilung: 1,3 % Arbeitnehmer / 1,3 % Arbeitgeber</li>
+  <li>BBG entspricht der Rentenversicherungs-BBG</li>
+</ul>
+
+<h4>👶 Pflegeversicherung (PV)</h4>
+<ul>
+  <li>Grundbeitrag: 3,4 % (§ 55 SGB XI)</li>
+  <li>Aufteilung: 1,7 % Arbeitnehmer / 1,7 % Arbeitgeber</li>
+  <li>Kinderlosenzuschlag: +0,6 % Arbeitnehmeranteil (§ 55 Abs. 3 SGB XI)</li>
+  <li>BBG entspricht der Krankenversicherungs-BBG</li>
+</ul>
+
+<p>
+Im Modell werden Beitragsabschläge für mehrere Kinder unter 25 vereinfacht berücksichtigt.
+</p>
 
     <h4>3️⃣ Zuschläge für besondere Arbeitszeiten (§ 3b EStG)</h4>
     <p>Im Modell berücksichtigt: Nachtarbeit 25 %, Nachtarbeit 40 %, Sonntagsarbeit 50 %, Feiertagsarbeit 125 %</p>
@@ -1659,6 +1658,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
