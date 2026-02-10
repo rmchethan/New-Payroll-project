@@ -157,7 +157,7 @@ Arbeitsentgelt oberhalb dieser Grenzen ist beitragsfrei.
 
     <h3>7️⃣ Nettoermittlung im Modell</h3>
     <p>Netto = steuerpflichtiges Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag – Kirchensteuer – AN-Anteile SV – sonstige Abzüge (z. B. Jobticket)</p>
-  `
+  `,
 
 //Explanation Midijob
     
@@ -1869,6 +1869,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
