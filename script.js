@@ -2105,23 +2105,24 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
 
 //  JS functions for modal
 function openModal(content) {
-  const modal = document.getElementById("infoModal");
-  const modalBody = document.getElementById("modalBody");
+  const modal = document.getElementById('infoModal');
+  const modalBody = document.getElementById('modalBody');
   modalBody.innerHTML = content;
-  modal.style.display = "block";
+  modal.style.display = 'block';
 }
 
 function closeModal() {
-  document.getElementById("infoModal").style.display = "none";
+  document.getElementById('infoModal').style.display = 'none';
 }
 
-// Close modal on clicking outside the content
+// Close if user clicks outside the modal content
 window.onclick = function(event) {
-  const modal = document.getElementById("infoModal");
+  const modal = document.getElementById('infoModal');
   if (event.target === modal) {
     modal.style.display = "none";
   }
-};
+}
+
 
 
 
@@ -2220,6 +2221,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
