@@ -1,7 +1,7 @@
 
   // ===== Explanation Content =====
 const explanationContent = {
-  explanationContent.normal = normal: `
+  normal: `
     <h3>Normaler Arbeitnehmer – Steuer- und Sozialversicherungsübersicht</h3>
 
     <h3>1️⃣ Steuerliche Behandlung (Einkommensteuerrecht)</h3>
@@ -159,9 +159,9 @@ Arbeitsentgelt oberhalb dieser Grenzen ist beitragsfrei.
     <p>Netto = steuerpflichtiges Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag – Kirchensteuer – AN-Anteile SV – sonstige Abzüge (z. B. Jobticket)</p>
   `
 
-
-explanationContent.midijob =
-  midijob: `
+//Explanation Midijob
+    
+midijob: `
 <h3>Übergangsbereich (Midijob) – Fachliche Systematik</h3>
 
 <h4>1️⃣ Rechtsgrundlage & Definition</h4>
@@ -1869,6 +1869,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
