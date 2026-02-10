@@ -312,7 +312,133 @@ Brutto<br>
 
 <p><em>Hinweis: Das Modell dient der strukturellen Darstellung der Systematik
 des Übergangsbereichs und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
-`
+`,
+
+// Explanation MiniJobs
+
+  explanationContent.minijob = `
+<h3>Minijob (§ 8 Abs. 1 Nr. 1 SGB IV – Geringfügig entlohnte Beschäftigung)</h3>
+
+<h4>1️⃣ Sozialversicherungsrechtliche Einordnung</h4>
+
+<p><strong>Gesetzliche Grundlage:</strong></p>
+<ul>
+  <li>§ 8 SGB IV – Geringfügige Beschäftigung</li>
+  <li>§ 172 SGB VI – Rentenversicherung Minijob</li>
+  <li>§ 249b SGB V – Krankenversicherung Pauschalbeitrag</li>
+  <li>AAG – Umlagepflicht</li>
+  <li>§ 358 SGB III – Insolvenzgeldumlage</li>
+</ul>
+
+<p>
+Eine geringfügig entlohnte Beschäftigung liegt vor, wenn das regelmäßige monatliche Arbeitsentgelt die gesetzliche Geringfügigkeitsgrenze (derzeit 538 €) nicht übersteigt.
+</p>
+
+<p>
+Minijobs sind grundsätzlich sozialversicherungsfrei für den Arbeitnehmer mit Ausnahme der Rentenversicherungspflicht.
+</p>
+
+<hr>
+
+<h4>2️⃣ Beiträge des Arbeitgebers (Pauschalabgaben)</h4>
+
+<ul>
+  <li><strong>Krankenversicherung:</strong> 13 % (§ 249b SGB V)</li>
+  <li><strong>Rentenversicherung:</strong> 15 % (§ 172 Abs. 3 SGB VI)</li>
+  <li><strong>Pauschalsteuer:</strong> 2 % (§ 40a Abs. 2 EStG – optional, im Modell nicht simuliert)</li>
+  <li><strong>Umlage U1:</strong> 2,8 % (AAG – modellhafte Annahme)</li>
+  <li><strong>Umlage U2:</strong> 0,75 % (AAG – modellhafte Annahme)</li>
+  <li><strong>Insolvenzgeldumlage:</strong> 0,6 % (§ 358 SGB III)</li>
+</ul>
+
+<p>
+Diese Abgaben werden ausschließlich vom Arbeitgeber getragen und erhöhen die Gesamtkosten der Beschäftigung.
+</p>
+
+<hr>
+
+<h4>3️⃣ Rentenversicherungspflicht des Arbeitnehmers</h4>
+
+<p>
+Minijobs sind grundsätzlich rentenversicherungspflichtig.
+</p>
+
+<ul>
+  <li><strong>Gesamtbeitrag RV:</strong> 18,6 % (§ 158 SGB VI)</li>
+  <li><strong>Arbeitgeberanteil:</strong> 15 %</li>
+  <li><strong>Arbeitnehmeranteil:</strong> 3,6 % (Differenzbetrag)</li>
+</ul>
+
+<p>
+Der Arbeitnehmer kann sich gemäß § 6 Abs. 1b SGB VI von der Rentenversicherungspflicht befreien lassen.
+Im Befreiungsfall entfällt der 3,6 %-Eigenanteil.
+</p>
+
+<p>
+Das Modell berücksichtigt die RV-Befreiungsoption über die entsprechende Auswahlfunktion.
+</p>
+
+<hr>
+
+<h4>4️⃣ Steuerliche Behandlung</h4>
+
+<p><strong>Gesetzliche Grundlage:</strong></p>
+<ul>
+  <li>§ 40a EStG – Pauschalbesteuerung bei geringfügiger Beschäftigung</li>
+  <li>§ 38 EStG – Lohnsteuerabzug</li>
+</ul>
+
+<p>
+Minijobs können pauschal mit 2 % besteuert werden (inkl. Kirchensteuer und Solidaritätszuschlag).
+Alternativ ist eine individuelle Besteuerung nach ELStAM möglich.
+</p>
+
+<p>
+Im Modell erfolgt eine vereinfachte Darstellung ohne pauschale 2 %-Besteuerung.
+</p>
+
+<hr>
+
+<h4>5️⃣ Umlagen und Arbeitgebernebenkosten</h4>
+
+<p>
+Minijobs unterliegen vollständig der Umlagepflicht nach dem Aufwendungsausgleichsgesetz (AAG).
+Die Umlagen erhöhen die Arbeitgebergesamtkosten, wirken sich jedoch nicht auf das Netto des Arbeitnehmers aus.
+</p>
+
+<hr>
+
+<h4>6️⃣ Besonderheiten im Beitragsrecht</h4>
+
+<ul>
+  <li>Keine Anwendung von Beitragsbemessungsgrenzen (da Entgelt unterhalb der Grenzen liegt)</li>
+  <li>Keine Anwendung der Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
+  <li>Keine Gleitzonenregelung (Abgrenzung zum Midijob)</li>
+  <li>Volle Umlagepflicht unabhängig von Betriebsgröße</li>
+</ul>
+
+<hr>
+
+<h4>7️⃣ Nettoermittlung im Modell</h4>
+
+<p><strong>Netto =</strong></p>
+<ul>
+  <li>Brutto</li>
+  <li>– Arbeitnehmeranteil RV (falls keine Befreiung)</li>
+</ul>
+
+<p>
+Weitere Abzüge werden im Modell nicht simuliert.
+</p>
+
+<hr>
+
+<p style="font-size:13px; color:#666;">
+Hinweis: Das Modell dient der strukturellen Darstellung der Systematik der geringfügigen Beschäftigung.
+Komplexe Sonderfälle (z. B. kurzfristige Beschäftigung, Mehrfachbeschäftigung, Mindestlohnbewertung, Statusfeststellungsverfahren) sind nicht implementiert.
+</p>
+`;
+
 };
 
 
@@ -1869,6 +1995,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
