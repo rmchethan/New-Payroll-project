@@ -2127,7 +2127,6 @@ window.onclick = function(event) {
 
 
 
-// ===== Info content for i-icons =====
 const infoContent = {
   brutto: `
     <ul>
@@ -2191,8 +2190,11 @@ const infoContent = {
   nacht40: `
     <ul>
       <li>Nachtarbeit mit 40 % Zuschlag</li>
-
-};
+      <li>Im Modell steuerfrei, erhöht Netto</li>
+      <li>Sozialversicherungsfrei</li>
+    </ul>
+  `
+}; // <-- close the object properly
 
 
 
@@ -2221,6 +2223,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
