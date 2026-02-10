@@ -331,7 +331,7 @@ minijob: `
 </ul>
 
 <p>
-Eine geringfügig entlohnte Beschäftigung liegt vor, wenn das regelmäßige monatliche Arbeitsentgelt die gesetzliche Geringfügigkeitsgrenze (derzeit 538 €) nicht übersteigt.
+Eine geringfügig entlohnte Beschäftigung liegt vor, wenn das regelmäßige monatliche Arbeitsentgelt die gesetzliche Geringfügigkeitsgrenze (derzeit 603 €) nicht übersteigt.
 </p>
 
 <p>
@@ -1995,6 +1995,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
