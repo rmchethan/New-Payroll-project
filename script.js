@@ -437,7 +437,7 @@ Weitere Abzüge werden im Modell nicht simuliert.
 Hinweis: Das Modell dient der strukturellen Darstellung der Systematik der geringfügigen Beschäftigung.
 Komplexe Sonderfälle (z. B. kurzfristige Beschäftigung, Mehrfachbeschäftigung, Mindestlohnbewertung, Statusfeststellungsverfahren) sind nicht implementiert.
 </p>
-`;
+`
 
 };
 
@@ -1995,6 +1995,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
