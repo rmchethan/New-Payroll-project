@@ -2128,31 +2128,69 @@ window.onclick = function(event) {
 
 // ===== Info content for i-icons =====
 const infoContent = {
-  brutto: "Monatliches Bruttogehalt vor Abzügen. Basis für Lohnsteuer und Sozialversicherung. Beispiel: 3.000 €.",
-  
-  steuerklasse: "Lohnsteuerklasse I–VI gemäß §39 EStG. Berücksichtigt Familienstand und Kinderfreibeträge. Wirkt auf Lohnsteuerhöhe.",
-  
-  state: "Bundesland für Kirchensteuerberechnung. Bayern/BW = 8 %, andere Bundesländer = 9 %.",
-  
-  kirchensteuer: "Ja/Nein – ob der Arbeitnehmer kirchensteuerpflichtig ist. Nur relevant für Lohnsteuerberechnung.",
-  
-  dob: "Geburtsdatum zur Berechnung von Alters-abhängigen SV Beiträgen und Kinderfreibeträgen. Einfluss z. B. auf Pflegeversicherung (Kinderlosenzuschlag).",
-  
-  children: "Anzahl Kinder für Steuerklasse II oder Freibetragsanpassung. Wirkt auf Lohnsteuer im Modell.",
-  
-  ueberstunden: "Vergütung von Überstunden. Steuer- und SV-pflichtig. Zuschläge werden separat behandelt.",
-  
-  vwl: "Arbeitgeberzuschuss zu vermögenswirksamen Leistungen. Steuer- und SV-pflichtig, wirkt auf Brutto und Netto.",
-  
-  nacht25: "Zuschlag für Nachtarbeit 25 %. Steuer- und SV-frei im Modell, erhöht Netto.",
-  
-  nacht40: "Zuschlag für Nachtarbeit 40 %. Steuer- und SV-frei im Modell, erhöht Netto.",
-  
-  sonntag50: "Zuschlag für Sonntagsarbeit 50 %. Steuer- und SV-frei im Modell, erhöht Netto.",
-  
-  feiertag125: "Zuschlag für Feiertagsarbeit 125 %. Steuer- und SV-frei im Modell, erhöht Netto.",
-  
-  jobticket: "Monatlicher Zuschuss für Jobticket. Im Modell steuerpflichtig, wirkt auf Brutto und Netto. SV-pflichtig je nach Regelung."
+  brutto: `
+    <ul>
+      <li>Gesamtbrutto des Monats (ohne steuerfreie Zuschläge)</li>
+      <li>Basis für Lohnsteuer und Sozialversicherungsabgaben</li>
+      <li>Für Midijobs und Minijobs gelten spezielle Regeln</li>
+    </ul>
+  `,
+  steuerklasse: `
+    <ul>
+      <li>Steuerklassen I–VI bestimmen die Lohnsteuer</li>
+      <li>Berücksichtigt Kinderfreibeträge und Familienstand</li>
+      <li>Wichtig für korrekte monatliche Steuerberechnung</li>
+    </ul>
+  `,
+  state: `
+    <ul>
+      <li>Bundesland für Berechnung der Kirchensteuer</li>
+      <li>Kirchensteuer: 8 % in Bayern/BW, 9 % in anderen Ländern</li>
+    </ul>
+  `,
+  kirchensteuer: `
+    <ul>
+      <li>Nur relevant, wenn Arbeitnehmer kirchensteuerpflichtig ist</li>
+      <li>Bemessungsgrundlage: Lohnsteuer</li>
+    </ul>
+  `,
+  dob: `
+    <ul>
+      <li>Geburtsdatum zur Ermittlung von Kinderfreibeträgen</li>
+      <li>Keine direkte Auswirkung auf Sozialversicherung im Modell</li>
+    </ul>
+  `,
+  children: `
+    <ul>
+      <li>Anzahl der Kinder für Steuerklassenanpassung</li>
+      <li>Berücksichtigt Freibeträge über Steuerklasse</li>
+    </ul>
+  `,
+  ueberstunden: `
+    <ul>
+      <li>Vergütung für geleistete Überstunden</li>
+      <li>Monatsbrutto + Überstunden vergütet</li>
+      <li>Erhöhung sozialversicherungspflichtiges Entgelt</li>
+    </ul>
+  `,
+  vwl: `
+    <ul>
+      <li>Vermögenswirksame Leistungen durch Arbeitgeber</li>
+      <li>Steuerpflichtig, Sozialversicherungspflichtig</li>
+      <li>Steuertabelle wird berücksichtigt</li>
+    </ul>
+  `,
+  nacht25: `
+    <ul>
+      <li>Nachtarbeit mit 25 % Zuschlag</li>
+      <li>Im Modell steuerfrei, erhöht Netto</li>
+      <li>Sozialversicherungsfrei</li>
+    </ul>
+  `,
+  nacht40: `
+    <ul>
+      <li>Nachtarbeit mit 40 % Zuschlag</li>
+
 };
 
 
@@ -2182,6 +2220,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
