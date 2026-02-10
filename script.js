@@ -2120,40 +2120,36 @@ window.onclick = function(event) {
 };
 
 
+// ===== Info content for i-icons =====
 const infoContent = {
-  ueberstunden: `
-    <h3>Überstunden</h3>
-    <div class="highlight highlight-green">
-      Zuschläge können steuerfrei sein (§3b EStG).
-    </div>
-    <div class="highlight highlight-yellow">
-      Steuerfreiheit gilt nur bei bestimmtem Grundlohn.
-    </div>
-    <div class="highlight highlight-red">
-      Sozialversicherungspflicht kann trotzdem bestehen.
-    </div>
-  `,
-
-  soli: `
-    <h3>Solidaritätszuschlag</h3>
-    <div class="highlight highlight-green">
-      Fällt für die meisten Arbeitnehmer nicht mehr an.
-    </div>
-    <div class="highlight highlight-yellow">
-      Greift erst oberhalb der Freigrenze.
-    </div>
-  `,
-
-  sv: `
-    <h3>Sozialversicherung</h3>
-    <div class="highlight highlight-yellow">
-      Beiträge richten sich nach Beitragsbemessungsgrenzen.
-    </div>
-    <div class="highlight highlight-red">
-      Sachsen hat abweichende Pflegeversicherung.
-    </div>
-  `
+  brutto: "Monatliches Bruttogehalt vor Abzügen. Basis für Lohnsteuer und Sozialversicherung. Beispiel: 3.000 €.",
+  
+  steuerklasse: "Lohnsteuerklasse I–VI gemäß §39 EStG. Berücksichtigt Familienstand und Kinderfreibeträge. Wirkt auf Lohnsteuerhöhe.",
+  
+  state: "Bundesland für Kirchensteuerberechnung. Bayern/BW = 8 %, andere Bundesländer = 9 %.",
+  
+  kirchensteuer: "Ja/Nein – ob der Arbeitnehmer kirchensteuerpflichtig ist. Nur relevant für Lohnsteuerberechnung.",
+  
+  dob: "Geburtsdatum zur Berechnung von Alters-abhängigen SV Beiträgen und Kinderfreibeträgen. Einfluss z. B. auf Pflegeversicherung (Kinderlosenzuschlag).",
+  
+  children: "Anzahl Kinder für Steuerklasse II oder Freibetragsanpassung. Wirkt auf Lohnsteuer im Modell.",
+  
+  ueberstunden: "Vergütung von Überstunden. Steuer- und SV-pflichtig. Zuschläge werden separat behandelt.",
+  
+  vwl: "Arbeitgeberzuschuss zu vermögenswirksamen Leistungen. Steuer- und SV-pflichtig, wirkt auf Brutto und Netto.",
+  
+  nacht25: "Zuschlag für Nachtarbeit 25 %. Steuer- und SV-frei im Modell, erhöht Netto.",
+  
+  nacht40: "Zuschlag für Nachtarbeit 40 %. Steuer- und SV-frei im Modell, erhöht Netto.",
+  
+  sonntag50: "Zuschlag für Sonntagsarbeit 50 %. Steuer- und SV-frei im Modell, erhöht Netto.",
+  
+  feiertag125: "Zuschlag für Feiertagsarbeit 125 %. Steuer- und SV-frei im Modell, erhöht Netto.",
+  
+  jobticket: "Monatlicher Zuschuss für Jobticket. Im Modell steuerpflichtig, wirkt auf Brutto und Netto. SV-pflichtig je nach Regelung."
 };
+
+
 
 // ===== Toggle collapsible explanation panel =====
 // Update explanation content only, do not touch display
@@ -2180,6 +2176,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
