@@ -160,7 +160,163 @@ Arbeitsentgelt oberhalb dieser Grenzen ist beitragsfrei.
   `
 };
 
+const explanationContent = {
+  midijob: `
+<h3>Übergangsbereich (Midijob) – Fachliche Systematik</h3>
 
+<h4>1️⃣ Rechtsgrundlage & Definition</h4>
+<ul>
+  <li>§ 20 Abs. 2 SGB IV – Übergangsbereich</li>
+  <li>§ 163 Abs. 10 SGB VI – Ermäßigte Beitragsbemessungsgrundlage</li>
+</ul>
+
+<p>
+Der Übergangsbereich umfasst ein monatliches Arbeitsentgelt von
+<strong>603,01 € bis 2.000 €</strong>.
+Ziel ist die <strong>Entlastung des Arbeitnehmers bei den Sozialversicherungsbeiträgen</strong>,
+während der Arbeitgeber grundsätzlich reguläre Beiträge trägt.
+</p>
+
+<hr>
+
+<h4>2️⃣ Steuerliche Behandlung (keine Sonderregelung)</h4>
+<ul>
+  <li>§ 38 EStG – Lohnsteuerabzug</li>
+  <li>§ 32a EStG – Progressiver Einkommensteuertarif</li>
+  <li>§ 39 EStG – Steuerklassen</li>
+  <li>§ 3 SolzG – Solidaritätszuschlag</li>
+  <li>Kirchensteuergesetze der Länder</li>
+</ul>
+
+<p>
+Midijobs unterliegen <strong>vollständig dem regulären Lohnsteuerrecht</strong>.
+Es existiert keine steuerliche Begünstigung wie im Minijob.
+</p>
+
+<p>
+Das Monatsbrutto wird gemäß § 39b EStG auf einen Jahresarbeitslohn
+hochgerechnet und progressiv besteuert.
+</p>
+
+<hr>
+
+<h4>3️⃣ Sozialversicherung – Kernmechanismus des Übergangsbereichs</h4>
+
+<p><strong>Grundsatz:</strong> Das tatsächliche Brutto ist sozialversicherungspflichtig,
+jedoch wird für den Arbeitnehmer eine reduzierte Beitragsbemessungsgrundlage
+ermittelt.</p>
+
+<ul>
+  <li><strong>Arbeitnehmer:</strong> Ermäßigte Bemessungsgrundlage gemäß gesetzlicher Formel</li>
+  <li><strong>Arbeitgeber:</strong> Beiträge grundsätzlich aus dem tatsächlichen Arbeitsentgelt</li>
+</ul>
+
+<p>
+Im Modell wird die Arbeitnehmer-Bemessungsgrundlage mit der gesetzlich
+vorgegebenen Übergangsbereichsformel simuliert:
+</p>
+
+<p>
+svBaseAN = (2000 / (2000 − G)) × (Brutto − G)
+</p>
+
+<p>
+Zusätzlich wird der Faktor F (Modellannahme 2026 ≈ 0,6619)
+zur Ermittlung der Gesamtsozialversicherungsbasis berücksichtigt.
+</p>
+
+<p>
+Dadurch steigt der Arbeitnehmeranteil gleitend von einem reduzierten Wert
+auf den regulären Beitragsanteil bei 2.000 €.
+</p>
+
+<hr>
+
+<h4>4️⃣ Beitragssätze im Übergangsbereich</h4>
+
+<ul>
+  <li><strong>Krankenversicherung:</strong> 14,6 % + Ø 1,7 % Zusatzbeitrag → ca. 16,3 % gesamt<br>
+      Aufteilung 50 % / 50 % (§ 249 SGB V)</li>
+
+  <li><strong>Rentenversicherung:</strong> 18,6 % gesamt → 9,3 % AN / 9,3 % AG (§ 158 SGB VI)</li>
+
+  <li><strong>Arbeitslosenversicherung:</strong> 2,6 % gesamt → 1,3 % AN / 1,3 % AG (§ 341 SGB III)</li>
+
+  <li><strong>Pflegeversicherung:</strong> 3,4 % gesamt → 1,7 % AN / 1,7 % AG<br>
+      Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI)</li>
+</ul>
+
+<p>
+Die Beitragsbemessungsgrenzen (BBG) werden auch im Übergangsbereich angewendet,
+sind jedoch bei Entgelten unter 2.000 € regelmäßig nicht erreicht.
+</p>
+
+<hr>
+
+<h4>5️⃣ Umlagen & Arbeitgeberaufwendungen</h4>
+
+<ul>
+  <li>AAG – Aufwendungsausgleichsgesetz (U1 / U2)</li>
+  <li>§ 358 SGB III – Insolvenzgeldumlage</li>
+</ul>
+
+<p>
+Umlagen werden <strong>nicht reduziert</strong> und basieren im Modell
+auf dem tatsächlichen Bruttoarbeitsentgelt:
+</p>
+
+<ul>
+  <li>U1: 2,8 %</li>
+  <li>U2: 0,75 %</li>
+  <li>Insolvenzgeldumlage: 0,6 %</li>
+</ul>
+
+<p>
+Sie werden ausschließlich vom Arbeitgeber getragen.
+</p>
+
+<hr>
+
+<h4>6️⃣ Abgrenzung zum Minijob</h4>
+
+<ul>
+  <li>Keine Pauschalversteuerung</li>
+  <li>Volle Versicherungspflicht in allen Zweigen</li>
+  <li>Reduktion betrifft ausschließlich die Arbeitnehmer-Beitragslast</li>
+</ul>
+
+<hr>
+
+<h4>7️⃣ Nicht im Modell berücksichtigt (bewusste Vereinfachung)</h4>
+
+<ul>
+  <li>Mehrfachbeschäftigung (§ 22 SGB IV)</li>
+  <li>Überschreiten der Grenze im Jahresverlauf</li>
+  <li>Einmalzahlungen mit Übergangsbereichs-Splitting</li>
+  <li>SV-Tage bei untermonatiger Beschäftigung</li>
+  <li>Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
+</ul>
+
+<hr>
+
+<h4>8️⃣ Nettoermittlung im Modell</h4>
+
+<p>
+Netto =<br>
+Brutto<br>
+− Lohnsteuer<br>
+− Solidaritätszuschlag<br>
+− Kirchensteuer<br>
+− Arbeitnehmeranteile Sozialversicherung
+</p>
+
+<p><em>Hinweis: Das Modell dient der strukturellen Darstellung der Systematik
+des Übergangsbereichs und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
+`
+};
+
+
+  
 
 // ===== Utility Helpers =====
 function safeNumber(value) {
@@ -1713,6 +1869,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
