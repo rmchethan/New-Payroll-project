@@ -533,7 +533,7 @@ Netto = Brutto + steuerfreie Zuschläge − Lohnsteuer − Solidaritätszuschlag
 </p>
 
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik von Praktikantenvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
-`
+`,
 
 
   // ===== Explanation Content for Azubi =====
@@ -623,7 +623,7 @@ Net = Taxable gross + tax-free additions – Income tax – Solidarity surcharge
 </p>
 
 <p><em>Note: This model is a simplified demonstration of Azubi payroll treatment and is not legally binding.</em></p>
-`,
+`
 };
 
 
@@ -2180,6 +2180,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
