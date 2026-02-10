@@ -536,6 +536,94 @@ Netto = Brutto + steuerfreie Zuschläge − Lohnsteuer − Solidaritätszuschlag
 `
 
 
+  // ===== Explanation Content for Azubi =====
+azubi: `
+<h3>Azubi – Apprenticeship Payroll Overview</h3>
+
+<h4>1️⃣ Legal Basis & Definition</h4>
+<ul>
+  <li>§ 14 SGB IV – Definition of remuneration</li>
+  <li>SGB V – Health Insurance (KV)</li>
+  <li>SGB VI – Pension Insurance (RV)</li>
+  <li>SGB III – Unemployment Insurance (AV)</li>
+  <li>SGB XI – Nursing Care Insurance (PV)</li>
+  <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
+  <li>§ 32a EStG – Progressive income tax rate</li>
+  <li>§ 39 EStG – Tax classes</li>
+  <li>§ 3 SolzG – Solidarity surcharge</li>
+  <li>Kirchensteuergesetze der Länder</li>
+</ul>
+
+<h4>2️⃣ Taxable Income in the Model</h4>
+<ul>
+  <li>Base apprenticeship allowance (Ausbildungsvergütung)</li>
+  <li>Employer contributions to capital-building schemes (VWL)</li>
+  <li>Overtime pay (if applicable)</li>
+  <li>Overtime bonuses (taxable)</li>
+</ul>
+<p>Monthly income is annualized according to <strong>§ 39b EStG</strong> and taxed progressively.</p>
+
+<h4>3️⃣ Income Tax (Lohnsteuer)</h4>
+<ul>
+  <li>Calculated based on the progressive tariff (§ 32a EStG)</li>
+  <li>Adjusted for tax class I–VI (§ 39 EStG)</li>
+  <li>Child allowances considered via tax class adjustments</li>
+</ul>
+
+<h4>4️⃣ Solidarity Surcharge</h4>
+<ul>
+  <li>5.5 % of assessed income tax (§ 3 SolzG)</li>
+  <li>Simplified threshold handling in the model</li>
+</ul>
+
+<h4>5️⃣ Church Tax</h4>
+<ul>
+  <li>8 % (Bavaria & Baden-Württemberg), 9 % (other states)</li>
+  <li>Calculated on assessed income tax</li>
+  <li>Only if apprentice is church-tax liable</li>
+</ul>
+
+<h4>6️⃣ Social Security (SGB IV, V, VI, XI, III)</h4>
+<ul>
+  <li>Health Insurance (KV): 14.6 % + average 1.7 % supplementary → 16.3 % total, split 50 % / 50 % (BBG ≈ €5,175)</li>
+  <li>Pension Insurance (RV): 18.6 % total → 9.3 % AN / 9.3 % AG (BBG ≈ €7,550)</li>
+  <li>Unemployment Insurance (AV): 2.6 % total → 1.3 % AN / 1.3 % AG (BBG same as RV)</li>
+  <li>Nursing Care Insurance (PV): 3.4 % total → 1.7 % AN / 1.7 % AG, childless surcharge +0.6 % AN (BBG same as KV)</li>
+</ul>
+<p>Contributions are capped at the respective contribution ceilings (BBG). Apprentices are generally fully covered.</p>
+
+<h4>7️⃣ Special Payments / Bonuses</h4>
+<ul>
+  <li>Overtime, night, Sunday, and holiday bonuses are generally taxable and subject to social security</li>
+  <li>The model does not split minor tax exemptions for small bonuses</li>
+</ul>
+
+<h4>8️⃣ Employer Contributions (Umlagen)</h4>
+<ul>
+  <li>Umlage U1: 2.8 %</li>
+  <li>Umlage U2: 0.75 %</li>
+  <li>Insolvency fund: 0.6 %</li>
+  <li>These costs are fully borne by the employer</li>
+</ul>
+
+<h4>9️⃣ Components Not Modeled (Future Iterations)</h4>
+<ul>
+  <li>March clause (§ 23a SGB IV)</li>
+  <li>Special social security splitting for one-time payments</li>
+  <li>ELStAM allowances (§ 39a EStG)</li>
+  <li>Fringe benefits (§ 8 EStG)</li>
+  <li>Flat-rate taxation (§ 40 EStG)</li>
+  <li>Reduced working hours / Kurzarbeit</li>
+  <li>Other payroll keys and small-business checks</li>
+</ul>
+
+<h4>🔟 Net Pay in the Model</h4>
+<p>
+Net = Taxable gross + tax-free additions – Income tax – Solidarity surcharge – Church tax – Employee social security contributions – Other deductions (e.g., Jobticket)
+</p>
+
+<p><em>Note: This model is a simplified demonstration of Azubi payroll treatment and is not legally binding.</em></p>
+`
 };
 
 
@@ -2092,6 +2180,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
