@@ -437,7 +437,104 @@ Weitere Abzüge werden im Modell nicht simuliert.
 Hinweis: Das Modell dient der strukturellen Darstellung der Systematik der geringfügigen Beschäftigung.
 Komplexe Sonderfälle (z. B. kurzfristige Beschäftigung, Mehrfachbeschäftigung, Mindestlohnbewertung, Statusfeststellungsverfahren) sind nicht implementiert.
 </p>
+`,
+
+// ===== Explanation Praktikant =====
+  
+praktikant: `
+<h3>Praktikant – Steuer- und Sozialversicherungsübersicht</h3>
+
+<h3>1️⃣ Rechtsgrundlage & Definition</h3>
+<ul>
+  <li>§ 20 Abs. 1,2 SGB IV – Arbeitsentgeltbegriff für Praktikanten</li>
+  <li>§ 1,2,3 SGB V, VI, III, XI – Sozialversicherungspflicht</li>
+  <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
+  <li>§ 32a EStG – Einkommensteuertarif</li>
+  <li>§ 39 EStG – Steuerklassen</li>
+  <li>Kirchensteuergesetze der Länder</li>
+</ul>
+
+<h4>Praktikantentypen</h4>
+<ul>
+  <li><strong>Pflichtpraktikum</strong> (Teil von Ausbildung/Studium): sozialversicherungsfrei (§ 20 SGB IV)</li>
+  <li><strong>Freiwilliges Praktikum &lt; 3 Monate:</strong> sozialversicherungsfrei (§ 20 SGB IV)</li>
+  <li><strong>Freiwilliges Praktikum ≥ 3 Monate und Brutto ≤ 603 €:</strong> sozialversicherungsfrei bzw. Minijob-Status</li>
+  <li><strong>Freiwilliges Praktikum ≥ 3 Monate und Brutto > 603 €:</strong> sozialversicherungspflichtig wie Normaler Arbeitnehmer</li>
+</ul>
+
+<h3>2️⃣ Steuerliche Behandlung (Einkommensteuerrecht)</h3>
+<ul>
+  <li>Monatsbrutto wird bei SV-pflichtigen Praktika gemäß § 39b EStG auf Jahresarbeitslohn hochgerechnet (×12)</li>
+  <li>Besteuerung nach progressivem Tarif gemäß § 32a EStG</li>
+  <li>Berücksichtigung Steuerklasse I–VI (§ 39 EStG)</li>
+  <li>Solidaritätszuschlag 5,5 % der Lohnsteuer (§ 3 SolzG)</li>
+  <li>Kirchensteuer: 8 % (Bayern/BW), 9 % (übrige Bundesländer)</li>
+</ul>
+
+<h3>3️⃣ Sozialversicherung – SV-Behandlung Praktikanten</h3>
+<p>
+Die Sozialversicherung hängt von Praktikantentyp, Dauer und Vergütung ab:
+</p>
+<ul>
+  <li>Pflichtpraktikum: sozialversicherungsfrei (§ 20 SGB IV)</li>
+  <li>Freiwilliges Praktikum &lt; 3 Monate: sozialversicherungsfrei</li>
+  <li>Freiwilliges Praktikum ≥ 3 Monate:
+    <ul>
+      <li>Brutto ≤ 603 €: sozialversicherungsfrei / Minijob-Status</li>
+      <li>Brutto > 603 €: volle SV-Pflicht wie Normaler Arbeitnehmer</li>
+    </ul>
+  </li>
+</ul>
+
+<h4>Beitragssätze bei SV-pflichtigen Praktika</h4>
+<ul>
+  <li>Krankenversicherung (KV): 14,6 % + Ø 1,7 % Zusatz → 16,3 % gesamt, 50 % AN / 50 % AG (§ 249 SGB V), BBG 2026 ≈ 5.175 €</li>
+  <li>Rentenversicherung (RV): 18,6 % gesamt, 9,3 % AN / 9,3 % AG (§ 158 SGB VI), BBG West 2026 ≈ 7.550 €</li>
+  <li>Arbeitslosenversicherung (AV): 2,6 % gesamt, 1,3 % AN / 1,3 % AG (§ 341 SGB III), BBG wie RV</li>
+  <li>Pflegeversicherung (PV): 3,4 % gesamt, 1,7 % AN / 1,7 % AG, Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI), BBG wie KV</li>
+</ul>
+
+<h3>4️⃣ Zuschläge / Überstunden</h3>
+<p>
+Bei Praktikanten werden Überstunden und Zuschläge im Modell analog Normaler Arbeitnehmer behandelt, nur wenn die Beschäftigung SV-pflichtig ist.
+</p>
+<ul>
+  <li>Nachtarbeit 25 %, Nachtarbeit 40 %, Sonntagsarbeit 50 %, Feiertagsarbeit 125 %</li>
+  <li>Steuerfrei, falls zusätzlich zum Grundlohn und gesetzliche Höchstgrenzen eingehalten</li>
+  <li>Erhöhen nur das Netto, keine SV auf steuerfreie Zuschläge</li>
+</ul>
+
+<h3>5️⃣ Umlagen (Arbeitgeber)</h3>
+<p>
+Umlagen werden nur bei SV-pflichtigen Praktika relevant:
+</p>
+<ul>
+  <li>U1: 2,8 %</li>
+  <li>U2: 0,75 %</li>
+  <li>Insolvenzgeldumlage: 0,6 %</li>
+</ul>
+<p>Diese werden vollständig vom Arbeitgeber getragen.</p>
+
+<h3>6️⃣ Nicht im Modell berücksichtigt (wird in zukünftigen Versionen entwickelt)</h3>
+<ul>
+  <li>Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
+  <li>Märzklausel (§ 23a SGB IV)</li>
+  <li>Einmalzahlungen mit SV-Splitting</li>
+  <li>ELStAM-Freibeträge (§ 39a EStG)</li>
+  <li>Sachbezüge (§ 8 EStG)</li>
+  <li>Pauschalversteuerungen (§ 40 EStG)</li>
+  <li>Altersteilzeit / Kurzarbeitergeld</li>
+  <li>Beitragsgruppenschlüssel / Personengruppenschlüssel</li>
+</ul>
+
+<h3>7️⃣ Nettoermittlung im Modell</h3>
+<p>
+Netto = Brutto + steuerfreie Zuschläge − Lohnsteuer − Solidaritätszuschlag − Kirchensteuer − Arbeitnehmeranteile SV − sonstige Abzüge (z. B. Jobticket)
+</p>
+
+<p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik von Praktikantenvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
+
 
 };
 
@@ -1995,6 +2092,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
