@@ -2101,22 +2101,29 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
 
 }
 
+
+
+//  JS functions for modal
 function openModal(content) {
-  document.getElementById("modalBody").innerHTML = content;
-  document.getElementById("infoModal").style.display = "block";
+  const modal = document.getElementById("infoModal");
+  const modalBody = document.getElementById("modalBody");
+  modalBody.innerHTML = content;
+  modal.style.display = "block";
 }
 
 function closeModal() {
   document.getElementById("infoModal").style.display = "none";
 }
 
-// Close when clicking outside
+// Close modal on clicking outside the content
 window.onclick = function(event) {
   const modal = document.getElementById("infoModal");
   if (event.target === modal) {
-    closeModal();
+    modal.style.display = "none";
   }
 };
+
+
 
 
 // ===== Info content for i-icons =====
@@ -2175,6 +2182,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
