@@ -1210,11 +1210,6 @@ function calculatePraktikant({ sv, employer }) {
   const steuerpflichtigesBrutto = brutto;
 
   
-  // ===== SV calculation =====
-  const svBase = applyBBG(steuerpflichtigesBrutto);
- 
-
-
   console.log("SV contributions:", sv);
   console.log("Employer costs:", employer);
   const totalAN = sv.totalAN;
@@ -1410,11 +1405,7 @@ function calculateAzubi({ sv, employer }) {
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
 
-  // ===== SV calculation (Azubi: full contributions) =====
-  const svBase = applyBBG(steuerpflichtigesBrutto);
-
-
- console.log("SV contributions:", sv);
+  console.log("SV contributions:", sv);
   console.log("Employer costs:", employer);
   const totalAN = sv.totalAN;
   const totalAG = sv.totalAG;
@@ -2340,6 +2331,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
