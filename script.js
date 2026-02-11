@@ -468,8 +468,27 @@ function calculateNetto() {
   const age = calculateAge(dob);
 
   // Example: create social insurance bases
- const svBaseAN = { kvPvBase: brutto, rvAvBase: brutto };
- const svBaseAG = { kvPvBase: brutto, rvAvBase: brutto };
+ let svBaseAN;
+let svBaseAG;
+
+if (employeeType === "midijob") {
+    const reducedBase = calculateMidijobBase(brutto);
+
+    svBaseAN = {
+        kvPvBase: reducedBase,
+        rvAvBase: reducedBase
+    };
+
+    svBaseAG = {
+        kvPvBase: brutto,
+        rvAvBase: brutto
+    };
+
+} else {
+    svBaseAN = { kvPvBase: brutto, rvAvBase: brutto };
+    svBaseAG = { kvPvBase: brutto, rvAvBase: brutto };
+}
+
 
   // Call your social insurance function
   const sv = calculateSV({
@@ -664,6 +683,12 @@ function calculateMidijob() {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
     return; // Stop the calculation
   }
+
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
+  console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
   
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
@@ -693,35 +718,8 @@ const F2026 = 0.6619; // from 28 / 42.30
   // Case: midijob range
 if (brutto > MIDIJOB_MIN && brutto <= MIDIJOB_MAX) {
   const G = MIDIJOB_MIN;
-  // employee contribution base
-  svBaseAN = (MIDIJOB_MAX / (MIDIJOB_MAX - G)) * (brutto - G);
-
-  // total social base
-  svBaseAG = F2026 * G
-      + ((MIDIJOB_MAX / (MIDIJOB_MAX - G)) - (G / (MIDIJOB_MAX - G) * F2026)) * (brutto - G);
-
-} else {
-  // normal (no reduction)
-  svBaseAN = brutto;
-  svBaseAG = brutto;
-}
-
-  // then pass to calculateSV
-const sv = calculateSV({
-  brutto,
-  svBaseAN,
-  svBaseAG,
-  children,
-  age,
-  state,
-  employeeType
-});
-
-  console.log("SV contributions:", sv);
-  console.log("Employer costs:", employer);
-  const totalAN = sv.totalAN;
-  const totalAG = sv.totalAG;
-  const totalEmployerCost = employer.totalCost;
+ 
+  
 
   // ===== Lohnsteuer (annualized) =====
   const annualIncome = steuerpflichtigesBrutto * 12;
@@ -2310,6 +2308,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
