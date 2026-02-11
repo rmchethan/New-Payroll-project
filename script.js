@@ -900,7 +900,7 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
 
  // Calculate for Normal AN
 // ===== Calculate Normal Employee =====
-function calculateNormal() {
+function calculateNormal({ sv, employer }) {
 
  
   const brutto = safeNumber(document.getElementById("brutto")?.value);
@@ -915,12 +915,12 @@ function calculateNormal() {
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-
-   // ✅ Compute SV bases here
-  const svBaseAN = computeSVBaseAN(brutto, age, children);
-  const svBaseAG = computeSVBaseAG(brutto);
-
-
+  
+  console.log("SV contributions:", sv);
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
+  
   const ueberstunden = Number(document.getElementById("ueberstunden")?.value || 0);
   const vwl = Number(document.getElementById("vwl")?.value || 0);
   const nacht25 = Number(document.getElementById("nacht25")?.value || 0);
@@ -953,23 +953,6 @@ const insolvenzgeld = steuerpflichtigesBrutto * 0.006; // Insolvenzgeld (0.6%)
   // ===== BBG & SV =====
   const bbg = applyBBG(steuerpflichtigesBrutto);
   
-const sv = calculateSV({
-  brutto,
-  svBaseAN,
-  svBaseAG,
-  children,
-  age,
-  state,
-  employeeType
-});
-
-   console.log("SV contributions:", sv);
-  console.log("Employer costs:", employer);
- 
-  const totalAN = sv.totalAN;
-  const totalAG = sv.totalAG;
-  const totalEmployerCost = employer.totalCost;
-
   
   // ===== Jahreshochrechnung & Steuerklasse =====
   const annualIncome = steuerpflichtigesBrutto * 12;
@@ -2327,6 +2310,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
