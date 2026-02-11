@@ -801,11 +801,37 @@ function calculateSV({
   children,
   age,
   state,
+  employeeType,
   includeKV = true,
   includeRV = true,
   includeAV = true,
   includePV = true
-}) {
+})
+
+function calculateEmployerCosts({ brutto, svAG }) {
+
+  // Umlagen (approximate demo values)
+  const U1 = brutto * 0.01;       // 1% sickness reimbursement
+  const U2 = brutto * 0.003;      // 0.3% maternity
+  const INS = brutto * 0.0006;    // insolvency levy 0.06%
+
+  const umlagenTotal = U1 + U2 + INS;
+
+  const totalCost = brutto + svAG + umlagenTotal;
+
+  const kostenfaktor = totalCost / brutto;
+
+  return {
+    U1,
+    U2,
+    INS,
+    umlagenTotal,
+    totalCost,
+    kostenfaktor
+  };
+}
+
+
 
   if (!svBaseAN || typeof svBaseAN !== "object") {
     console.error("Invalid svBaseAN:", svBaseAN);
@@ -841,7 +867,7 @@ function calculateSV({
     kvAN = kvPvBase * 0.073;
     kvAG = kvPvBaseAG * 0.073;
 
-    const KV_ZUSATZ = 0.029;
+    const KV_ZUSATZ = 0.017; // 1.7% average Zusatzbeitrag
     const KV_ZUSATZ_HALF = KV_ZUSATZ / 2;
 
     kvZusatzAN = kvPvBase * KV_ZUSATZ_HALF;
@@ -871,7 +897,7 @@ if (includeRV) {
 
   // ===== AV =====
   if (includeAV) {
-    avAN = rvAvBase * 0.012;
+    avAN = rvAvBase * 0.013;
     avAG = rvAvBaseAG * 0.013;
   }
 
@@ -1065,13 +1091,18 @@ if (!validateInputs()) {
   }
 
   const employeeType = document.getElementById("employeeType")?.value;
-  
+ 
+
   if (employeeType === "normal") calculateNormal();
   else if (employeeType === "praktikant") calculatePraktikant();
   else if (employeeType === "minijob") calculateMinijob();
   else if (employeeType === "midijob") calculateMidijob();
   else if (employeeType === "azubi") calculateAzubi();
-
+  
+ const employer = calculateEmployerCosts({
+  brutto,
+  svAG: sv.totalAG
+});
  
 // ===== Update the explanation panel (do NOT force display) =====
   updateExplanation(employeeType);
@@ -1188,6 +1219,13 @@ const outputHTML = `
     <th>Gesamtkosten AG</th>
     <th>${formatCurrency(gesamtKostenAG)}</th>
   </tr>
+  <table>
+<tr><td>Bruttogehalt</td><td>${brutto.toFixed(2)} €</td></tr>
+<tr><td>AG Sozialversicherung</td><td>${sv.totalAG.toFixed(2)} €</td></tr>
+<tr><td>Umlagen (U1/U2/INS)</td><td>${employer.umlagenTotal.toFixed(2)} €</td></tr>
+<tr><th>Gesamtkosten</th><th>${employer.totalCost.toFixed(2)} €</th></tr>
+<tr><td>Kostenfaktor</td><td>${employer.kostenfaktor.toFixed(2)}</td></tr>
+</table>
 
 </table>
 `;
@@ -2223,6 +2261,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
