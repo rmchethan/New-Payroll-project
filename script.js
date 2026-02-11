@@ -1,632 +1,4 @@
-
-  // ===== Explanation Content =====
-const explanationContent = {
-  normal: `
-    <h3>Normaler Arbeitnehmer – Steuer- und Sozialversicherungsübersicht</h3>
-
-    <h3>1️⃣ Steuerliche Behandlung (Einkommensteuerrecht)</h3>
-
-<h4>Gesetzliche Grundlage</h4>
-<ul>
-  <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
-  <li>§ 32a EStG – Einkommensteuertarif (Grund-/Splittingtarif)</li>
-  <li>§ 39 EStG – Steuerklassen</li>
-  <li>§ 39b EStG – Jahreshochrechnung / Lohnsteuerberechnung</li>
-  <li>§ 3 SolzG – Solidaritätszuschlag</li>
-  <li>Kirchensteuergesetze der Länder</li>
-</ul>
-
-<h4>Steuerpflichtiger Arbeitslohn im Modell</h4>
-<ul>
-  <li>Grundgehalt</li>
-  <li>Vermögenswirksame Leistungen (VWL)</li>
-  <li>Überstundenvergütung</li>
-  <li>Überstundenzuschläge (steuerpflichtig)</li>
-</ul>
-
-<h4>Lohnsteuer</h4>
-<ul>
-  <li>Monatsbrutto wird gemäß <strong>§ 39b EStG</strong> auf Jahresarbeitslohn hochgerechnet (× 12)</li>
-  <li>Besteuerung nach progressivem Tarif gemäß <strong>§ 32a EStG</strong></li>
-  <li>Berücksichtigung der Steuerklasse I–VI gemäß <strong>§ 39 EStG</strong></li>
-</ul>
-
-<h4>Solidaritätszuschlag</h4>
-<ul>
-  <li><strong>5,5 %</strong> der festgesetzten Lohnsteuer (§ 3 SolzG)</li>
-  <li>Freigrenzen im Modell vereinfacht berücksichtigt</li>
-</ul>
-
-<h4>Kirchensteuer</h4>
-<ul>
-  <li><strong>8 %</strong> (Bayern, Baden-Württemberg)</li>
-  <li><strong>9 %</strong> (übrige Bundesländer)</li>
-  <li>Bemessungsgrundlage: Lohnsteuer</li>
-  <li>Nur bei bestehender Kirchensteuerpflicht</li>
-</ul>
-
-
-<h3>2️⃣ Sozialversicherung</h3>
-<p><strong>Gesetzliche Grundlage:</strong><br>
-§ 14 SGB IV (Arbeitsentgeltbegriff)<br>
-SGB V (KV) · SGB VI (RV) · SGB III (AV) · SGB XI (PV)
-</p>
-
-<p>
-Im Modell wird das sozialversicherungspflichtige Entgelt bis zur jeweiligen 
-<strong>Beitragsbemessungsgrenze (BBG)</strong> berücksichtigt.
-</p>
-
-<h4>🏥 Krankenversicherung (KV)</h4>
-<ul>
-  <li>Allgemeiner Beitragssatz: 14,6 % (§ 241 SGB V)</li>
-  <li>Durchschnittlicher Zusatzbeitrag: ca. 1,7 % (§ 242 SGB V)</li>
-  <li>Gesamt: ca. 16,3 %</li>
-  <li>Aufteilung: 50 % Arbeitnehmer / 50 % Arbeitgeber (§ 249 SGB V)</li>
-  <li>BBG 2026 (Modellannahme): ca. 5.175 € monatlich</li>
-</ul>
-
-<h4>👴 Rentenversicherung (RV)</h4>
-<ul>
-  <li>Beitragssatz: 18,6 % (§ 158 SGB VI)</li>
-  <li>Aufteilung: 9,3 % Arbeitnehmer / 9,3 % Arbeitgeber</li>
-  <li>BBG West 2026 (Modellannahme): ca. 7.550 € monatlich</li>
-</ul>
-
-<h4>📉 Arbeitslosenversicherung (AV)</h4>
-<ul>
-  <li>Beitragssatz: 2,6 % (§ 341 SGB III)</li>
-  <li>Aufteilung: 1,3 % Arbeitnehmer / 1,3 % Arbeitgeber</li>
-  <li>BBG entspricht der Rentenversicherungs-BBG</li>
-</ul>
-
-<h4>👶 Pflegeversicherung (PV)</h4>
-<ul>
-  <li>Grundbeitrag: 3,4 % (§ 55 SGB XI)</li>
-  <li>Aufteilung: 1,7 % Arbeitnehmer / 1,7 % Arbeitgeber</li>
-  <li>Kinderlosenzuschlag: +0,6 % Arbeitnehmeranteil (§ 55 Abs. 3 SGB XI)</li>
-  <li>BBG entspricht der Krankenversicherungs-BBG</li>
-</ul>
-
-<p>
-Im Modell werden Beitragsabschläge für mehrere Kinder unter 25 vereinfacht berücksichtigt.
-</p>
-
-<h3>3️⃣ Zuschläge für besondere Arbeitszeiten (§ 3b EStG)</h3>
-<p><strong>Gesetzliche Grundlage:</strong> § 3b EStG</p>
-
-<h4>Im Modell berücksichtigt</h4>
-<ul>
-  <li>Nachtarbeit: <strong>25 %</strong></li>
-  <li>Nachtarbeit: <strong>40 %</strong></li>
-  <li>Sonntagsarbeit: <strong>50 %</strong></li>
-  <li>Feiertagsarbeit: <strong>125 %</strong></li>
-   <li>Feiertagsarbeit: <strong>150 % (Nicht)</strong></li>
-</ul>
-
-<h4>Steuerliche Behandlung</h4>
-<ul>
-  <li>Steuerfrei bei zusätzlicher Zahlung zum Grundlohn</li>
-  <li>Steuerfreiheit nur bis gesetzliche Höchstgrenzen</li>
-  <li>Grundlohn ≤ <strong>50 € je Stunde</strong></li>
-</ul>
-
-<h4>Behandlung im Modell</h4>
-<ul>
-  <li>Zuschläge steuerfrei</li>
-  <li>Zuschläge sozialversicherungsfrei</li>
-  <li>Erhöhen ausschließlich das Netto</li>
-  <li>Gesetzliche Höchstgrenzen werden nicht gesondert geprüft</li>
-</ul>
-
-
-    <h3>4️⃣ Umlagen (Arbeitgeberaufwendungen)</h3>
-    <p><strong>Gesetzliche Grundlage:</strong> AAG, § 358 SGB III (Insolvenzgeldumlage)</p>
-    <ul>
-  <li>Umlage U1: <strong>2,8 %</strong></li>
-  <li>Umlage U2: <strong>0,75 %</strong></li>
-  <li>Insolvenzgeldumlage: <strong>0,6 %</strong></li>
-</ul>
-<p>
-Diese Umlagen werden ausschließlich vom Arbeitgeber getragen und erhöhen nicht das Netto des Arbeitnehmers.
-</p>
-
-    <h3>5️⃣ Beitragsbemessungsgrenzen (BBG) – Modellannahme 2026</h3>
-   <ul>
-  <li>KV / PV BBG 2026: <strong>≈ 5.175 € monatlich</strong></li>
-  <li>RV / AV BBG 2026: <strong>≈ 7.550 € monatlich</strong></li>
-</ul>
-
-<p>
-Arbeitsentgelt oberhalb dieser Grenzen ist beitragsfrei.
-</p>
-
-    <h3>6️⃣ Nicht im Modell berücksichtigt (vereinfachte Darstellung)</h3>
-    <ul>
-      <li>Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
-      <li>Märzklausel (§ 23a SGB IV)</li>
-      <li>Einmalzahlungen mit SV-Splitting</li>
-      <li>ELStAM-Freibeträge (§ 39a EStG)</li>
-      <li>Sachbezüge (§ 8 EStG)</li>
-      <li>Pauschalversteuerungen (§ 40 EStG)</li>
-      <li>Altersteilzeit / Kurzarbeitergeld</li>
-      <li>Geringfügige Beschäftigung (§ 8 SGB IV)</li>
-      <li>Beitragsgruppenschlüssel / Personengruppenschlüssel</li>
-      <li>Umlagepflichtige Kleinbetriebsprüfung</li>
-    </ul>
-
-    <h3>7️⃣ Nettoermittlung im Modell</h3>
-    <p>Netto = steuerpflichtiges Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag – Kirchensteuer – AN-Anteile SV – sonstige Abzüge (z. B. Jobticket)</p>
-  `,
-
-//Explanation Midijob
-    
-midijob: `
-<h3>Übergangsbereich (Midijob) – Fachliche Systematik</h3>
-
-<h4>1️⃣ Rechtsgrundlage & Definition</h4>
-<ul>
-  <li>§ 20 Abs. 2 SGB IV – Übergangsbereich</li>
-  <li>§ 163 Abs. 10 SGB VI – Ermäßigte Beitragsbemessungsgrundlage</li>
-</ul>
-
-<p>
-Der Übergangsbereich umfasst ein monatliches Arbeitsentgelt von
-<strong>603,01 € bis 2.000 €</strong>.
-Ziel ist die <strong>Entlastung des Arbeitnehmers bei den Sozialversicherungsbeiträgen</strong>,
-während der Arbeitgeber grundsätzlich reguläre Beiträge trägt.
-</p>
-
-<hr>
-
-<h4>2️⃣ Steuerliche Behandlung (keine Sonderregelung)</h4>
-<ul>
-  <li>§ 38 EStG – Lohnsteuerabzug</li>
-  <li>§ 32a EStG – Progressiver Einkommensteuertarif</li>
-  <li>§ 39 EStG – Steuerklassen</li>
-  <li>§ 3 SolzG – Solidaritätszuschlag</li>
-  <li>Kirchensteuergesetze der Länder</li>
-</ul>
-
-<p>
-Midijobs unterliegen <strong>vollständig dem regulären Lohnsteuerrecht</strong>.
-Es existiert keine steuerliche Begünstigung wie im Minijob.
-</p>
-
-<p>
-Das Monatsbrutto wird gemäß § 39b EStG auf einen Jahresarbeitslohn
-hochgerechnet und progressiv besteuert.
-</p>
-
-<hr>
-
-<h4>3️⃣ Sozialversicherung – Kernmechanismus des Übergangsbereichs</h4>
-
-<p><strong>Grundsatz:</strong> Das tatsächliche Brutto ist sozialversicherungspflichtig,
-jedoch wird für den Arbeitnehmer eine reduzierte Beitragsbemessungsgrundlage
-ermittelt.</p>
-
-<ul>
-  <li><strong>Arbeitnehmer:</strong> Ermäßigte Bemessungsgrundlage gemäß gesetzlicher Formel</li>
-  <li><strong>Arbeitgeber:</strong> Beiträge grundsätzlich aus dem tatsächlichen Arbeitsentgelt</li>
-</ul>
-
-<p>
-Im Modell wird die Arbeitnehmer-Bemessungsgrundlage mit der gesetzlich
-vorgegebenen Übergangsbereichsformel simuliert:
-</p>
-
-<p>
-svBaseAN = (2000 / (2000 − G)) × (Brutto − G)
-</p>
-
-<p>
-Zusätzlich wird der Faktor F (Modellannahme 2026 ≈ 0,6619)
-zur Ermittlung der Gesamtsozialversicherungsbasis berücksichtigt.
-</p>
-
-<p>
-Dadurch steigt der Arbeitnehmeranteil gleitend von einem reduzierten Wert
-auf den regulären Beitragsanteil bei 2.000 €.
-</p>
-
-<hr>
-
-<h4>4️⃣ Beitragssätze im Übergangsbereich</h4>
-
-<ul>
-  <li><strong>Krankenversicherung:</strong> 14,6 % + Ø 1,7 % Zusatzbeitrag → ca. 16,3 % gesamt<br>
-      Aufteilung 50 % / 50 % (§ 249 SGB V)</li>
-
-  <li><strong>Rentenversicherung:</strong> 18,6 % gesamt → 9,3 % AN / 9,3 % AG (§ 158 SGB VI)</li>
-
-  <li><strong>Arbeitslosenversicherung:</strong> 2,6 % gesamt → 1,3 % AN / 1,3 % AG (§ 341 SGB III)</li>
-
-  <li><strong>Pflegeversicherung:</strong> 3,4 % gesamt → 1,7 % AN / 1,7 % AG<br>
-      Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI)</li>
-</ul>
-
-<p>
-Die Beitragsbemessungsgrenzen (BBG) werden auch im Übergangsbereich angewendet,
-sind jedoch bei Entgelten unter 2.000 € regelmäßig nicht erreicht.
-</p>
-
-<hr>
-
-<h4>5️⃣ Umlagen & Arbeitgeberaufwendungen</h4>
-
-<ul>
-  <li>AAG – Aufwendungsausgleichsgesetz (U1 / U2)</li>
-  <li>§ 358 SGB III – Insolvenzgeldumlage</li>
-</ul>
-
-<p>
-Umlagen werden <strong>nicht reduziert</strong> und basieren im Modell
-auf dem tatsächlichen Bruttoarbeitsentgelt:
-</p>
-
-<ul>
-  <li>U1: 2,8 %</li>
-  <li>U2: 0,75 %</li>
-  <li>Insolvenzgeldumlage: 0,6 %</li>
-</ul>
-
-<p>
-Sie werden ausschließlich vom Arbeitgeber getragen.
-</p>
-
-<hr>
-
-<h4>6️⃣ Abgrenzung zum Minijob</h4>
-
-<ul>
-  <li>Keine Pauschalversteuerung</li>
-  <li>Volle Versicherungspflicht in allen Zweigen</li>
-  <li>Reduktion betrifft ausschließlich die Arbeitnehmer-Beitragslast</li>
-</ul>
-
-<hr>
-
-<h4>7️⃣ Nicht im Modell berücksichtigt (bewusste Vereinfachung)</h4>
-
-<ul>
-  <li>Mehrfachbeschäftigung (§ 22 SGB IV)</li>
-  <li>Überschreiten der Grenze im Jahresverlauf</li>
-  <li>Einmalzahlungen mit Übergangsbereichs-Splitting</li>
-  <li>SV-Tage bei untermonatiger Beschäftigung</li>
-  <li>Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
-</ul>
-
-<hr>
-
-<h4>8️⃣ Nettoermittlung im Modell</h4>
-
-<p>
-Netto =<br>
-Brutto<br>
-− Lohnsteuer<br>
-− Solidaritätszuschlag<br>
-− Kirchensteuer<br>
-− Arbeitnehmeranteile Sozialversicherung
-</p>
-
-<p><em>Hinweis: Das Modell dient der strukturellen Darstellung der Systematik
-des Übergangsbereichs und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
-`,
-
-// Explanation MiniJobs
-
-minijob: `
-<h3>Minijob (§ 8 Abs. 1 Nr. 1 SGB IV – Geringfügig entlohnte Beschäftigung)</h3>
-
-<h4>1️⃣ Sozialversicherungsrechtliche Einordnung</h4>
-
-<p><strong>Gesetzliche Grundlage:</strong></p>
-<ul>
-  <li>§ 8 SGB IV – Geringfügige Beschäftigung</li>
-  <li>§ 172 SGB VI – Rentenversicherung Minijob</li>
-  <li>§ 249b SGB V – Krankenversicherung Pauschalbeitrag</li>
-  <li>AAG – Umlagepflicht</li>
-  <li>§ 358 SGB III – Insolvenzgeldumlage</li>
-</ul>
-
-<p>
-Eine geringfügig entlohnte Beschäftigung liegt vor, wenn das regelmäßige monatliche Arbeitsentgelt die gesetzliche Geringfügigkeitsgrenze (derzeit 603 €) nicht übersteigt.
-</p>
-
-<p>
-Minijobs sind grundsätzlich sozialversicherungsfrei für den Arbeitnehmer mit Ausnahme der Rentenversicherungspflicht.
-</p>
-
-<hr>
-
-<h4>2️⃣ Beiträge des Arbeitgebers (Pauschalabgaben)</h4>
-
-<ul>
-  <li><strong>Krankenversicherung:</strong> 13 % (§ 249b SGB V)</li>
-  <li><strong>Rentenversicherung:</strong> 15 % (§ 172 Abs. 3 SGB VI)</li>
-  <li><strong>Pauschalsteuer:</strong> 2 % (§ 40a Abs. 2 EStG – optional, im Modell nicht simuliert)</li>
-  <li><strong>Umlage U1:</strong> 2,8 % (AAG – modellhafte Annahme)</li>
-  <li><strong>Umlage U2:</strong> 0,75 % (AAG – modellhafte Annahme)</li>
-  <li><strong>Insolvenzgeldumlage:</strong> 0,6 % (§ 358 SGB III)</li>
-</ul>
-
-<p>
-Diese Abgaben werden ausschließlich vom Arbeitgeber getragen und erhöhen die Gesamtkosten der Beschäftigung.
-</p>
-
-<hr>
-
-<h4>3️⃣ Rentenversicherungspflicht des Arbeitnehmers</h4>
-
-<p>
-Minijobs sind grundsätzlich rentenversicherungspflichtig.
-</p>
-
-<ul>
-  <li><strong>Gesamtbeitrag RV:</strong> 18,6 % (§ 158 SGB VI)</li>
-  <li><strong>Arbeitgeberanteil:</strong> 15 %</li>
-  <li><strong>Arbeitnehmeranteil:</strong> 3,6 % (Differenzbetrag)</li>
-</ul>
-
-<p>
-Der Arbeitnehmer kann sich gemäß § 6 Abs. 1b SGB VI von der Rentenversicherungspflicht befreien lassen.
-Im Befreiungsfall entfällt der 3,6 %-Eigenanteil.
-</p>
-
-<p>
-Das Modell berücksichtigt die RV-Befreiungsoption über die entsprechende Auswahlfunktion.
-</p>
-
-<hr>
-
-<h4>4️⃣ Steuerliche Behandlung</h4>
-
-<p><strong>Gesetzliche Grundlage:</strong></p>
-<ul>
-  <li>§ 40a EStG – Pauschalbesteuerung bei geringfügiger Beschäftigung</li>
-  <li>§ 38 EStG – Lohnsteuerabzug</li>
-</ul>
-
-<p>
-Minijobs können pauschal mit 2 % besteuert werden (inkl. Kirchensteuer und Solidaritätszuschlag).
-Alternativ ist eine individuelle Besteuerung nach ELStAM möglich.
-</p>
-
-<p>
-Im Modell erfolgt eine vereinfachte Darstellung ohne pauschale 2 %-Besteuerung.
-</p>
-
-<hr>
-
-<h4>5️⃣ Umlagen und Arbeitgebernebenkosten</h4>
-
-<p>
-Minijobs unterliegen vollständig der Umlagepflicht nach dem Aufwendungsausgleichsgesetz (AAG).
-Die Umlagen erhöhen die Arbeitgebergesamtkosten, wirken sich jedoch nicht auf das Netto des Arbeitnehmers aus.
-</p>
-
-<hr>
-
-<h4>6️⃣ Besonderheiten im Beitragsrecht</h4>
-
-<ul>
-  <li>Keine Anwendung von Beitragsbemessungsgrenzen (da Entgelt unterhalb der Grenzen liegt)</li>
-  <li>Keine Anwendung der Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
-  <li>Keine Gleitzonenregelung (Abgrenzung zum Midijob)</li>
-  <li>Volle Umlagepflicht unabhängig von Betriebsgröße</li>
-</ul>
-
-<hr>
-
-<h4>7️⃣ Nettoermittlung im Modell</h4>
-
-<p><strong>Netto =</strong></p>
-<ul>
-  <li>Brutto</li>
-  <li>– Arbeitnehmeranteil RV (falls keine Befreiung)</li>
-</ul>
-
-<p>
-Weitere Abzüge werden im Modell nicht simuliert.
-</p>
-
-<hr>
-
-<p style="font-size:13px; color:#666;">
-Hinweis: Das Modell dient der strukturellen Darstellung der Systematik der geringfügigen Beschäftigung.
-Komplexe Sonderfälle (z. B. kurzfristige Beschäftigung, Mehrfachbeschäftigung, Mindestlohnbewertung, Statusfeststellungsverfahren) sind nicht implementiert.
-</p>
-`,
-
-// ===== Explanation Praktikant =====
-  
-praktikant: `
-<h3>Praktikant – Steuer- und Sozialversicherungsübersicht</h3>
-
-<h3>1️⃣ Rechtsgrundlage & Definition</h3>
-<ul>
-  <li>§ 20 Abs. 1,2 SGB IV – Arbeitsentgeltbegriff für Praktikanten</li>
-  <li>§ 1,2,3 SGB V, VI, III, XI – Sozialversicherungspflicht</li>
-  <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
-  <li>§ 32a EStG – Einkommensteuertarif</li>
-  <li>§ 39 EStG – Steuerklassen</li>
-  <li>Kirchensteuergesetze der Länder</li>
-</ul>
-
-<h4>Praktikantentypen</h4>
-<ul>
-  <li><strong>Pflichtpraktikum</strong> (Teil von Ausbildung/Studium): sozialversicherungsfrei (§ 20 SGB IV)</li>
-  <li><strong>Freiwilliges Praktikum &lt; 3 Monate:</strong> sozialversicherungsfrei (§ 20 SGB IV)</li>
-  <li><strong>Freiwilliges Praktikum ≥ 3 Monate und Brutto ≤ 603 €:</strong> sozialversicherungsfrei bzw. Minijob-Status</li>
-  <li><strong>Freiwilliges Praktikum ≥ 3 Monate und Brutto > 603 €:</strong> sozialversicherungspflichtig wie Normaler Arbeitnehmer</li>
-</ul>
-
-<h3>2️⃣ Steuerliche Behandlung (Einkommensteuerrecht)</h3>
-<ul>
-  <li>Monatsbrutto wird bei SV-pflichtigen Praktika gemäß § 39b EStG auf Jahresarbeitslohn hochgerechnet (×12)</li>
-  <li>Besteuerung nach progressivem Tarif gemäß § 32a EStG</li>
-  <li>Berücksichtigung Steuerklasse I–VI (§ 39 EStG)</li>
-  <li>Solidaritätszuschlag 5,5 % der Lohnsteuer (§ 3 SolzG)</li>
-  <li>Kirchensteuer: 8 % (Bayern/BW), 9 % (übrige Bundesländer)</li>
-</ul>
-
-<h3>3️⃣ Sozialversicherung – SV-Behandlung Praktikanten</h3>
-<p>
-Die Sozialversicherung hängt von Praktikantentyp, Dauer und Vergütung ab:
-</p>
-<ul>
-  <li>Pflichtpraktikum: sozialversicherungsfrei (§ 20 SGB IV)</li>
-  <li>Freiwilliges Praktikum &lt; 3 Monate: sozialversicherungsfrei</li>
-  <li>Freiwilliges Praktikum ≥ 3 Monate:
-    <ul>
-      <li>Brutto ≤ 603 €: sozialversicherungsfrei / Minijob-Status</li>
-      <li>Brutto > 603 €: volle SV-Pflicht wie Normaler Arbeitnehmer</li>
-    </ul>
-  </li>
-</ul>
-
-<h4>Beitragssätze bei SV-pflichtigen Praktika</h4>
-<ul>
-  <li>Krankenversicherung (KV): 14,6 % + Ø 1,7 % Zusatz → 16,3 % gesamt, 50 % AN / 50 % AG (§ 249 SGB V), BBG 2026 ≈ 5.175 €</li>
-  <li>Rentenversicherung (RV): 18,6 % gesamt, 9,3 % AN / 9,3 % AG (§ 158 SGB VI), BBG West 2026 ≈ 7.550 €</li>
-  <li>Arbeitslosenversicherung (AV): 2,6 % gesamt, 1,3 % AN / 1,3 % AG (§ 341 SGB III), BBG wie RV</li>
-  <li>Pflegeversicherung (PV): 3,4 % gesamt, 1,7 % AN / 1,7 % AG, Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI), BBG wie KV</li>
-</ul>
-
-<h3>4️⃣ Zuschläge / Überstunden</h3>
-<p>
-Bei Praktikanten werden Überstunden und Zuschläge im Modell analog Normaler Arbeitnehmer behandelt, nur wenn die Beschäftigung SV-pflichtig ist.
-</p>
-<ul>
-  <li>Nachtarbeit 25 %, Nachtarbeit 40 %, Sonntagsarbeit 50 %, Feiertagsarbeit 125 %</li>
-  <li>Steuerfrei, falls zusätzlich zum Grundlohn und gesetzliche Höchstgrenzen eingehalten</li>
-  <li>Erhöhen nur das Netto, keine SV auf steuerfreie Zuschläge</li>
-</ul>
-
-<h3>5️⃣ Umlagen (Arbeitgeber)</h3>
-<p>
-Umlagen werden nur bei SV-pflichtigen Praktika relevant:
-</p>
-<ul>
-  <li>U1: 2,8 %</li>
-  <li>U2: 0,75 %</li>
-  <li>Insolvenzgeldumlage: 0,6 %</li>
-</ul>
-<p>Diese werden vollständig vom Arbeitgeber getragen.</p>
-
-<h3>6️⃣ Nicht im Modell berücksichtigt (wird in zukünftigen Versionen entwickelt)</h3>
-<ul>
-  <li>Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
-  <li>Märzklausel (§ 23a SGB IV)</li>
-  <li>Einmalzahlungen mit SV-Splitting</li>
-  <li>ELStAM-Freibeträge (§ 39a EStG)</li>
-  <li>Sachbezüge (§ 8 EStG)</li>
-  <li>Pauschalversteuerungen (§ 40 EStG)</li>
-  <li>Altersteilzeit / Kurzarbeitergeld</li>
-  <li>Beitragsgruppenschlüssel / Personengruppenschlüssel</li>
-</ul>
-
-<h3>7️⃣ Nettoermittlung im Modell</h3>
-<p>
-Netto = Brutto + steuerfreie Zuschläge − Lohnsteuer − Solidaritätszuschlag − Kirchensteuer − Arbeitnehmeranteile SV − sonstige Abzüge (z. B. Jobticket)
-</p>
-
-<p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik von Praktikantenvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
-`,
-
-
-  // ===== Explanation Content for Azubi =====
-azubi: `
-<h3>Azubi – Übersicht Entgeltabrechnung</h3>
-
-<h4>1️⃣ Gesetzliche Grundlage & Definition</h4>
-<ul>
-  <li>§ 14 SGB IV – Arbeitsentgeltbegriff</li>
-  <li>SGB V – Krankenversicherung (KV)</li>
-  <li>SGB VI – Rentenversicherung (RV)</li>
-  <li>SGB III – Arbeitslosenversicherung (AV)</li>
-  <li>SGB XI – Pflegeversicherung (PV)</li>
-  <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
-  <li>§ 32a EStG – Progressiver Einkommensteuertarif</li>
-  <li>§ 39 EStG – Steuerklassen</li>
-  <li>§ 3 SolzG – Solidaritätszuschlag</li>
-  <li>Kirchensteuergesetze der Länder</li>
-</ul>
-
-<h4>2️⃣ Steuerpflichtiger Arbeitslohn im Modell</h4>
-<ul>
-  <li>Grundvergütung / Ausbildungsvergütung</li>
-  <li>Vermögenswirksame Leistungen (VWL), falls vom Arbeitgeber gezahlt</li>
-  <li>Überstundenvergütung</li>
-  <li>Überstundenzuschläge (steuerpflichtig)</li>
-</ul>
-
-<h4>3️⃣ Lohnsteuer</h4>
-<ul>
-  <li>Monatsbrutto wird gemäß § 39b EStG auf Jahresarbeitslohn hochgerechnet</li>
-  <li>Besteuerung nach progressivem Tarif (§ 32a EStG)</li>
-  <li>Berücksichtigung der Steuerklasse I–VI (§ 39 EStG)</li>
-  <li>Kinderfreibeträge werden im Modell vereinfacht berücksichtigt</li>
-</ul>
-
-<h4>4️⃣ Solidaritätszuschlag</h4>
-<ul>
-  <li>5,5 % der festgesetzten Lohnsteuer (§ 3 SolzG)</li>
-  <li>Freigrenzen im Modell vereinfacht berücksichtigt</li>
-</ul>
-
-<h4>5️⃣ Kirchensteuer</h4>
-<ul>
-  <li>8 % (Bayern, Baden-Württemberg)</li>
-  <li>9 % (übrige Bundesländer)</li>
-  <li>Bemessungsgrundlage: Lohnsteuer</li>
-  <li>Nur bei bestehender Kirchensteuerpflicht</li>
-</ul>
-
-<h4>6️⃣ Sozialversicherung</h4>
-<ul>
-  <li>Krankenversicherung: 14,6 % + ca. 1,7 % Zusatzbeitrag → ca. 16,3 % gesamt, Aufteilung 50 % AN / 50 % AG (§ 249 SGB V), BBG 2026 ≈ 5.175 €</li>
-  <li>Rentenversicherung: 18,6 % gesamt → 9,3 % AN / 9,3 % AG (§ 158 SGB VI), BBG West 2026 ≈ 7.550 €</li>
-  <li>Arbeitslosenversicherung: 2,6 % gesamt → 1,3 % AN / 1,3 % AG (§ 341 SGB III), BBG wie RV</li>
-  <li>Pflegeversicherung: 3,4 % gesamt → 1,7 % AN / 1,7 % AG, Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI), BBG wie KV</li>
-</ul>
-
-<h4>7️⃣ Zuschläge & Sonderzahlungen</h4>
-<ul>
-  <li>Nachtarbeit, Sonntagsarbeit, Feiertagsarbeit – im Modell steuerfrei und SV-frei, erhöhen ausschließlich das Netto</li>
-  <li>Überstundenvergütung ist steuer- und SV-pflichtig</li>
-</ul>
-
-<h4>8️⃣ Umlagen (Arbeitgeber)</h4>
-<ul>
-  <li>Umlage U1: 2,8 %</li>
-  <li>Umlage U2: 0,75 %</li>
-  <li>Insolvenzgeldumlage: 0,6 %</li>
-  <li>Nur Arbeitgeberanteil, erhöht nicht das Netto</li>
-</ul>
-
-<h4>9️⃣ Nicht im Modell berücksichtigt (künftige Entwicklung)</h4>
-<ul>
-  <li>Einmalzahlungen, Sonderzahlungen mit SV-Splitting</li>
-  <li>ELStAM-Freibeträge (§ 39a EStG)</li>
-  <li>Sachbezüge (§ 8 EStG)</li>
-  <li>Pauschalversteuerungen (§ 40 EStG)</li>
-  <li>Altersteilzeit / Kurzarbeitergeld</li>
-  <li>Beitragsgruppenschlüssel / Personengruppenschlüssel</li>
-</ul>
-
-<h4>🔟 Nettoermittlung im Modell</h4>
-<p>
-Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag – Kirchensteuer – AN-Anteile Sozialversicherung – sonstige Abzüge (z. B. Jobticket)
-</p>
-
-<p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
-`
-};
-
-
-  
+ 
 
 // ===== Utility Helpers =====
 function safeNumber(value) {
@@ -2272,6 +1644,634 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
+
+
+  // ===== Explanation Content =====
+const explanationContent = {
+  normal: `
+    <h3>Normaler Arbeitnehmer – Steuer- und Sozialversicherungsübersicht</h3>
+
+    <h3>1️⃣ Steuerliche Behandlung (Einkommensteuerrecht)</h3>
+
+<h4>Gesetzliche Grundlage</h4>
+<ul>
+  <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
+  <li>§ 32a EStG – Einkommensteuertarif (Grund-/Splittingtarif)</li>
+  <li>§ 39 EStG – Steuerklassen</li>
+  <li>§ 39b EStG – Jahreshochrechnung / Lohnsteuerberechnung</li>
+  <li>§ 3 SolzG – Solidaritätszuschlag</li>
+  <li>Kirchensteuergesetze der Länder</li>
+</ul>
+
+<h4>Steuerpflichtiger Arbeitslohn im Modell</h4>
+<ul>
+  <li>Grundgehalt</li>
+  <li>Vermögenswirksame Leistungen (VWL)</li>
+  <li>Überstundenvergütung</li>
+  <li>Überstundenzuschläge (steuerpflichtig)</li>
+</ul>
+
+<h4>Lohnsteuer</h4>
+<ul>
+  <li>Monatsbrutto wird gemäß <strong>§ 39b EStG</strong> auf Jahresarbeitslohn hochgerechnet (× 12)</li>
+  <li>Besteuerung nach progressivem Tarif gemäß <strong>§ 32a EStG</strong></li>
+  <li>Berücksichtigung der Steuerklasse I–VI gemäß <strong>§ 39 EStG</strong></li>
+</ul>
+
+<h4>Solidaritätszuschlag</h4>
+<ul>
+  <li><strong>5,5 %</strong> der festgesetzten Lohnsteuer (§ 3 SolzG)</li>
+  <li>Freigrenzen im Modell vereinfacht berücksichtigt</li>
+</ul>
+
+<h4>Kirchensteuer</h4>
+<ul>
+  <li><strong>8 %</strong> (Bayern, Baden-Württemberg)</li>
+  <li><strong>9 %</strong> (übrige Bundesländer)</li>
+  <li>Bemessungsgrundlage: Lohnsteuer</li>
+  <li>Nur bei bestehender Kirchensteuerpflicht</li>
+</ul>
+
+
+<h3>2️⃣ Sozialversicherung</h3>
+<p><strong>Gesetzliche Grundlage:</strong><br>
+§ 14 SGB IV (Arbeitsentgeltbegriff)<br>
+SGB V (KV) · SGB VI (RV) · SGB III (AV) · SGB XI (PV)
+</p>
+
+<p>
+Im Modell wird das sozialversicherungspflichtige Entgelt bis zur jeweiligen 
+<strong>Beitragsbemessungsgrenze (BBG)</strong> berücksichtigt.
+</p>
+
+<h4>🏥 Krankenversicherung (KV)</h4>
+<ul>
+  <li>Allgemeiner Beitragssatz: 14,6 % (§ 241 SGB V)</li>
+  <li>Durchschnittlicher Zusatzbeitrag: ca. 1,7 % (§ 242 SGB V)</li>
+  <li>Gesamt: ca. 16,3 %</li>
+  <li>Aufteilung: 50 % Arbeitnehmer / 50 % Arbeitgeber (§ 249 SGB V)</li>
+  <li>BBG 2026 (Modellannahme): ca. 5.175 € monatlich</li>
+</ul>
+
+<h4>👴 Rentenversicherung (RV)</h4>
+<ul>
+  <li>Beitragssatz: 18,6 % (§ 158 SGB VI)</li>
+  <li>Aufteilung: 9,3 % Arbeitnehmer / 9,3 % Arbeitgeber</li>
+  <li>BBG West 2026 (Modellannahme): ca. 7.550 € monatlich</li>
+</ul>
+
+<h4>📉 Arbeitslosenversicherung (AV)</h4>
+<ul>
+  <li>Beitragssatz: 2,6 % (§ 341 SGB III)</li>
+  <li>Aufteilung: 1,3 % Arbeitnehmer / 1,3 % Arbeitgeber</li>
+  <li>BBG entspricht der Rentenversicherungs-BBG</li>
+</ul>
+
+<h4>👶 Pflegeversicherung (PV)</h4>
+<ul>
+  <li>Grundbeitrag: 3,4 % (§ 55 SGB XI)</li>
+  <li>Aufteilung: 1,7 % Arbeitnehmer / 1,7 % Arbeitgeber</li>
+  <li>Kinderlosenzuschlag: +0,6 % Arbeitnehmeranteil (§ 55 Abs. 3 SGB XI)</li>
+  <li>BBG entspricht der Krankenversicherungs-BBG</li>
+</ul>
+
+<p>
+Im Modell werden Beitragsabschläge für mehrere Kinder unter 25 vereinfacht berücksichtigt.
+</p>
+
+<h3>3️⃣ Zuschläge für besondere Arbeitszeiten (§ 3b EStG)</h3>
+<p><strong>Gesetzliche Grundlage:</strong> § 3b EStG</p>
+
+<h4>Im Modell berücksichtigt</h4>
+<ul>
+  <li>Nachtarbeit: <strong>25 %</strong></li>
+  <li>Nachtarbeit: <strong>40 %</strong></li>
+  <li>Sonntagsarbeit: <strong>50 %</strong></li>
+  <li>Feiertagsarbeit: <strong>125 %</strong></li>
+   <li>Feiertagsarbeit: <strong>150 % (Nicht)</strong></li>
+</ul>
+
+<h4>Steuerliche Behandlung</h4>
+<ul>
+  <li>Steuerfrei bei zusätzlicher Zahlung zum Grundlohn</li>
+  <li>Steuerfreiheit nur bis gesetzliche Höchstgrenzen</li>
+  <li>Grundlohn ≤ <strong>50 € je Stunde</strong></li>
+</ul>
+
+<h4>Behandlung im Modell</h4>
+<ul>
+  <li>Zuschläge steuerfrei</li>
+  <li>Zuschläge sozialversicherungsfrei</li>
+  <li>Erhöhen ausschließlich das Netto</li>
+  <li>Gesetzliche Höchstgrenzen werden nicht gesondert geprüft</li>
+</ul>
+
+
+    <h3>4️⃣ Umlagen (Arbeitgeberaufwendungen)</h3>
+    <p><strong>Gesetzliche Grundlage:</strong> AAG, § 358 SGB III (Insolvenzgeldumlage)</p>
+    <ul>
+  <li>Umlage U1: <strong>2,8 %</strong></li>
+  <li>Umlage U2: <strong>0,75 %</strong></li>
+  <li>Insolvenzgeldumlage: <strong>0,6 %</strong></li>
+</ul>
+<p>
+Diese Umlagen werden ausschließlich vom Arbeitgeber getragen und erhöhen nicht das Netto des Arbeitnehmers.
+</p>
+
+    <h3>5️⃣ Beitragsbemessungsgrenzen (BBG) – Modellannahme 2026</h3>
+   <ul>
+  <li>KV / PV BBG 2026: <strong>≈ 5.175 € monatlich</strong></li>
+  <li>RV / AV BBG 2026: <strong>≈ 7.550 € monatlich</strong></li>
+</ul>
+
+<p>
+Arbeitsentgelt oberhalb dieser Grenzen ist beitragsfrei.
+</p>
+
+    <h3>6️⃣ Nicht im Modell berücksichtigt (vereinfachte Darstellung)</h3>
+    <ul>
+      <li>Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
+      <li>Märzklausel (§ 23a SGB IV)</li>
+      <li>Einmalzahlungen mit SV-Splitting</li>
+      <li>ELStAM-Freibeträge (§ 39a EStG)</li>
+      <li>Sachbezüge (§ 8 EStG)</li>
+      <li>Pauschalversteuerungen (§ 40 EStG)</li>
+      <li>Altersteilzeit / Kurzarbeitergeld</li>
+      <li>Geringfügige Beschäftigung (§ 8 SGB IV)</li>
+      <li>Beitragsgruppenschlüssel / Personengruppenschlüssel</li>
+      <li>Umlagepflichtige Kleinbetriebsprüfung</li>
+    </ul>
+
+    <h3>7️⃣ Nettoermittlung im Modell</h3>
+    <p>Netto = steuerpflichtiges Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag – Kirchensteuer – AN-Anteile SV – sonstige Abzüge (z. B. Jobticket)</p>
+  `,
+
+//Explanation Midijob
+    
+midijob: `
+<h3>Übergangsbereich (Midijob) – Fachliche Systematik</h3>
+
+<h4>1️⃣ Rechtsgrundlage & Definition</h4>
+<ul>
+  <li>§ 20 Abs. 2 SGB IV – Übergangsbereich</li>
+  <li>§ 163 Abs. 10 SGB VI – Ermäßigte Beitragsbemessungsgrundlage</li>
+</ul>
+
+<p>
+Der Übergangsbereich umfasst ein monatliches Arbeitsentgelt von
+<strong>603,01 € bis 2.000 €</strong>.
+Ziel ist die <strong>Entlastung des Arbeitnehmers bei den Sozialversicherungsbeiträgen</strong>,
+während der Arbeitgeber grundsätzlich reguläre Beiträge trägt.
+</p>
+
+<hr>
+
+<h4>2️⃣ Steuerliche Behandlung (keine Sonderregelung)</h4>
+<ul>
+  <li>§ 38 EStG – Lohnsteuerabzug</li>
+  <li>§ 32a EStG – Progressiver Einkommensteuertarif</li>
+  <li>§ 39 EStG – Steuerklassen</li>
+  <li>§ 3 SolzG – Solidaritätszuschlag</li>
+  <li>Kirchensteuergesetze der Länder</li>
+</ul>
+
+<p>
+Midijobs unterliegen <strong>vollständig dem regulären Lohnsteuerrecht</strong>.
+Es existiert keine steuerliche Begünstigung wie im Minijob.
+</p>
+
+<p>
+Das Monatsbrutto wird gemäß § 39b EStG auf einen Jahresarbeitslohn
+hochgerechnet und progressiv besteuert.
+</p>
+
+<hr>
+
+<h4>3️⃣ Sozialversicherung – Kernmechanismus des Übergangsbereichs</h4>
+
+<p><strong>Grundsatz:</strong> Das tatsächliche Brutto ist sozialversicherungspflichtig,
+jedoch wird für den Arbeitnehmer eine reduzierte Beitragsbemessungsgrundlage
+ermittelt.</p>
+
+<ul>
+  <li><strong>Arbeitnehmer:</strong> Ermäßigte Bemessungsgrundlage gemäß gesetzlicher Formel</li>
+  <li><strong>Arbeitgeber:</strong> Beiträge grundsätzlich aus dem tatsächlichen Arbeitsentgelt</li>
+</ul>
+
+<p>
+Im Modell wird die Arbeitnehmer-Bemessungsgrundlage mit der gesetzlich
+vorgegebenen Übergangsbereichsformel simuliert:
+</p>
+
+<p>
+svBaseAN = (2000 / (2000 − G)) × (Brutto − G)
+</p>
+
+<p>
+Zusätzlich wird der Faktor F (Modellannahme 2026 ≈ 0,6619)
+zur Ermittlung der Gesamtsozialversicherungsbasis berücksichtigt.
+</p>
+
+<p>
+Dadurch steigt der Arbeitnehmeranteil gleitend von einem reduzierten Wert
+auf den regulären Beitragsanteil bei 2.000 €.
+</p>
+
+<hr>
+
+<h4>4️⃣ Beitragssätze im Übergangsbereich</h4>
+
+<ul>
+  <li><strong>Krankenversicherung:</strong> 14,6 % + Ø 1,7 % Zusatzbeitrag → ca. 16,3 % gesamt<br>
+      Aufteilung 50 % / 50 % (§ 249 SGB V)</li>
+
+  <li><strong>Rentenversicherung:</strong> 18,6 % gesamt → 9,3 % AN / 9,3 % AG (§ 158 SGB VI)</li>
+
+  <li><strong>Arbeitslosenversicherung:</strong> 2,6 % gesamt → 1,3 % AN / 1,3 % AG (§ 341 SGB III)</li>
+
+  <li><strong>Pflegeversicherung:</strong> 3,4 % gesamt → 1,7 % AN / 1,7 % AG<br>
+      Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI)</li>
+</ul>
+
+<p>
+Die Beitragsbemessungsgrenzen (BBG) werden auch im Übergangsbereich angewendet,
+sind jedoch bei Entgelten unter 2.000 € regelmäßig nicht erreicht.
+</p>
+
+<hr>
+
+<h4>5️⃣ Umlagen & Arbeitgeberaufwendungen</h4>
+
+<ul>
+  <li>AAG – Aufwendungsausgleichsgesetz (U1 / U2)</li>
+  <li>§ 358 SGB III – Insolvenzgeldumlage</li>
+</ul>
+
+<p>
+Umlagen werden <strong>nicht reduziert</strong> und basieren im Modell
+auf dem tatsächlichen Bruttoarbeitsentgelt:
+</p>
+
+<ul>
+  <li>U1: 2,8 %</li>
+  <li>U2: 0,75 %</li>
+  <li>Insolvenzgeldumlage: 0,6 %</li>
+</ul>
+
+<p>
+Sie werden ausschließlich vom Arbeitgeber getragen.
+</p>
+
+<hr>
+
+<h4>6️⃣ Abgrenzung zum Minijob</h4>
+
+<ul>
+  <li>Keine Pauschalversteuerung</li>
+  <li>Volle Versicherungspflicht in allen Zweigen</li>
+  <li>Reduktion betrifft ausschließlich die Arbeitnehmer-Beitragslast</li>
+</ul>
+
+<hr>
+
+<h4>7️⃣ Nicht im Modell berücksichtigt (bewusste Vereinfachung)</h4>
+
+<ul>
+  <li>Mehrfachbeschäftigung (§ 22 SGB IV)</li>
+  <li>Überschreiten der Grenze im Jahresverlauf</li>
+  <li>Einmalzahlungen mit Übergangsbereichs-Splitting</li>
+  <li>SV-Tage bei untermonatiger Beschäftigung</li>
+  <li>Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
+</ul>
+
+<hr>
+
+<h4>8️⃣ Nettoermittlung im Modell</h4>
+
+<p>
+Netto =<br>
+Brutto<br>
+− Lohnsteuer<br>
+− Solidaritätszuschlag<br>
+− Kirchensteuer<br>
+− Arbeitnehmeranteile Sozialversicherung
+</p>
+
+<p><em>Hinweis: Das Modell dient der strukturellen Darstellung der Systematik
+des Übergangsbereichs und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
+`,
+
+// Explanation MiniJobs
+
+minijob: `
+<h3>Minijob (§ 8 Abs. 1 Nr. 1 SGB IV – Geringfügig entlohnte Beschäftigung)</h3>
+
+<h4>1️⃣ Sozialversicherungsrechtliche Einordnung</h4>
+
+<p><strong>Gesetzliche Grundlage:</strong></p>
+<ul>
+  <li>§ 8 SGB IV – Geringfügige Beschäftigung</li>
+  <li>§ 172 SGB VI – Rentenversicherung Minijob</li>
+  <li>§ 249b SGB V – Krankenversicherung Pauschalbeitrag</li>
+  <li>AAG – Umlagepflicht</li>
+  <li>§ 358 SGB III – Insolvenzgeldumlage</li>
+</ul>
+
+<p>
+Eine geringfügig entlohnte Beschäftigung liegt vor, wenn das regelmäßige monatliche Arbeitsentgelt die gesetzliche Geringfügigkeitsgrenze (derzeit 603 €) nicht übersteigt.
+</p>
+
+<p>
+Minijobs sind grundsätzlich sozialversicherungsfrei für den Arbeitnehmer mit Ausnahme der Rentenversicherungspflicht.
+</p>
+
+<hr>
+
+<h4>2️⃣ Beiträge des Arbeitgebers (Pauschalabgaben)</h4>
+
+<ul>
+  <li><strong>Krankenversicherung:</strong> 13 % (§ 249b SGB V)</li>
+  <li><strong>Rentenversicherung:</strong> 15 % (§ 172 Abs. 3 SGB VI)</li>
+  <li><strong>Pauschalsteuer:</strong> 2 % (§ 40a Abs. 2 EStG – optional, im Modell nicht simuliert)</li>
+  <li><strong>Umlage U1:</strong> 2,8 % (AAG – modellhafte Annahme)</li>
+  <li><strong>Umlage U2:</strong> 0,75 % (AAG – modellhafte Annahme)</li>
+  <li><strong>Insolvenzgeldumlage:</strong> 0,6 % (§ 358 SGB III)</li>
+</ul>
+
+<p>
+Diese Abgaben werden ausschließlich vom Arbeitgeber getragen und erhöhen die Gesamtkosten der Beschäftigung.
+</p>
+
+<hr>
+
+<h4>3️⃣ Rentenversicherungspflicht des Arbeitnehmers</h4>
+
+<p>
+Minijobs sind grundsätzlich rentenversicherungspflichtig.
+</p>
+
+<ul>
+  <li><strong>Gesamtbeitrag RV:</strong> 18,6 % (§ 158 SGB VI)</li>
+  <li><strong>Arbeitgeberanteil:</strong> 15 %</li>
+  <li><strong>Arbeitnehmeranteil:</strong> 3,6 % (Differenzbetrag)</li>
+</ul>
+
+<p>
+Der Arbeitnehmer kann sich gemäß § 6 Abs. 1b SGB VI von der Rentenversicherungspflicht befreien lassen.
+Im Befreiungsfall entfällt der 3,6 %-Eigenanteil.
+</p>
+
+<p>
+Das Modell berücksichtigt die RV-Befreiungsoption über die entsprechende Auswahlfunktion.
+</p>
+
+<hr>
+
+<h4>4️⃣ Steuerliche Behandlung</h4>
+
+<p><strong>Gesetzliche Grundlage:</strong></p>
+<ul>
+  <li>§ 40a EStG – Pauschalbesteuerung bei geringfügiger Beschäftigung</li>
+  <li>§ 38 EStG – Lohnsteuerabzug</li>
+</ul>
+
+<p>
+Minijobs können pauschal mit 2 % besteuert werden (inkl. Kirchensteuer und Solidaritätszuschlag).
+Alternativ ist eine individuelle Besteuerung nach ELStAM möglich.
+</p>
+
+<p>
+Im Modell erfolgt eine vereinfachte Darstellung ohne pauschale 2 %-Besteuerung.
+</p>
+
+<hr>
+
+<h4>5️⃣ Umlagen und Arbeitgebernebenkosten</h4>
+
+<p>
+Minijobs unterliegen vollständig der Umlagepflicht nach dem Aufwendungsausgleichsgesetz (AAG).
+Die Umlagen erhöhen die Arbeitgebergesamtkosten, wirken sich jedoch nicht auf das Netto des Arbeitnehmers aus.
+</p>
+
+<hr>
+
+<h4>6️⃣ Besonderheiten im Beitragsrecht</h4>
+
+<ul>
+  <li>Keine Anwendung von Beitragsbemessungsgrenzen (da Entgelt unterhalb der Grenzen liegt)</li>
+  <li>Keine Anwendung der Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
+  <li>Keine Gleitzonenregelung (Abgrenzung zum Midijob)</li>
+  <li>Volle Umlagepflicht unabhängig von Betriebsgröße</li>
+</ul>
+
+<hr>
+
+<h4>7️⃣ Nettoermittlung im Modell</h4>
+
+<p><strong>Netto =</strong></p>
+<ul>
+  <li>Brutto</li>
+  <li>– Arbeitnehmeranteil RV (falls keine Befreiung)</li>
+</ul>
+
+<p>
+Weitere Abzüge werden im Modell nicht simuliert.
+</p>
+
+<hr>
+
+<p style="font-size:13px; color:#666;">
+Hinweis: Das Modell dient der strukturellen Darstellung der Systematik der geringfügigen Beschäftigung.
+Komplexe Sonderfälle (z. B. kurzfristige Beschäftigung, Mehrfachbeschäftigung, Mindestlohnbewertung, Statusfeststellungsverfahren) sind nicht implementiert.
+</p>
+`,
+
+// ===== Explanation Praktikant =====
+  
+praktikant: `
+<h3>Praktikant – Steuer- und Sozialversicherungsübersicht</h3>
+
+<h3>1️⃣ Rechtsgrundlage & Definition</h3>
+<ul>
+  <li>§ 20 Abs. 1,2 SGB IV – Arbeitsentgeltbegriff für Praktikanten</li>
+  <li>§ 1,2,3 SGB V, VI, III, XI – Sozialversicherungspflicht</li>
+  <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
+  <li>§ 32a EStG – Einkommensteuertarif</li>
+  <li>§ 39 EStG – Steuerklassen</li>
+  <li>Kirchensteuergesetze der Länder</li>
+</ul>
+
+<h4>Praktikantentypen</h4>
+<ul>
+  <li><strong>Pflichtpraktikum</strong> (Teil von Ausbildung/Studium): sozialversicherungsfrei (§ 20 SGB IV)</li>
+  <li><strong>Freiwilliges Praktikum &lt; 3 Monate:</strong> sozialversicherungsfrei (§ 20 SGB IV)</li>
+  <li><strong>Freiwilliges Praktikum ≥ 3 Monate und Brutto ≤ 603 €:</strong> sozialversicherungsfrei bzw. Minijob-Status</li>
+  <li><strong>Freiwilliges Praktikum ≥ 3 Monate und Brutto > 603 €:</strong> sozialversicherungspflichtig wie Normaler Arbeitnehmer</li>
+</ul>
+
+<h3>2️⃣ Steuerliche Behandlung (Einkommensteuerrecht)</h3>
+<ul>
+  <li>Monatsbrutto wird bei SV-pflichtigen Praktika gemäß § 39b EStG auf Jahresarbeitslohn hochgerechnet (×12)</li>
+  <li>Besteuerung nach progressivem Tarif gemäß § 32a EStG</li>
+  <li>Berücksichtigung Steuerklasse I–VI (§ 39 EStG)</li>
+  <li>Solidaritätszuschlag 5,5 % der Lohnsteuer (§ 3 SolzG)</li>
+  <li>Kirchensteuer: 8 % (Bayern/BW), 9 % (übrige Bundesländer)</li>
+</ul>
+
+<h3>3️⃣ Sozialversicherung – SV-Behandlung Praktikanten</h3>
+<p>
+Die Sozialversicherung hängt von Praktikantentyp, Dauer und Vergütung ab:
+</p>
+<ul>
+  <li>Pflichtpraktikum: sozialversicherungsfrei (§ 20 SGB IV)</li>
+  <li>Freiwilliges Praktikum &lt; 3 Monate: sozialversicherungsfrei</li>
+  <li>Freiwilliges Praktikum ≥ 3 Monate:
+    <ul>
+      <li>Brutto ≤ 603 €: sozialversicherungsfrei / Minijob-Status</li>
+      <li>Brutto > 603 €: volle SV-Pflicht wie Normaler Arbeitnehmer</li>
+    </ul>
+  </li>
+</ul>
+
+<h4>Beitragssätze bei SV-pflichtigen Praktika</h4>
+<ul>
+  <li>Krankenversicherung (KV): 14,6 % + Ø 1,7 % Zusatz → 16,3 % gesamt, 50 % AN / 50 % AG (§ 249 SGB V), BBG 2026 ≈ 5.175 €</li>
+  <li>Rentenversicherung (RV): 18,6 % gesamt, 9,3 % AN / 9,3 % AG (§ 158 SGB VI), BBG West 2026 ≈ 7.550 €</li>
+  <li>Arbeitslosenversicherung (AV): 2,6 % gesamt, 1,3 % AN / 1,3 % AG (§ 341 SGB III), BBG wie RV</li>
+  <li>Pflegeversicherung (PV): 3,4 % gesamt, 1,7 % AN / 1,7 % AG, Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI), BBG wie KV</li>
+</ul>
+
+<h3>4️⃣ Zuschläge / Überstunden</h3>
+<p>
+Bei Praktikanten werden Überstunden und Zuschläge im Modell analog Normaler Arbeitnehmer behandelt, nur wenn die Beschäftigung SV-pflichtig ist.
+</p>
+<ul>
+  <li>Nachtarbeit 25 %, Nachtarbeit 40 %, Sonntagsarbeit 50 %, Feiertagsarbeit 125 %</li>
+  <li>Steuerfrei, falls zusätzlich zum Grundlohn und gesetzliche Höchstgrenzen eingehalten</li>
+  <li>Erhöhen nur das Netto, keine SV auf steuerfreie Zuschläge</li>
+</ul>
+
+<h3>5️⃣ Umlagen (Arbeitgeber)</h3>
+<p>
+Umlagen werden nur bei SV-pflichtigen Praktika relevant:
+</p>
+<ul>
+  <li>U1: 2,8 %</li>
+  <li>U2: 0,75 %</li>
+  <li>Insolvenzgeldumlage: 0,6 %</li>
+</ul>
+<p>Diese werden vollständig vom Arbeitgeber getragen.</p>
+
+<h3>6️⃣ Nicht im Modell berücksichtigt (wird in zukünftigen Versionen entwickelt)</h3>
+<ul>
+  <li>Jahresarbeitsentgeltgrenze (§ 6 SGB V)</li>
+  <li>Märzklausel (§ 23a SGB IV)</li>
+  <li>Einmalzahlungen mit SV-Splitting</li>
+  <li>ELStAM-Freibeträge (§ 39a EStG)</li>
+  <li>Sachbezüge (§ 8 EStG)</li>
+  <li>Pauschalversteuerungen (§ 40 EStG)</li>
+  <li>Altersteilzeit / Kurzarbeitergeld</li>
+  <li>Beitragsgruppenschlüssel / Personengruppenschlüssel</li>
+</ul>
+
+<h3>7️⃣ Nettoermittlung im Modell</h3>
+<p>
+Netto = Brutto + steuerfreie Zuschläge − Lohnsteuer − Solidaritätszuschlag − Kirchensteuer − Arbeitnehmeranteile SV − sonstige Abzüge (z. B. Jobticket)
+</p>
+
+<p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik von Praktikantenvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
+`,
+
+
+  // ===== Explanation Content for Azubi =====
+azubi: `
+<h3>Azubi – Übersicht Entgeltabrechnung</h3>
+
+<h4>1️⃣ Gesetzliche Grundlage & Definition</h4>
+<ul>
+  <li>§ 14 SGB IV – Arbeitsentgeltbegriff</li>
+  <li>SGB V – Krankenversicherung (KV)</li>
+  <li>SGB VI – Rentenversicherung (RV)</li>
+  <li>SGB III – Arbeitslosenversicherung (AV)</li>
+  <li>SGB XI – Pflegeversicherung (PV)</li>
+  <li>§ 38 EStG – Lohnsteuerabzug durch den Arbeitgeber</li>
+  <li>§ 32a EStG – Progressiver Einkommensteuertarif</li>
+  <li>§ 39 EStG – Steuerklassen</li>
+  <li>§ 3 SolzG – Solidaritätszuschlag</li>
+  <li>Kirchensteuergesetze der Länder</li>
+</ul>
+
+<h4>2️⃣ Steuerpflichtiger Arbeitslohn im Modell</h4>
+<ul>
+  <li>Grundvergütung / Ausbildungsvergütung</li>
+  <li>Vermögenswirksame Leistungen (VWL), falls vom Arbeitgeber gezahlt</li>
+  <li>Überstundenvergütung</li>
+  <li>Überstundenzuschläge (steuerpflichtig)</li>
+</ul>
+
+<h4>3️⃣ Lohnsteuer</h4>
+<ul>
+  <li>Monatsbrutto wird gemäß § 39b EStG auf Jahresarbeitslohn hochgerechnet</li>
+  <li>Besteuerung nach progressivem Tarif (§ 32a EStG)</li>
+  <li>Berücksichtigung der Steuerklasse I–VI (§ 39 EStG)</li>
+  <li>Kinderfreibeträge werden im Modell vereinfacht berücksichtigt</li>
+</ul>
+
+<h4>4️⃣ Solidaritätszuschlag</h4>
+<ul>
+  <li>5,5 % der festgesetzten Lohnsteuer (§ 3 SolzG)</li>
+  <li>Freigrenzen im Modell vereinfacht berücksichtigt</li>
+</ul>
+
+<h4>5️⃣ Kirchensteuer</h4>
+<ul>
+  <li>8 % (Bayern, Baden-Württemberg)</li>
+  <li>9 % (übrige Bundesländer)</li>
+  <li>Bemessungsgrundlage: Lohnsteuer</li>
+  <li>Nur bei bestehender Kirchensteuerpflicht</li>
+</ul>
+
+<h4>6️⃣ Sozialversicherung</h4>
+<ul>
+  <li>Krankenversicherung: 14,6 % + ca. 1,7 % Zusatzbeitrag → ca. 16,3 % gesamt, Aufteilung 50 % AN / 50 % AG (§ 249 SGB V), BBG 2026 ≈ 5.175 €</li>
+  <li>Rentenversicherung: 18,6 % gesamt → 9,3 % AN / 9,3 % AG (§ 158 SGB VI), BBG West 2026 ≈ 7.550 €</li>
+  <li>Arbeitslosenversicherung: 2,6 % gesamt → 1,3 % AN / 1,3 % AG (§ 341 SGB III), BBG wie RV</li>
+  <li>Pflegeversicherung: 3,4 % gesamt → 1,7 % AN / 1,7 % AG, Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI), BBG wie KV</li>
+</ul>
+
+<h4>7️⃣ Zuschläge & Sonderzahlungen</h4>
+<ul>
+  <li>Nachtarbeit, Sonntagsarbeit, Feiertagsarbeit – im Modell steuerfrei und SV-frei, erhöhen ausschließlich das Netto</li>
+  <li>Überstundenvergütung ist steuer- und SV-pflichtig</li>
+</ul>
+
+<h4>8️⃣ Umlagen (Arbeitgeber)</h4>
+<ul>
+  <li>Umlage U1: 2,8 %</li>
+  <li>Umlage U2: 0,75 %</li>
+  <li>Insolvenzgeldumlage: 0,6 %</li>
+  <li>Nur Arbeitgeberanteil, erhöht nicht das Netto</li>
+</ul>
+
+<h4>9️⃣ Nicht im Modell berücksichtigt (künftige Entwicklung)</h4>
+<ul>
+  <li>Einmalzahlungen, Sonderzahlungen mit SV-Splitting</li>
+  <li>ELStAM-Freibeträge (§ 39a EStG)</li>
+  <li>Sachbezüge (§ 8 EStG)</li>
+  <li>Pauschalversteuerungen (§ 40 EStG)</li>
+  <li>Altersteilzeit / Kurzarbeitergeld</li>
+  <li>Beitragsgruppenschlüssel / Personengruppenschlüssel</li>
+</ul>
+
+<h4>🔟 Nettoermittlung im Modell</h4>
+<p>
+Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag – Kirchensteuer – AN-Anteile Sozialversicherung – sonstige Abzüge (z. B. Jobticket)
+</p>
+
+<p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
+`
+};
 
 
 
