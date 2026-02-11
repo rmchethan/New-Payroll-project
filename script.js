@@ -190,21 +190,22 @@ function calculateSV({
     return createZeroSV();
   }
 
-  const kvPvBaseCapped= Number(svBaseAN.kvPvBase) || 0;
-  const rvAvBaseCapped = Number(svBaseAN.rvAvBaseCapped) || 0;
+  // ===== Extract raw bases =====
+const kvPvBase = Number(svBaseAN.kvPvBase) || 0;
+const rvAvBase = Number(svBaseAN.rvAvBase) || 0;
 
-  const kvPvBaseAGCapped = Number(svBaseAG.kvPvBase) || 0;
-  const rvAvBaseCappedAG = Number(svBaseAG.rvAvBaseCapped) || 0;
+const kvPvBaseAG = Number(svBaseAG.kvPvBase) || 0;
+const rvAvBaseAG = Number(svBaseAG.rvAvBase) || 0;
 
- // ===== Apply Beitragsbemessungsgrenzen (2026 Model) =====
+// ===== Apply Beitragsbemessungsgrenzen (2026 Model) =====
 const BBG_KV = 5175;
 const BBG_RV = 7550;
 
 const kvPvBaseCapped = Math.min(kvPvBase, BBG_KV);
-const rvAvBaseCappedCapped = Math.min(rvAvBaseCapped, BBG_RV);
+const rvAvBaseCapped = Math.min(rvAvBase, BBG_RV);
 
-const kvPvBaseAGCappedCapped = Math.min(kvPvBaseAGCapped, BBG_KV);
-const rvAvBaseCappedAGCapped = Math.min(rvAvBaseCappedAG, BBG_RV);
+const kvPvBaseAGCapped = Math.min(kvPvBaseAG, BBG_KV);
+const rvAvBaseAGCapped = Math.min(rvAvBaseAG, BBG_RV);
 
   let { pvANRate, pvAGRate } = getPvRates(children, age);
 
@@ -2331,6 +2332,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
