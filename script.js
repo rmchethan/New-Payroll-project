@@ -672,11 +672,8 @@ function calculateMidijob() {
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
   const kirchensteuerpflichtig =
     document.getElementById("kirchensteuer")?.checked || false;
-  console.log("SV contributions:", sv);
-  console.log("Employer costs:", employer);
-  const totalAN = sv.totalAN;
-  const totalAG = sv.totalAG;
-  const totalEmployerCost = employer.totalCost;
+ 
+
 
  
   if (brutto <= 603 || brutto > 2000) {
@@ -719,6 +716,12 @@ const sv = calculateSV({
   state,
   employeeType
 });
+
+  console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
 
   // ===== Lohnsteuer (annualized) =====
   const annualIncome = steuerpflichtigesBrutto * 12;
@@ -1168,11 +1171,7 @@ function calculatePraktikant() {
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-  console.log("SV contributions:", sv);
-  console.log("Employer costs:", employer);
-  const totalAN = sv.totalAN;
-  const totalAG = sv.totalAG;
-  const totalEmployerCost = employer.totalCost;
+  
  
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
@@ -1191,7 +1190,11 @@ const sv = calculateSV({
   employeeType
 });
 
-
+console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
   
   // ===== Jahreshochrechnung & Steuerklasse =====
   const annualIncome = steuerpflichtigesBrutto * 12;
@@ -1376,11 +1379,7 @@ function calculateAzubi() {
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-  console.log("SV contributions:", sv);
-  console.log("Employer costs:", employer);
-  const totalAN = sv.totalAN;
-  const totalAG = sv.totalAG;
-  const totalEmployerCost = employer.totalCost;
+  
 
  
   // ===== Steuerpflichtiges Brutto =====
@@ -1397,6 +1396,12 @@ const sv = calculateSV({
   state,
   employeeType
 });
+
+ console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
 
   // ===== Jahreshochrechnung & Steuerklasse =====
   const annualIncome = steuerpflichtigesBrutto * 12;
@@ -2318,6 +2323,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
