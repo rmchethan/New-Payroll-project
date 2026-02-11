@@ -139,38 +139,56 @@ button[onclick="calculateNetto()"] {
 /* MODAL */
 /* ============================= */
 
+/* =============================
+   MODAL SYSTEM
+============================= */
+
 .modal {
   display: none;
   position: fixed;
-  z-index: 999;
+  z-index: 1000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.4);
-  backdrop-filter: blur(2px);
+  background-color: rgba(0,0,0,0.6);
 }
 
 .modal-content {
-  background-color: #ffffff;
-  margin: 10% auto;
-  padding: 20px;
+  background: white;
+  margin: 8% auto;
+  padding: 25px;
   width: 90%;
-  max-width: 420px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  animation: fadeIn 0.2s ease-out;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
 .close-btn {
   float: right;
-  font-size: 22px;
+  font-size: 20px;
   cursor: pointer;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to { opacity: 1; transform: scale(1); }
+.info-icon {
+  color: #1a73e8;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+/* =============================
+   COLLAPSIBLE KNOWLEDGE PANEL
+============================= */
+
+#explanationWrapper {
+  background: #f9fbfd;
+  border-left: 4px solid #1a73e8;
+  padding: 20px;
+  margin-top: 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 /* ============================= */
@@ -552,6 +570,7 @@ button[onclick="calculateNetto()"] {
   float: right;
   font-size: 1.3rem;
   font-we
+
 
 
 
