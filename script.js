@@ -898,6 +898,8 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
  // Calculate for Normal AN
 // ===== Calculate Normal Employee =====
 function calculateNormal() {
+   console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
   const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
@@ -910,8 +912,7 @@ function calculateNormal() {
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-  console.log("SV contributions:", sv);
-  console.log("Employer costs:", employer);
+  
   const totalAN = sv.totalAN;
   const totalAG = sv.totalAG;
   const totalEmployerCost = employer.totalCost;
@@ -2313,6 +2314,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
