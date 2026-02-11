@@ -508,6 +508,7 @@ function calculateNetto() {
 
 
 // Calculate for Minijob
+
 function calculateMinijob() {
   const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
@@ -522,6 +523,8 @@ function calculateMinijob() {
   }
 
   const steuerpflichtigesBrutto = brutto;
+  console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
 
   // ===== RV Exemption checkbox =====
   const minijobRVExempt = document.getElementById("minijobRVExempt")?.checked ?? true;
@@ -671,7 +674,8 @@ function calculateMidijob() {
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
   const kirchensteuerpflichtig =
     document.getElementById("kirchensteuer")?.checked || false;
-
+  console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
 
   if (brutto <= 603 || brutto > 2000) {
     alert("Brutto liegt nicht im Übergangsbereich (603,01 – 2.000 €)");
@@ -904,6 +908,8 @@ function calculateNormal() {
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
+  console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
 
   const ueberstunden = Number(document.getElementById("ueberstunden")?.value || 0);
   const vwl = Number(document.getElementById("vwl")?.value || 0);
@@ -1152,7 +1158,8 @@ function calculatePraktikant() {
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-
+  console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
 
@@ -1355,7 +1362,8 @@ function calculateAzubi() {
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-
+  console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
 
@@ -2291,6 +2299,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
