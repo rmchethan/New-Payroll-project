@@ -1156,14 +1156,15 @@ function calculatePraktikant() {
   const svBase = applyBBG(steuerpflichtigesBrutto);
 
 const sv = calculateSV({
-  brutto: steuerpflichtigesBrutto,
-  svBaseAN: svBase,
-  svBaseAG: svBase,
+  brutto,
+  svBaseAN,
+  svBaseAG,
   children,
   age,
   state,
-  includeAV: false
+  employeeType
 });
+
 
   
   // ===== Jahreshochrechnung & Steuerklasse =====
@@ -2285,6 +2286,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
