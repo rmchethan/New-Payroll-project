@@ -166,10 +166,10 @@ function createZeroSV() {
 }
 
 // ===== Calculate Social Insurance contributions =====
+
+
 function calculateSV({
   brutto,
-  svBaseAN,
-  svBaseAG,
   children,
   age,
   state,
@@ -179,107 +179,77 @@ function calculateSV({
   includeAV = true,
   includePV = true
 }) {
-  
-  if (!svBaseAN || typeof svBaseAN !== "object") {
-    console.error("Invalid svBaseAN:", svBaseAN);
-    return createZeroSV();
-  }
 
-  if (!svBaseAG || typeof svBaseAG !== "object") {
-    console.error("Invalid svBaseAG:", svBaseAG);
-    return createZeroSV();
-  }
+  // ===== Beitragsbemessungsgrenzen (Model 2026) =====
+  const BBG_KV = 5175;
+  const BBG_RV = 7550;
 
-  // ===== Extract raw bases =====
-const kvPvBase = Number(svBaseAN.kvPvBase) || 0;
-const rvAvBase = Number(svBaseAN.rvAvBase) || 0;
-
-const kvPvBaseAG = Number(svBaseAG.kvPvBase) || 0;
-const rvAvBaseAG = Number(svBaseAG.rvAvBase) || 0;
-
-// ===== Apply Beitragsbemessungsgrenzen (2026 Model) =====
-const BBG_KV = 5175;
-const BBG_RV = 7550;
-
-const kvPvBaseCapped = Math.min(kvPvBase, BBG_KV);
-const rvAvBaseCapped = Math.min(rvAvBase, BBG_RV);
-
-const kvPvBaseAGCapped = Math.min(kvPvBaseAG, BBG_KV);
-const rvAvBaseAGCapped = Math.min(rvAvBaseAG, BBG_RV);
+  // ===== Apply BBG once (central logic) =====
+  const kvPvBase = Math.min(brutto, BBG_KV);
+  const rvAvBase = Math.min(brutto, BBG_RV);
 
   let { pvANRate, pvAGRate } = getPvRates(children, age);
 
   // Sachsen adjustment
   if (state === "SN") {
     pvAGRate = 0.013;
-    pvANRate = pvANRate + 0.005;
+    pvANRate += 0.005;
   }
 
-  // ===== DECLARE VARIABLES =====
   let kvAN = 0, kvZusatzAN = 0, rvAN = 0, avAN = 0, pvAN = 0;
   let kvAG = 0, kvZusatzAG = 0, rvAG = 0, avAG = 0, pvAG = 0;
 
-
   // ===== KV =====
   if (includeKV) {
-    kvAN = kvPvBaseCapped* 0.073;
-    kvAG = kvPvBaseAGCapped * 0.073;
+    kvAN = kvPvBase * 0.073;
+    kvAG = kvPvBase * 0.073;
 
-    const KV_ZUSATZ = 0.017; // 1.7% average Zusatzbeitrag
-    const KV_ZUSATZ_HALF = KV_ZUSATZ / 2;
+    const KV_ZUSATZ = 0.017;
+    const halfZusatz = KV_ZUSATZ / 2;
 
-    kvZusatzAN = kvPvBaseCapped* KV_ZUSATZ_HALF;
-    kvZusatzAG = kvPvBaseAGCapped * KV_ZUSATZ_HALF;
+    kvZusatzAN = kvPvBase * halfZusatz;
+    kvZusatzAG = kvPvBase * halfZusatz;
   }
 
-    // ===== RV =====
-  const minijobRVExempt = document.getElementById("minijobRVExempt")?.checked || false;
-if (includeRV) {
-  if (employeeType === "minijob") {
-    if (minijobRVExempt) {
-      // Employee is exempt → pays 0%
-      rvAN = 0;
+  // ===== RV =====
+  if (includeRV) {
+    const minijobRVExempt =
+      document.getElementById("minijobRVExempt")?.checked || false;
+
+    if (employeeType === "minijob") {
+      rvAG = rvAvBase * 0.15;
+      rvAN = minijobRVExempt ? 0 : rvAvBase * 0.036;
     } else {
-      // Employee not exempt → pays 3.6%
-      rvAN = rvAvBaseCapped * 0.036;
+      rvAN = rvAvBase * 0.093;
+      rvAG = rvAvBase * 0.093;
     }
-    // Employer always 15%
-    rvAG = rvAvBaseCappedAG * 0.15;
-  } else {
-    // Normal employees
-    rvAN = rvAvBaseCapped * 0.093;
-    rvAG = rvAvBaseCappedAG * 0.093;
   }
-}
-  
 
   // ===== AV =====
   if (includeAV) {
-    avAN = rvAvBaseCapped * 0.013;
-    avAG = rvAvBaseCappedAG * 0.013;
+    avAN = rvAvBase * 0.013;
+    avAG = rvAvBase * 0.013;
   }
 
   // ===== PV =====
   if (includePV) {
-    pvAN = kvPvBaseCapped* pvANRate;
-    pvAG = kvPvBaseAGCapped * pvAGRate;
+    pvAN = kvPvBase * pvANRate;
+    pvAG = kvPvBase * pvAGRate;
   }
 
   return {
-  kvAN,
-  kvZusatzAN,
-  rvAN,
-  avAN,
-  pvAN,
-
-  kvAG,
-  kvZusatzAG,
-  rvAG,
-  avAG,
-  pvAG,
-
-  totalAN: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
-  totalAG: kvAG + kvZusatzAG + rvAG + avAG + pvAG
+    kvAN,
+    kvZusatzAN,
+    rvAN,
+    avAN,
+    pvAN,
+    kvAG,
+    kvZusatzAG,
+    rvAG,
+    avAG,
+    pvAG,
+    totalAN: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
+    totalAG: kvAG + kvZusatzAG + rvAG + avAG + pvAG
   };
 }
 
@@ -2332,6 +2302,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
