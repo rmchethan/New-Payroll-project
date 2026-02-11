@@ -806,33 +806,8 @@ function calculateSV({
   includeRV = true,
   includeAV = true,
   includePV = true
-})
-
-function calculateEmployerCosts({ brutto, svAG }) {
-
-  // Umlagen (approximate demo values)
-  const U1 = brutto * 0.01;       // 1% sickness reimbursement
-  const U2 = brutto * 0.003;      // 0.3% maternity
-  const INS = brutto * 0.0006;    // insolvency levy 0.06%
-
-  const umlagenTotal = U1 + U2 + INS;
-
-  const totalCost = brutto + svAG + umlagenTotal;
-
-  const kostenfaktor = totalCost / brutto;
-
-  return {
-    U1,
-    U2,
-    INS,
-    umlagenTotal,
-    totalCost,
-    kostenfaktor
-  };
-}
-
-
-
+}) {
+  
   if (!svBaseAN || typeof svBaseAN !== "object") {
     console.error("Invalid svBaseAN:", svBaseAN);
     return createZeroSV();
@@ -922,7 +897,30 @@ if (includeRV) {
 
   totalAN: kvAN + kvZusatzAN + rvAN + avAN + pvAN,
   totalAG: kvAG + kvZusatzAG + rvAG + avAG + pvAG
-  }
+  };
+}
+
+function calculateEmployerCosts({ brutto, svAG }) {
+
+  // Umlagen (approximate demo values)
+  const U1 = brutto * 0.01;       // 1% sickness reimbursement
+  const U2 = brutto * 0.003;      // 0.3% maternity
+  const INS = brutto * 0.0006;    // insolvency levy 0.06%
+
+  const umlagenTotal = U1 + U2 + INS;
+
+  const totalCost = brutto + svAG + umlagenTotal;
+
+  const kostenfaktor = totalCost / brutto;
+
+  return {
+    U1,
+    U2,
+    INS,
+    umlagenTotal,
+    totalCost,
+    kostenfaktor
+  };
 }
 
 // ===== Progressive Tax Functions =====
@@ -2261,6 +2259,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
