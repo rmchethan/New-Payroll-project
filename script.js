@@ -456,48 +456,53 @@ function toggleExplanation() {
 
 // Main calculate function
 function calculateNetto() {
-if (!validateInputs()) {
-    return;
-  }
+  if (!validateInputs()) return;
 
+  const brutto = safeNumber(document.getElementById("brutto")?.value);
+  const dob = document.getElementById("dob")?.value;
+  const children = safeNumber(document.getElementById("children")?.value) || 0;
+  const state = document.getElementById("state")?.value || "BW"; // default state if empty
   const employeeType = document.getElementById("employeeType")?.value;
- // Example: create social insurance bases
-const svBaseAN = {
-  kvPvBase: brutto, // health + nursing care base for employee
-  rvAvBase: brutto  // pension + unemployment base for employee
-};
 
-const svBaseAG = {
-  kvPvBase: brutto, // health + nursing care base for employer
-  rvAvBase: brutto  // pension + unemployment base for employer
-};
+  // Calculate age from DOB
+  const age = calculateAge(dob);
 
+  // Example: create social insurance bases
+  const svBaseAN = {
+    kvPvBase: brutto, // health + nursing care base for employee
+    rvAvBase: brutto  // pension + unemployment base for employee
+  };
 
+  const svBaseAG = {
+    kvPvBase: brutto, // health + nursing care base for employer
+    rvAvBase: brutto  // pension + unemployment base for employer
+  };
+
+  // Call your social insurance function
+  const sv = calculateSV({
+    brutto,
+    svBaseAN,
+    svBaseAG,
+    children,
+    age,
+    state,
+    employeeType
+  });
+
+  // Then pass sv.totalAG to employer calculation
+  const employer = calculateEmployerCosts({
+    brutto,
+    svAG: sv.totalAG
+  });
+
+  // Call employee-type specific calculation
   if (employeeType === "normal") calculateNormal();
   else if (employeeType === "praktikant") calculatePraktikant();
   else if (employeeType === "minijob") calculateMinijob();
   else if (employeeType === "midijob") calculateMidijob();
   else if (employeeType === "azubi") calculateAzubi();
-  
-// Call your social insurance function first
-const sv = calculateSV({
-  brutto,
-  svBaseAN: svBaseAN,
-  svBaseAG: svBaseAG,
-  children,
-  age,
-  state,
-  employeeType
-});
 
-// Then pass sv.totalAG to employer calculation
-const employer = calculateEmployerCosts({
-  brutto,
-  svAG: sv.totalAG
-});
-
- 
-// ===== Update the explanation panel (do NOT force display) =====
+  // Update explanation panel
   updateExplanation(employeeType);
 }
 
@@ -2286,6 +2291,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
