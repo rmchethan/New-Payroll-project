@@ -915,7 +915,10 @@ function calculateNormal() {
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-  
+
+   // ✅ Compute SV bases here
+  const svBaseAN = computeSVBaseAN(brutto, age, children);
+  const svBaseAG = computeSVBaseAG(brutto);
 
 
   const ueberstunden = Number(document.getElementById("ueberstunden")?.value || 0);
@@ -1179,6 +1182,7 @@ function calculatePraktikant() {
   
   // ===== SV calculation =====
   const svBase = applyBBG(steuerpflichtigesBrutto);
+ 
 
 const sv = calculateSV({
   brutto,
@@ -2323,6 +2327,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
