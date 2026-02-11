@@ -452,16 +452,14 @@ function calculateNetto() {
 
 
 
-  // Calculate SV once
-const sv = calculateSV({
+ const sv = calculateSV({
   brutto,
-  svBaseAN,
-  svBaseAG,
   children,
   age,
   state,
   employeeType
 });
+
 
  
  // Calculate employer cost once
@@ -677,8 +675,7 @@ const MIDIJOB_MIN = 603.01;
 const MIDIJOB_MAX = 2000;
 const F2026 = 0.6619; // from 28 / 42.30
 
-  let svBaseAN, svBaseAG;
-
+ 
   // Case: midijob range
 if (brutto > MIDIJOB_MIN && brutto <= MIDIJOB_MAX) {
   const G = MIDIJOB_MIN;
@@ -2246,6 +2243,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
