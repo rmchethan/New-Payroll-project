@@ -468,15 +468,8 @@ function calculateNetto() {
   const age = calculateAge(dob);
 
   // Example: create social insurance bases
-  const svBaseAN = {
-    kvPvBase: brutto, // health + nursing care base for employee
-    rvAvBase: brutto  // pension + unemployment base for employee
-  };
-
-  const svBaseAG = {
-    kvPvBase: brutto, // health + nursing care base for employer
-    rvAvBase: brutto  // pension + unemployment base for employer
-  };
+ const svBaseAN = { kvPvBase: brutto, rvAvBase: brutto };
+ const svBaseAG = { kvPvBase: brutto, rvAvBase: brutto };
 
   // Call your social insurance function
   const sv = calculateSV({
@@ -525,6 +518,11 @@ function calculateMinijob() {
   const steuerpflichtigesBrutto = brutto;
   console.log("SV contributions:", sv);
   console.log("Employer costs:", employer);
+
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
+ 
 
   // ===== RV Exemption checkbox =====
   const minijobRVExempt = document.getElementById("minijobRVExempt")?.checked ?? true;
@@ -676,7 +674,11 @@ function calculateMidijob() {
     document.getElementById("kirchensteuer")?.checked || false;
   console.log("SV contributions:", sv);
   console.log("Employer costs:", employer);
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
 
+ 
   if (brutto <= 603 || brutto > 2000) {
     alert("Brutto liegt nicht im Übergangsbereich (603,01 – 2.000 €)");
     return;
@@ -910,6 +912,9 @@ function calculateNormal() {
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
   console.log("SV contributions:", sv);
   console.log("Employer costs:", employer);
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
 
   const ueberstunden = Number(document.getElementById("ueberstunden")?.value || 0);
   const vwl = Number(document.getElementById("vwl")?.value || 0);
@@ -1160,6 +1165,10 @@ function calculatePraktikant() {
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
   console.log("SV contributions:", sv);
   console.log("Employer costs:", employer);
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
+ 
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
 
@@ -1364,6 +1373,11 @@ function calculateAzubi() {
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
   console.log("SV contributions:", sv);
   console.log("Employer costs:", employer);
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
+
+ 
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
 
@@ -2299,6 +2313,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
