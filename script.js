@@ -143,7 +143,7 @@ function applyBBG(brutto) {
 
   return {
     kvPvBase: Math.min(brutto, BBG_KV_PV),
-    rvAvBase: Math.min(brutto, BBG_RV_AV)
+    rvAvBaseCapped: Math.min(brutto, BBG_RV_AV)
   };
 }
 
@@ -190,11 +190,21 @@ function calculateSV({
     return createZeroSV();
   }
 
-  const kvPvBase = Number(svBaseAN.kvPvBase) || 0;
-  const rvAvBase = Number(svBaseAN.rvAvBase) || 0;
+  const kvPvBaseCapped= Number(svBaseAN.kvPvBase) || 0;
+  const rvAvBaseCapped = Number(svBaseAN.rvAvBaseCapped) || 0;
 
-  const kvPvBaseAG = Number(svBaseAG.kvPvBase) || 0;
-  const rvAvBaseAG = Number(svBaseAG.rvAvBase) || 0;
+  const kvPvBaseAGCapped = Number(svBaseAG.kvPvBase) || 0;
+  const rvAvBaseCappedAG = Number(svBaseAG.rvAvBaseCapped) || 0;
+
+ // ===== Apply Beitragsbemessungsgrenzen (2026 Model) =====
+const BBG_KV = 5175;
+const BBG_RV = 7550;
+
+const kvPvBaseCapped = Math.min(kvPvBase, BBG_KV);
+const rvAvBaseCappedCapped = Math.min(rvAvBaseCapped, BBG_RV);
+
+const kvPvBaseAGCappedCapped = Math.min(kvPvBaseAGCapped, BBG_KV);
+const rvAvBaseCappedAGCapped = Math.min(rvAvBaseCappedAG, BBG_RV);
 
   let { pvANRate, pvAGRate } = getPvRates(children, age);
 
@@ -211,14 +221,14 @@ function calculateSV({
 
   // ===== KV =====
   if (includeKV) {
-    kvAN = kvPvBase * 0.073;
-    kvAG = kvPvBaseAG * 0.073;
+    kvAN = kvPvBaseCapped* 0.073;
+    kvAG = kvPvBaseAGCapped * 0.073;
 
     const KV_ZUSATZ = 0.017; // 1.7% average Zusatzbeitrag
     const KV_ZUSATZ_HALF = KV_ZUSATZ / 2;
 
-    kvZusatzAN = kvPvBase * KV_ZUSATZ_HALF;
-    kvZusatzAG = kvPvBaseAG * KV_ZUSATZ_HALF;
+    kvZusatzAN = kvPvBaseCapped* KV_ZUSATZ_HALF;
+    kvZusatzAG = kvPvBaseAGCapped * KV_ZUSATZ_HALF;
   }
 
     // ===== RV =====
@@ -230,28 +240,28 @@ if (includeRV) {
       rvAN = 0;
     } else {
       // Employee not exempt → pays 3.6%
-      rvAN = rvAvBase * 0.036;
+      rvAN = rvAvBaseCapped * 0.036;
     }
     // Employer always 15%
-    rvAG = rvAvBaseAG * 0.15;
+    rvAG = rvAvBaseCappedAG * 0.15;
   } else {
     // Normal employees
-    rvAN = rvAvBase * 0.093;
-    rvAG = rvAvBaseAG * 0.093;
+    rvAN = rvAvBaseCapped * 0.093;
+    rvAG = rvAvBaseCappedAG * 0.093;
   }
 }
   
 
   // ===== AV =====
   if (includeAV) {
-    avAN = rvAvBase * 0.013;
-    avAG = rvAvBaseAG * 0.013;
+    avAN = rvAvBaseCapped * 0.013;
+    avAG = rvAvBaseCappedAG * 0.013;
   }
 
   // ===== PV =====
   if (includePV) {
-    pvAN = kvPvBase * pvANRate;
-    pvAG = kvPvBaseAG * pvAGRate;
+    pvAN = kvPvBaseCapped* pvANRate;
+    pvAG = kvPvBaseAGCapped * pvAGRate;
   }
 
   return {
@@ -453,8 +463,61 @@ function toggleExplanation() {
   steuerklasse.disabled = false;
 }
 
+// ===== Build SV Bases depending on employee type =====
 
-// Main calculate function
+function buildSVBases({ brutto, employeeType }) {
+
+  let svBaseAN;
+  let svBaseAG;
+
+  switch (employeeType) {
+
+    case "normal":
+    case "praktikant":
+    case "azubi":
+      // Standard full contributions
+      svBaseAN = { kvPvBase: brutto, rvAvBaseCapped: brutto };
+      svBaseAG = { kvPvBase: brutto, rvAvBaseCapped: brutto };
+      break;
+
+    case "midijob":
+      const reducedBase = calculateMidijobBase(brutto); // you already have this
+
+      svBaseAN = {
+        kvPvBase: reducedBase,
+        rvAvBaseCapped: reducedBase
+      };
+
+      svBaseAG = {
+        kvPvBase: brutto,
+        rvAvBaseCapped: brutto
+      };
+      break;
+
+    case "minijob":
+      // Only RV relevant
+      svBaseAN = {
+        kvPvBase: 0,
+        rvAvBaseCapped: brutto
+      };
+
+      svBaseAG = {
+        kvPvBase: brutto,
+        rvAvBaseCapped: brutto
+      };
+      break;
+
+    default:
+      svBaseAN = { kvPvBase: brutto, rvAvBaseCapped: brutto };
+      svBaseAG = { kvPvBase: brutto, rvAvBaseCapped: brutto };
+  }
+
+  return { svBaseAN, svBaseAG };
+}
+
+
+// Main calculate function Calculate Netto
+
 function calculateNetto() {
   if (!validateInputs()) return;
 
@@ -467,46 +530,32 @@ function calculateNetto() {
   // Calculate age from DOB
   const age = calculateAge(dob);
 
-  // Example: create social insurance bases
- let svBaseAN;
-let svBaseAG;
-
-if (employeeType === "midijob") {
-    const reducedBase = calculateMidijobBase(brutto);
-
-    svBaseAN = {
-        kvPvBase: reducedBase,
-        rvAvBase: reducedBase
-    };
-
-    svBaseAG = {
-        kvPvBase: brutto,
-        rvAvBase: brutto
-    };
-
-} else {
-    svBaseAN = { kvPvBase: brutto, rvAvBase: brutto };
-    svBaseAG = { kvPvBase: brutto, rvAvBase: brutto };
-}
+  // Build SV bases cleanly
+const { svBaseAN, svBaseAG } = buildSVBases({
+  brutto,
+  employeeType
+});
 
 
-  // Call your social insurance function
-  const sv = calculateSV({
-    brutto,
-    svBaseAN,
-    svBaseAG,
-    children,
-    age,
-    state,
-    employeeType
-  });
+  // Calculate SV once
+const sv = calculateSV({
+  brutto,
+  svBaseAN,
+  svBaseAG,
+  children,
+  age,
+  state,
+  employeeType
+});
 
-  // Then pass sv.totalAG to employer calculation
-  const employer = calculateEmployerCosts({
-    brutto,
-    svAG: sv.totalAG
-  });
+ 
+ // Calculate employer cost once
+const employer = calculateEmployerCosts({
+  brutto,
+  svAG: sv.totalAG
+});
 
+ 
   // Call employee-type specific calculation
   if (employeeType === "normal") calculateNormal({ sv, employer });
 else if (employeeType === "praktikant") calculatePraktikant({ sv, employer });
@@ -521,7 +570,7 @@ else if (employeeType === "azubi") calculateAzubi({ sv, employer });
 
 // Calculate for Minijob
 
-function calculateMinijob() {
+function calculateMinijob({ sv, employer }) {
   const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
@@ -675,7 +724,7 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
 
 // Calculate for Midijob
 
-function calculateMidijob() {
+function calculateMidijob({ sv, employer }) {
   const brutto = safeNumber(document.getElementById("brutto")?.value);
   
   // Prevent negative or zero Brutto
@@ -1143,7 +1192,7 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
  }
 
  // ===== Calculate Praktikant =====
-function calculatePraktikant() {
+function calculatePraktikant({ sv, employer }) {
   const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
@@ -1165,17 +1214,8 @@ function calculatePraktikant() {
   const svBase = applyBBG(steuerpflichtigesBrutto);
  
 
-const sv = calculateSV({
-  brutto,
-  svBaseAN,
-  svBaseAG,
-  children,
-  age,
-  state,
-  employeeType
-});
 
-console.log("SV contributions:", sv);
+  console.log("SV contributions:", sv);
   console.log("Employer costs:", employer);
   const totalAN = sv.totalAN;
   const totalAG = sv.totalAG;
@@ -1352,7 +1392,7 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
 
 
 // ===== Calculate Azubi =====
-function calculateAzubi() {
+function calculateAzubi({ sv, employer }) {
   const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
@@ -1372,15 +1412,7 @@ function calculateAzubi() {
 
   // ===== SV calculation (Azubi: full contributions) =====
   const svBase = applyBBG(steuerpflichtigesBrutto);
-const sv = calculateSV({
-  brutto,
-  svBaseAN,
-  svBaseAG,
-  children,
-  age,
-  state,
-  employeeType
-});
+
 
  console.log("SV contributions:", sv);
   console.log("Employer costs:", employer);
@@ -2308,6 +2340,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
