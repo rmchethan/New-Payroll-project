@@ -898,8 +898,7 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
  // Calculate for Normal AN
 // ===== Calculate Normal Employee =====
 function calculateNormal() {
-   console.log("SV contributions:", sv);
-  console.log("Employer costs:", employer);
+
  
   const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
@@ -914,9 +913,7 @@ function calculateNormal() {
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
   
-  const totalAN = sv.totalAN;
-  const totalAG = sv.totalAG;
-  const totalEmployerCost = employer.totalCost;
+
 
   const ueberstunden = Number(document.getElementById("ueberstunden")?.value || 0);
   const vwl = Number(document.getElementById("vwl")?.value || 0);
@@ -960,6 +957,12 @@ const sv = calculateSV({
   employeeType
 });
 
+   console.log("SV contributions:", sv);
+  console.log("Employer costs:", employer);
+ 
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+  const totalEmployerCost = employer.totalCost;
 
   
   // ===== Jahreshochrechnung & Steuerklasse =====
@@ -2315,6 +2318,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
