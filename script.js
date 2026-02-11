@@ -461,7 +461,17 @@ if (!validateInputs()) {
   }
 
   const employeeType = document.getElementById("employeeType")?.value;
- 
+ // Example: create social insurance bases
+const svBaseAN = {
+  kvPvBase: brutto, // health + nursing care base for employee
+  rvAvBase: brutto  // pension + unemployment base for employee
+};
+
+const svBaseAG = {
+  kvPvBase: brutto, // health + nursing care base for employer
+  rvAvBase: brutto  // pension + unemployment base for employer
+};
+
 
   if (employeeType === "normal") calculateNormal();
   else if (employeeType === "praktikant") calculatePraktikant();
@@ -691,11 +701,12 @@ if (brutto > MIDIJOB_MIN && brutto <= MIDIJOB_MAX) {
   // then pass to calculateSV
 const sv = calculateSV({
   brutto,
-  svBaseAN: applyBBG(svBaseAN),
-  svBaseAG: applyBBG(svBaseAG),
+  svBaseAN,
+  svBaseAG,
   children,
   age,
-  state
+  state,
+  employeeType
 });
 
   // ===== Lohnsteuer (annualized) =====
@@ -921,13 +932,14 @@ const insolvenzgeld = steuerpflichtigesBrutto * 0.006; // Insolvenzgeld (0.6%)
   // ===== BBG & SV =====
   const bbg = applyBBG(steuerpflichtigesBrutto);
   
-  const sv = calculateSV({
-  brutto: steuerpflichtigesBrutto,
-  svBaseAN: bbg,
-  svBaseAG: bbg,
+const sv = calculateSV({
+  brutto,
+  svBaseAN,
+  svBaseAG,
   children,
   age,
-  state
+  state,
+  employeeType
 });
 
 
@@ -1343,14 +1355,15 @@ function calculateAzubi() {
 
   // ===== SV calculation (Azubi: full contributions) =====
   const svBase = applyBBG(steuerpflichtigesBrutto);
-  const sv = calculateSV({
-    brutto: steuerpflichtigesBrutto,
-    svBaseAN: svBase,
-    svBaseAG: svBase,
-    children,
-    age,
-    state
-  });
+const sv = calculateSV({
+  brutto,
+  svBaseAN,
+  svBaseAG,
+  children,
+  age,
+  state,
+  employeeType
+});
 
   // ===== Jahreshochrechnung & Steuerklasse =====
   const annualIncome = steuerpflichtigesBrutto * 12;
@@ -2272,6 +2285,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
