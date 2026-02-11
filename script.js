@@ -1097,10 +1097,23 @@ if (!validateInputs()) {
   else if (employeeType === "midijob") calculateMidijob();
   else if (employeeType === "azubi") calculateAzubi();
   
- const employer = calculateEmployerCosts({
+// Call your social insurance function first
+const sv = calculateSV({
+  brutto,
+  svBaseAN: svBaseAN,
+  svBaseAG: svBaseAG,
+  children,
+  age,
+  state,
+  employeeType
+});
+
+// Then pass sv.totalAG to employer calculation
+const employer = calculateEmployerCosts({
   brutto,
   svAG: sv.totalAG
 });
+
  
 // ===== Update the explanation panel (do NOT force display) =====
   updateExplanation(employeeType);
@@ -2259,6 +2272,7 @@ function updateExplanation(employeeType) {
 
 // Initialize toggle on page load
 window.onload = toggleEmployeeType;
+
 
 
 
