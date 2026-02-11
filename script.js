@@ -489,11 +489,11 @@ function calculateNetto() {
   });
 
   // Call employee-type specific calculation
-  if (employeeType === "normal") calculateNormal();
-  else if (employeeType === "praktikant") calculatePraktikant();
-  else if (employeeType === "minijob") calculateMinijob();
-  else if (employeeType === "midijob") calculateMidijob();
-  else if (employeeType === "azubi") calculateAzubi();
+  if (employeeType === "normal") calculateNormal({ sv, employer });
+else if (employeeType === "praktikant") calculatePraktikant({ sv, employer });
+else if (employeeType === "minijob") calculateMinijob({ sv, employer });
+else if (employeeType === "midijob") calculateMidijob({ sv, employer });
+else if (employeeType === "azubi") calculateAzubi({ sv, employer });
 
   // Update explanation panel
   updateExplanation(employeeType);
@@ -900,6 +900,7 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
 function calculateNormal() {
    console.log("SV contributions:", sv);
   console.log("Employer costs:", employer);
+ 
   const brutto = safeNumber(document.getElementById("brutto")?.value);
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
@@ -2314,6 +2315,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
