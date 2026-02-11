@@ -450,11 +450,6 @@ function calculateNetto() {
   // Calculate age from DOB
   const age = calculateAge(dob);
 
-  // Build SV bases cleanly
-const { svBaseAN, svBaseAG } = buildSVBases({
-  brutto,
-  employeeType
-});
 
 
   // Calculate SV once
@@ -2251,6 +2246,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
