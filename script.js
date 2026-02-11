@@ -434,57 +434,6 @@ function toggleExplanation() {
   steuerklasse.disabled = false;
 }
 
-// ===== Build SV Bases depending on employee type =====
-
-function buildSVBases({ brutto, employeeType }) {
-
-  let svBaseAN;
-  let svBaseAG;
-
-  switch (employeeType) {
-
-    case "normal":
-    case "praktikant":
-    case "azubi":
-      // Standard full contributions
-      svBaseAN = { kvPvBase: brutto, rvAvBaseCapped: brutto };
-      svBaseAG = { kvPvBase: brutto, rvAvBaseCapped: brutto };
-      break;
-
-    case "midijob":
-      const reducedBase = calculateMidijobBase(brutto); // you already have this
-
-      svBaseAN = {
-        kvPvBase: reducedBase,
-        rvAvBaseCapped: reducedBase
-      };
-
-      svBaseAG = {
-        kvPvBase: brutto,
-        rvAvBaseCapped: brutto
-      };
-      break;
-
-    case "minijob":
-      // Only RV relevant
-      svBaseAN = {
-        kvPvBase: 0,
-        rvAvBaseCapped: brutto
-      };
-
-      svBaseAG = {
-        kvPvBase: brutto,
-        rvAvBaseCapped: brutto
-      };
-      break;
-
-    default:
-      svBaseAN = { kvPvBase: brutto, rvAvBaseCapped: brutto };
-      svBaseAG = { kvPvBase: brutto, rvAvBaseCapped: brutto };
-  }
-
-  return { svBaseAN, svBaseAG };
-}
 
 
 // Main calculate function Calculate Netto
@@ -2302,6 +2251,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
