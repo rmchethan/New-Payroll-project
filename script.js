@@ -943,7 +943,7 @@ const summaryHTML = `
 `;
 
 document.getElementById("output").innerHTML = summaryHTML + outputHTML;
-
+ }
  }
 
  // Calculate for Normal AN
@@ -2332,6 +2332,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
