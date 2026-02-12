@@ -283,10 +283,12 @@ button[onclick="calculateNetto()"] {
   background: #111827;
 }
 
-/* Netto row highlight */
-#output tr th:contains("Netto") {
-  background: #065f46;
+.netto-highlight {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0b5ed7;
 }
+
 
 /* Mobile Responsive */
 @media (max-width: 600px) {
@@ -570,6 +572,7 @@ button[onclick="calculateNetto()"] {
   float: right;
   font-size: 1.3rem;
   font-we
+
 
 
 
