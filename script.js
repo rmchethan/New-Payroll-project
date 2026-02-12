@@ -485,13 +485,6 @@ function calculateNetto() {
 
 
  
- // Calculate employer cost once
-const employer = calculateEmployerCosts({
-  brutto,
-  svAG: sv.totalAG
-});
-
- 
   // Call employee-type specific calculation
   if (employeeType === "normal") calculateNormal({ sv, employer });
 else if (employeeType === "praktikant") calculatePraktikant({ sv, employer });
@@ -2275,6 +2268,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
