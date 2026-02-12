@@ -271,28 +271,20 @@ if (employeeType === "midijob" && brutto > 603 && brutto <= 2000) {
   };
 }
 
-function calculateEmployerCosts({ brutto, svAG }) {
+// Calculate Employer cost
 
-  // Umlagen (approximate demo values)
-  const U1 = brutto * 0.01;       // 1% sickness reimbursement
-  const U2 = brutto * 0.003;      // 0.3% maternity
-  const INS = brutto * 0.0006;    // insolvency levy 0.06%
+function calculateEmployerCosts({ brutto, svAG, umlagen = 0, pauschsteuer = 0 }) {
 
-  const umlagenTotal = U1 + U2 + INS;
+  const totalCost = brutto + svAG + umlagen + pauschsteuer;
 
-  const totalCost = brutto + svAG + umlagenTotal;
-
-  const kostenfaktor = totalCost / brutto;
+  const kostenfaktor = brutto > 0 ? totalCost / brutto : 0;
 
   return {
-    U1,
-    U2,
-    INS,
-    umlagenTotal,
     totalCost,
     kostenfaktor
   };
 }
+
 
 // ===== Progressive Tax Functions =====
 
@@ -937,6 +929,12 @@ function calculateNormal({ sv, employer }) {
 const umlage1 = steuerpflichtigesBrutto * 0.028;      // U1 (2.8%)
 const umlage2 = steuerpflichtigesBrutto * 0.0075;     // U2 (0.75%)
 const insolvenzgeld = steuerpflichtigesBrutto * 0.006; // Insolvenzgeld (0.6%)
+const umlagenTotal = umlage1 + umlage2 + insolvenzgeld;
+const employer = calculateEmployerCosts({
+  brutto: steuerpflichtigesBrutto,
+  svAG: sv.totalAG,
+  umlagen: umlagenTotal
+});
 
   
 
@@ -966,12 +964,7 @@ if (kirchensteuerpflichtig && lohnsteuer > 0) {
   // ===== Netto =====
   const netto = steuerpflichtigesBrutto - lohnsteuer - soli - kirchensteuer - sv.totalAN - jobticket + steuerfreieZuschlaege;
 
-  // ===== Arbeitgeberanteile =====
-  const arbeitgeberGesamt =
-  sv.totalAG +
-  umlage1 +
-  umlage2 +
-  insolvenzgeld;
+
 
   // ===== Output =====
 const gesamtBrutto = steuerpflichtigesBrutto + steuerfreieZuschlaege;
@@ -1100,11 +1093,11 @@ const outputHTML = `
 </tr>
   <tr>
     <th>AG Gesamt</th>
-    <th>${formatCurrency(arbeitgeberGesamt)}</th>
+    <th>${formatCurrency(employer.totalCost)}</th>
   </tr>
   <tr>
     <th>Gesamtkosten AG</th>
-    <th>${formatCurrency(gesamtKostenAG)}</th>
+    <th>${formatCurrency(employer.kostenfaktor)}</th>
   </tr>
 </table>
 `;
@@ -1125,8 +1118,12 @@ const summaryHTML = `
   </div>
   <div class="summary-item">
     <h4>AG Gesamtkosten</h4>
-    <p>${formatCurrency(gesamtKostenAG)}</p>
+    <p>${formatCurrency(employer.kostenfaktor)}</p>
   </div>
+</div>
+<div class="result-card">
+  <div class="result-label">Kostenfaktor</div>
+  <div class="result-value" id="kostenfaktorDisplay">1.00 (0%)</div>
 </div>
 `;
 
@@ -2278,6 +2275,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
