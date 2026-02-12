@@ -854,27 +854,22 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
 
  // Calculate for Normal AN
 // ===== Calculate Normal Employee =====
+// ===== Calculate Normal Employee =====
 function calculateNormal() {
 
- 
   const brutto = safeNumber(document.getElementById("brutto")?.value);
-  // Prevent negative or zero Brutto
+
   if (brutto <= 0) {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
-    return; // Stop the calculation
+    return;
   }
-  
+
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-  
-  console.log("SV contributions:", sv);
-  const totalAN = sv.totalAN;
-  const totalAG = sv.totalAG;
-  const totalEmployerCost = employer.totalCost;
-  
+
   const ueberstunden = Number(document.getElementById("ueberstunden")?.value || 0);
   const vwl = Number(document.getElementById("vwl")?.value || 0);
   const nacht25 = Number(document.getElementById("nacht25")?.value || 0);
@@ -883,10 +878,11 @@ function calculateNormal() {
   const feiertag125 = Number(document.getElementById("feiertag125")?.value || 0);
   const jobticket = Number(document.getElementById("jobticket")?.value || 0);
 
+  // ===== Brutto calculation =====
   const grundlohn = brutto + vwl;
   const monatlicheStunden = 160;
   const stundenlohn = monatlicheStunden > 0 ? grundlohn / monatlicheStunden : 0;
-  
+
   const ueberstundenPay = ueberstunden * stundenlohn;
   const ueberstundenZuschlag = ueberstundenPay * 0.25;
   const nacht25Pay  = nacht25 * stundenlohn * 0.25;
@@ -894,61 +890,70 @@ function calculateNormal() {
   const sonntagPay  = sonntag50 * stundenlohn * 0.50;
   const feiertagPay = feiertag125 * stundenlohn * 1.25;
 
-  const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
-  const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
- const sv = calculateSV({
-  brutto: steuerpflichtigesBrutto,
-  children,
-  age,
-  state,
-  employeeType: "normal"
-});
-  
-// ===== Umlagen (Arbeitgeber only) =====
-const umlage1 = steuerpflichtigesBrutto * 0.028;      // U1 (2.8%)
-const umlage2 = steuerpflichtigesBrutto * 0.0075;     // U2 (0.75%)
-const insolvenzgeld = steuerpflichtigesBrutto * 0.006; // Insolvenzgeld (0.6%)
-const umlagenTotal = umlage1 + umlage2 + insolvenzgeld;
-const employer = calculateEmployerCosts({
-  brutto: steuerpflichtigesBrutto,
-  svAG: sv.totalAG,
-  umlagen: umlagenTotal
-});
+  const steuerfreieZuschlaege =
+    nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
 
-  
+  const steuerpflichtigesBrutto =
+    grundlohn + ueberstundenPay + ueberstundenZuschlag;
 
-  // ===== BBG & SV =====
-  const bbg = applyBBG(steuerpflichtigesBrutto);
-  
-  
-  // ===== Jahreshochrechnung & Steuerklasse =====
+  // ===== Social Insurance =====
+  const sv = calculateSV({
+    brutto: steuerpflichtigesBrutto,
+    children,
+    age,
+    state,
+    employeeType: "normal"
+  });
+
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
+
+  // ===== Umlagen (Employer only) =====
+  const umlage1 = steuerpflichtigesBrutto * 0.028;
+  const umlage2 = steuerpflichtigesBrutto * 0.0075;
+  const insolvenzgeld = steuerpflichtigesBrutto * 0.006;
+  const umlagenTotal = umlage1 + umlage2 + insolvenzgeld;
+
+  const employer = calculateEmployerCosts({
+    brutto: steuerpflichtigesBrutto,
+    svAG: totalAG,
+    umlagen: umlagenTotal
+  });
+
+  // ===== Tax =====
   const annualIncome = steuerpflichtigesBrutto * 12;
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
   annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
 
-  //Soli 
   const lohnsteuer = annualTax / 12;
+
   const annualSoli = calculateSoli(annualTax, steuerklasse);
   const soli = annualSoli / 12;
 
-  // ===== Kirchensteuer =====
-  const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
-  
+  const kirchensteuerpflichtig =
+    document.getElementById("kirchensteuer")?.checked || false;
+
   let kirchensteuer = 0;
-if (kirchensteuerpflichtig && lohnsteuer > 0) {
-  const kirchensteuerRate = getKirchensteuerRate(state);
-  kirchensteuer = lohnsteuer * kirchensteuerRate;
-}
+  if (kirchensteuerpflichtig && lohnsteuer > 0) {
+    const kirchensteuerRate = getKirchensteuerRate(state);
+    kirchensteuer = lohnsteuer * kirchensteuerRate;
+  }
 
   // ===== Netto =====
-  const netto = steuerpflichtigesBrutto - lohnsteuer - soli - kirchensteuer - sv.totalAN - jobticket + steuerfreieZuschlaege;
+  const netto =
+    steuerpflichtigesBrutto
+    - lohnsteuer
+    - soli
+    - kirchensteuer
+    - totalAN
+    - jobticket
+    + steuerfreieZuschlaege;
 
+  // ===== Employer Totals =====
+  const gesamtBrutto = steuerpflichtigesBrutto + steuerfreieZuschlaege;
+  const gesamtKostenAG = employer.totalCost;
 
-
-  // ===== Output =====
-const gesamtBrutto = steuerpflichtigesBrutto + steuerfreieZuschlaege;
-const gesamtKostenAG = gesamtBrutto + employer.totalCost;
-const outputHTML = `
+ const outputHTML = `
 <table>
   <tr>
     <th colspan="2">Brutto Bestandteile</th>
@@ -2254,6 +2259,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
