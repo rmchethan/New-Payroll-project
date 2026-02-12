@@ -321,26 +321,39 @@ function calculateProgressiveTax(monthlyIncome) {
   return tax;
 }
 
-// Annual progressive tax
-function calculateAnnualProgressiveTax(annualIncome) {
+// ===== Progressive Income Tax 2026 Model (Based on §32a EStG structure) =====
+function calculateAnnualProgressiveTax(zvE) {
+
+  // 2026 model values (demo realistic assumptions)
+ 
+  const GFB = 12000;        // Grundfreibetrag (adjustable)
+  const ZONE1_END = 18000;
+  const ZONE2_END = 66000;
+  const ZONE3_END = 277000;
+
   let tax = 0;
 
-  if (annualIncome <= 14400) return 0; // Grundfreibetrag
-  if (annualIncome > 14400 && annualIncome <= 24000) {
-    tax += (annualIncome - 14400) * 0.14;
-  }
-  if (annualIncome > 24000 && annualIncome <= 48000) {
-    tax += (24000 - 14400) * 0.14 + (annualIncome - 24000) * 0.24;
-  }
-  if (annualIncome > 48000 && annualIncome <= 84000) {
-    tax += (24000 - 14400) * 0.14 + (48000 - 24000) * 0.24 + (annualIncome - 48000) * 0.34;
-  }
-  if (annualIncome > 84000) {
-    tax += (24000 - 14400) * 0.14 + (48000 - 24000) * 0.24 + (84000 - 48000) * 0.34 + (annualIncome - 84000) * 0.42;
+  if (zvE <= GFB) {
+    tax = 0;
+
+  } else if (zvE <= ZONE1_END) {
+    const y = (zvE - GFB) / 10000;
+    tax = (979.18 * y + 1400) * y;
+
+  } else if (zvE <= ZONE2_END) {
+    const z = (zvE - ZONE1_END) / 10000;
+    tax = (192.59 * z + 2397) * z + 966;
+
+  } else if (zvE <= ZONE3_END) {
+    tax = 0.42 * zvE - 10000;
+
+  } else {
+    tax = 0.45 * zvE - 18300;
   }
 
-  return tax;
+  return Math.max(0, tax);
 }
+
 
 // ===== Solidaritätszuschlag (2025 simplified model) =====
 function calculateSoli(annualTax, steuerklasse) {
@@ -2261,6 +2274,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
