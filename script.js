@@ -1684,7 +1684,8 @@ const explanationContent = {
 <h4>Solidaritätszuschlag</h4>
 <ul>
   <li><strong>5,5 %</strong> der festgesetzten Lohnsteuer (§ 3 SolzG)</li>
-  <li>Freigrenzen im Modell vereinfacht berücksichtigt</li>
+  <li>Freigrenzen im Modell vereinfacht berücksichtigtSolidaritätszuschlag wird gemäß SolzG als 5,5 % der festgesetzten Lohnsteuer berechnet</li>
+  <li>Die Freigrenze und Milderungszone werden im Modell vereinfacht dargestellt</li>
 </ul>
 
 <h4>Kirchensteuer</h4>
@@ -1710,10 +1711,11 @@ Im Modell wird das sozialversicherungspflichtige Entgelt bis zur jeweiligen
 <h4>🏥 Krankenversicherung (KV)</h4>
 <ul>
   <li>Allgemeiner Beitragssatz: 14,6 % (§ 241 SGB V)</li>
-  <li>Durchschnittlicher Zusatzbeitrag: ca. 1,7 % (§ 242 SGB V)</li>
+  <li>Durchschnittlicher Zusatzbeitrag (Modellannahme): 1,7 % (§ 242 SGB V)</li>
   <li>Gesamt: ca. 16,3 %</li>
   <li>Aufteilung: 50 % Arbeitnehmer / 50 % Arbeitgeber (§ 249 SGB V)</li>
   <li>BBG 2026 (Modellannahme): ca. 5.175 € monatlich</li>
+  <li>KV Zusatzbeitrag: Durchschnittlicher Zusatzbeitrag (Modellannahme): 1,7 %</li>
 </ul>
 
 <h4>👴 Rentenversicherung (RV)</h4>
@@ -2223,7 +2225,8 @@ azubi: `
 <h4>4️⃣ Solidaritätszuschlag</h4>
 <ul>
   <li>5,5 % der festgesetzten Lohnsteuer (§ 3 SolzG)</li>
-  <li>Freigrenzen im Modell vereinfacht berücksichtigt</li>
+  <li>Freigrenzen im Modell vereinfacht berücksichtigtSolidaritätszuschlag wird gemäß SolzG als 5,5 % der festgesetzten Lohnsteuer berechnet</li>
+  <li>Die Freigrenze und Milderungszone werden im Modell vereinfacht dargestellt</li>
 </ul>
 
 <h4>5️⃣ Kirchensteuer</h4>
@@ -2240,6 +2243,7 @@ azubi: `
   <li>Rentenversicherung: 18,6 % gesamt → 9,3 % AN / 9,3 % AG (§ 158 SGB VI), BBG West 2026 ≈ 7.550 €</li>
   <li>Arbeitslosenversicherung: 2,6 % gesamt → 1,3 % AN / 1,3 % AG (§ 341 SGB III), BBG wie RV</li>
   <li>Pflegeversicherung: 3,4 % gesamt → 1,7 % AN / 1,7 % AG, Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI), BBG wie KV</li>
+  <li>KV Zusatzbeitrag: Durchschnittlicher Zusatzbeitrag (Modellannahme): 1,7 %</li>
 </ul>
 
 <h4>7️⃣ Zuschläge & Sonderzahlungen</h4>
@@ -2264,7 +2268,7 @@ azubi: `
   <li>Pauschalversteuerungen (§ 40 EStG)</li>
   <li>Altersteilzeit / Kurzarbeitergeld</li>
   <li>Beitragsgruppenschlüssel / Personengruppenschlüssel</li>
-</ul>
+  </ul>
 
 <h4>🔟 Nettoermittlung im Modell</h4>
 <p>
@@ -2274,6 +2278,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
