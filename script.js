@@ -464,35 +464,14 @@ function toggleExplanation() {
 function calculateNetto() {
   if (!validateInputs()) return;
 
-  const brutto = safeNumber(document.getElementById("brutto")?.value);
-  const dob = document.getElementById("dob")?.value;
-  const children = safeNumber(document.getElementById("children")?.value) || 0;
-  const state = document.getElementById("state")?.value || "BW"; // default state if empty
   const employeeType = document.getElementById("employeeType")?.value;
 
-  // Calculate age from DOB
-  const age = calculateAge(dob);
+  if (employeeType === "normal") calculateNormal();
+  else if (employeeType === "praktikant") calculatePraktikant();
+  else if (employeeType === "minijob") calculateMinijob();
+  else if (employeeType === "midijob") calculateMidijob();
+  else if (employeeType === "azubi") calculateAzubi();
 
-
-
- const sv = calculateSV({
-  brutto,
-  children,
-  age,
-  state,
-  employeeType
-});
-
-
- 
-  // Call employee-type specific calculation
-  if (employeeType === "normal") calculateNormal({ sv, employer });
-else if (employeeType === "praktikant") calculatePraktikant({ sv, employer });
-else if (employeeType === "minijob") calculateMinijob({ sv, employer });
-else if (employeeType === "midijob") calculateMidijob({ sv, employer });
-else if (employeeType === "azubi") calculateAzubi({ sv, employer });
-
-  // Update explanation panel
   updateExplanation(employeeType);
 }
 
@@ -875,7 +854,7 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
 
  // Calculate for Normal AN
 // ===== Calculate Normal Employee =====
-function calculateNormal({ sv, employer }) {
+function calculateNormal() {
 
  
   const brutto = safeNumber(document.getElementById("brutto")?.value);
@@ -917,6 +896,13 @@ function calculateNormal({ sv, employer }) {
 
   const steuerfreieZuschlaege = nacht25Pay + nacht40Pay + sonntagPay + feiertagPay;
   const steuerpflichtigesBrutto = grundlohn + ueberstundenPay + ueberstundenZuschlag;
+ const sv = calculateSV({
+  brutto: steuerpflichtigesBrutto,
+  children,
+  age,
+  state,
+  employeeType: "normal"
+});
   
 // ===== Umlagen (Arbeitgeber only) =====
 const umlage1 = steuerpflichtigesBrutto * 0.028;      // U1 (2.8%)
@@ -961,7 +947,7 @@ if (kirchensteuerpflichtig && lohnsteuer > 0) {
 
   // ===== Output =====
 const gesamtBrutto = steuerpflichtigesBrutto + steuerfreieZuschlaege;
-const gesamtKostenAG = gesamtBrutto + arbeitgeberGesamt;
+const gesamtKostenAG = gesamtBrutto + employer.totalCost;
 const outputHTML = `
 <table>
   <tr>
@@ -2268,6 +2254,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
