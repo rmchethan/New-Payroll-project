@@ -237,6 +237,24 @@ function calculateSV({
     pvAG = kvPvBase * pvAGRate;
   }
 
+ // ===== Midijob Reduction (Übergangsbereich) =====
+if (employeeType === "midijob" && brutto > 603 && brutto <= 2000) {
+
+  const lowerLimit = 603;
+  const upperLimit = 2000;
+
+  const factor =
+    0.28 +
+    (0.72 * (brutto - lowerLimit)) / (upperLimit - lowerLimit);
+
+  kvAN *= factor;
+  kvZusatzAN *= factor;
+  rvAN *= factor;
+  avAN *= factor;
+  pvAN *= factor;
+}
+
+
   return {
     kvAN,
     kvZusatzAN,
@@ -2243,6 +2261,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
