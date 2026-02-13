@@ -476,19 +476,17 @@ function calculateNetto() {
 }
 
 
-// Calculate for Minijob
+// ===== Calculate Minijob =====
 
 function calculateMinijob() {
 
   const brutto = safeNumber(document.getElementById("brutto")?.value);
 
-  // Prevent negative or zero Brutto
   if (brutto <= 0) {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
     return;
   }
 
-  // 2026 Minijob limit
   if (brutto > 603) {
     alert("Minijob darf 603€ nicht überschreiten.");
     return;
@@ -502,134 +500,127 @@ function calculateMinijob() {
 
   // ===== Arbeitnehmer =====
   const rvAN = minijobRVExempt ? 0 : brutto * 0.036;
+  const lohnsteuer = 0;
+  const netto = brutto - rvAN;
 
-  const sozialversicherungAN = rvAN;
-  const lohnsteuer = 0; // always 0 for Minijob
-  const netto = brutto - sozialversicherungAN;
-
-  // ===== Arbeitgeber (pauschal) =====
-  const kvAG = brutto * 0.13;       // 13% KV
-  const rvAG = brutto * 0.15;       // 15% RV
-  const pauschsteuer = brutto * 0.02; // 2% pauschal
+  // ===== Arbeitgeber =====
+  const kvAG = brutto * 0.13;       
+  const rvAG = brutto * 0.15;       
+  const pauschsteuer = brutto * 0.02; 
   const umlage1 = brutto * 0.028;
   const umlage2 = brutto * 0.0075;
   const insolvenzgeld = brutto * 0.006;
 
-  const svAG = kvAG + rvAG + pauschsteuer;
-  const umlagenTotal = umlage1 + umlage2 + insolvenzgeld;
+  const arbeitgeberGesamt =
+    kvAG + rvAG + pauschsteuer +
+    umlage1 + umlage2 + insolvenzgeld;
 
-  const employer = calculateEmployerCosts({
-    brutto: steuerpflichtigesBrutto,
-    svAG: svAG,
-    umlagen: umlagenTotal
-  });
+  const gesamtKostenAG = brutto + arbeitgeberGesamt;
 
-  const gesamtBrutto = brutto;
-  const gesamtKostenAG = employer.totalCost;
+  const kostenfaktor = gesamtKostenAG / brutto;
 
   // ===== Output =====
- 
-const outputHTML = `
-<table>
 
-  <!-- ================= BRUTTO ================= -->
-  <tr>
-    <th colspan="2">Brutto</th>
-  </tr>
-  <tr>
-    <td>Minijob Brutto</td>
-    <td>${formatCurrency(gesamtBrutto)}</td>
-  </tr>
-
-  <!-- ================= ABZÜGE AN ================= -->
-  <tr>
-    <th colspan="2">Abzüge Arbeitnehmer</th>
-  </tr>
-  <tr>
-    <td>Lohnsteuer</td>
-    <td>${formatCurrency(0)}</td>
-  </tr>
-  <tr>
-    <td>Rentenversicherung AN ${sozialversicherungAN > 0 ? "(3,6%)" : "(befreit)"}</td>
-    <td>${formatCurrency(sozialversicherungAN)}</td>
-  </tr>
-
-  <tr>
-    <th>Netto</th>
-    <th>${formatCurrency(netto)}</th>
-  </tr>
-
-  <!-- ================= ARBEITGEBER ================= -->
-  <tr>
-    <th colspan="2">Arbeitgeberanteile</th>
-  </tr>
-  <tr>
-    <td>KV AG (13% pauschal)</td>
-    <td>${formatCurrency(kvAG)}</td>
-  </tr>
-  <tr>
-    <td>RV AG (15%)</td>
-    <td>${formatCurrency(rvAG)}</td>
-  </tr>
-  <tr>
-    <td>Pauschsteuer (2%)</td>
-    <td>${formatCurrency(pauschsteuer)}</td>
-  </tr>
-  <tr>
-    <td>Umlage U1</td>
-    <td>${formatCurrency(umlage1)}</td>
-  </tr>
-  <tr>
-    <td>Umlage U2</td>
-    <td>${formatCurrency(umlage2)}</td>
-  </tr>
-  <tr>
-    <td>Insolvenzgeldumlage</td>
-    <td>${formatCurrency(insolvenzgeld)}</td>
-  </tr>
-  <tr>
-    <th>AG Gesamt</th>
-    <th>${formatCurrency(employer.totalCost)}</th>
-  </tr>
-  <tr>
-    <th>Gesamtkosten AG</th>
-    <th>${formatCurrency(employer.kostenfaktor)}</th>
-  </tr>
+  const outputHTML = `
   <table>
-<tr><td>Bruttogehalt</td><td>${brutto.toFixed(2)} €</td></tr>
-<tr><td>AG Sozialversicherung</td><td>${sv.totalAG.toFixed(2)} €</td></tr>
-<tr><td>Umlagen (U1/U2/INS)</td><td>${employer.umlagenTotal.toFixed(2)} €</td></tr>
-<tr><th>Gesamtkosten</th><th>${employer.totalCost.toFixed(2)} €</th></tr>
-<tr><td>Kostenfaktor</td><td>${employer.kostenfaktor.toFixed(2)}</td></tr>
-</table>
 
-</table>
-`;
+    <tr>
+      <th colspan="2">Brutto</th>
+    </tr>
+    <tr>
+      <td>Minijob Brutto</td>
+      <td>${formatCurrency(brutto)}</td>
+    </tr>
 
-const summaryHTML = `
-<div class="summary-box">
-  <div class="summary-item">
-    <h4>Beschäftigungsart</h4>
-    <p>Normal</p>
-  </div>
-  <div class="summary-item">
-    <h4>Brutto</h4>
-    <p>${formatCurrency(gesamtBrutto)}</p>
-  </div>
-  <div class="summary-item">
-    <h4>Netto</h4>
-    <p>${formatCurrency(netto)}</p>
-  </div>
-  <div class="summary-item">
-    <h4>AG Gesamtkosten</h4>
-    <p>${formatCurrency(gesamtKostenAG)}</p>
-  </div>
-</div>
-`;
+    <tr>
+      <th colspan="2">Abzüge Arbeitnehmer</th>
+    </tr>
+    <tr>
+      <td>Lohnsteuer</td>
+      <td>${formatCurrency(lohnsteuer)}</td>
+    </tr>
+    <tr>
+      <td>Rentenversicherung AN ${rvAN > 0 ? "(3,6%)" : "(befreit)"}</td>
+      <td>${formatCurrency(rvAN)}</td>
+    </tr>
 
-document.getElementById("output").innerHTML = summaryHTML + outputHTML;
+    <tr>
+      <th>Netto</th>
+      <th>${formatCurrency(netto)}</th>
+    </tr>
 
+    <tr>
+      <th colspan="2">Arbeitgeberanteile</th>
+    </tr>
+    <tr>
+      <td>KV AG (13%)</td>
+      <td>${formatCurrency(kvAG)}</td>
+    </tr>
+    <tr>
+      <td>RV AG (15%)</td>
+      <td>${formatCurrency(rvAG)}</td>
+    </tr>
+    <tr>
+      <td>Pauschsteuer (2%)</td>
+      <td>${formatCurrency(pauschsteuer)}</td>
+    </tr>
+    <tr>
+      <td>Umlage U1</td>
+      <td>${formatCurrency(umlage1)}</td>
+    </tr>
+    <tr>
+      <td>Umlage U2</td>
+      <td>${formatCurrency(umlage2)}</td>
+    </tr>
+    <tr>
+      <td>Insolvenzgeldumlage</td>
+      <td>${formatCurrency(insolvenzgeld)}</td>
+    </tr>
+
+    <tr>
+      <th>AG Gesamt</th>
+      <th>${formatCurrency(arbeitgeberGesamt)}</th>
+    </tr>
+
+    <tr>
+      <th>Gesamtkosten AG</th>
+      <th>${formatCurrency(gesamtKostenAG)}</th>
+    </tr>
+
+    <tr>
+      <th>Kostenfaktor</th>
+      <th>${kostenfaktor.toFixed(2)}</th>
+    </tr>
+
+  </table>
+  `;
+
+  const summaryHTML = `
+  <div class="summary-box">
+    <div class="summary-item">
+      <h4>Beschäftigungsart</h4>
+      <p>Minijob</p>
+    </div>
+    <div class="summary-item">
+      <h4>Brutto</h4>
+      <p>${formatCurrency(brutto)}</p>
+    </div>
+    <div class="summary-item">
+      <h4>Netto</h4>
+      <p>${formatCurrency(netto)}</p>
+    </div>
+    <div class="summary-item">
+      <h4>AG Gesamtkosten</h4>
+      <p>${formatCurrency(gesamtKostenAG)}</p>
+    </div>
+  </div>
+  `;
+
+  document.getElementById("output").innerHTML =
+    summaryHTML + outputHTML;
 }
+
+
 
 // ===== Calculate Midijob =====
 function calculateMidijob() {
@@ -2267,6 +2258,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
