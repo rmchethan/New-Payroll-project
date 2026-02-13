@@ -1170,7 +1170,8 @@ function calculatePraktikant() {
   // ===== Output values =====
   const gesamtBrutto = brutto;
   const gesamtKostenAG = employer.totalCost;
-
+  const arbeitgeberGesamt = sv.totalAG + umlagenTotal;
+ 
 const outputHTML = `
 <table>
 
@@ -1266,13 +1267,13 @@ const outputHTML = `
     <td>Insolvenzgeldumlage</td>
     <td>${formatCurrency(insolvenzgeld)}</td>
   </tr>
-  <tr>
+ <tr>
     <th>AG Gesamt</th>
-    <th>${formatCurrency(employer.totalCost)}</th>
+    <th>${formatCurrency(arbeitgeberGesamt)}</th>
   </tr>
   <tr>
     <th>Gesamtkosten AG</th>
-    <th>${formatCurrency(employer.kostenfaktor)}</th>
+    <th>${formatCurrency(gesamtKostenAG)}</th>
   </tr>
 </table>
 `;
@@ -2264,6 +2265,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
