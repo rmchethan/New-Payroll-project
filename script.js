@@ -1322,67 +1322,79 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
 
 
 // ===== Calculate Azubi =====
-function calculateAzubi({ sv, employer }) {
+function calculateAzubi() {
+
   const brutto = safeNumber(document.getElementById("brutto")?.value);
+
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
-    return; // Stop the calculation
+    return;
   }
+
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
   const state = document.getElementById("state")?.value;
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
-  
 
- 
   // ===== Steuerpflichtiges Brutto =====
   const steuerpflichtigesBrutto = brutto;
 
-  console.log("SV contributions:", sv);
-  console.log("Employer costs:", employer);
-  const totalAN = sv.totalAN;
-  const totalAG = sv.totalAG;
-  const totalEmployerCost = employer.totalCost;
+  // ===== Sozialversicherung =====
+  const sv = calculateSV({
+    brutto: steuerpflichtigesBrutto,
+    children,
+    age,
+    state,
+    employeeType: "azubi"
+  });
 
   // ===== Jahreshochrechnung & Steuerklasse =====
   const annualIncome = steuerpflichtigesBrutto * 12;
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
   annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
+
   const lohnsteuer = annualTax / 12;
   const annualSoli = calculateSoli(annualTax, steuerklasse);
   const soli = annualSoli / 12;
 
   // ===== Kirchensteuer =====
-  const kirchensteuerpflichtig = document.getElementById("kirchensteuer")?.checked || false;
+  const kirchensteuerpflichtig =
+    document.getElementById("kirchensteuer")?.checked || false;
+
   let kirchensteuer = 0;
   if (kirchensteuerpflichtig && lohnsteuer > 0) {
-  const kirchensteuerRate = getKirchensteuerRate(state);
-  kirchensteuer = lohnsteuer * kirchensteuerRate;
-}
+    const kirchensteuerRate = getKirchensteuerRate(state);
+    kirchensteuer = lohnsteuer * kirchensteuerRate;
+  }
 
-// ===== Umlagen (Arbeitgeber only) =====
-const umlage1 = brutto * 0.028;
-const umlage2 = brutto * 0.0075;
-const insolvenzgeld = brutto * 0.006;
+  // ===== Umlagen (Arbeitgeber only) =====
+  const umlage1 = brutto * 0.028;
+  const umlage2 = brutto * 0.0075;
+  const insolvenzgeld = brutto * 0.006;
+  const umlagenTotal = umlage1 + umlage2 + insolvenzgeld;
 
+  // ===== Employer Cost (centralized) =====
+  const employer = calculateEmployerCosts({
+    brutto: steuerpflichtigesBrutto,
+    svAG: sv.totalAG,
+    umlagen: umlagenTotal
+  });
 
   // ===== Netto =====
-  const netto = steuerpflichtigesBrutto - soli - lohnsteuer - kirchensteuer - sv.totalAN;
+  const netto =
+    steuerpflichtigesBrutto
+    - lohnsteuer
+    - soli
+    - kirchensteuer
+    - sv.totalAN;
 
-  // ===== AG contributions =====
-  const arbeitgeberGesamt =
-  sv.totalAG +
-  umlage1 +
-  umlage2 +
-  insolvenzgeld;
-
-
-  // ===== Output =====
+  // ===== Output Values =====
   const gesamtBrutto = brutto;
-const gesamtKostenAG = brutto + arbeitgeberGesamt;
-
+  const gesamtKostenAG = employer.totalCost;
+  const arbeitgeberGesamt = sv.totalAG + umlagenTotal;
+ 
 const outputHTML = `
 <table>
 
@@ -2270,6 +2282,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
