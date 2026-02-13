@@ -631,23 +631,22 @@ document.getElementById("output").innerHTML = summaryHTML + outputHTML;
 
 }
 
-// Calculate for Midijob
+// ===== Calculate Midijob =====
+function calculateMidijob() {
 
-function calculateMidijob({ sv, employer }) {
   const brutto = safeNumber(document.getElementById("brutto")?.value);
-  
+
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
-    return; // Stop the calculation
+    return;
   }
 
-  const totalAN = sv.totalAN;
-  const totalAG = sv.totalAG;
-  const totalEmployerCost = employer.totalCost;
-  console.log("SV contributions:", sv);
-  console.log("Employer costs:", employer);
-  
+  if (brutto <= 603 || brutto > 2000) {
+    alert("Brutto liegt nicht im Übergangsbereich (603,01 – 2.000 €)");
+    return;
+  }
+
   const dob = document.getElementById("dob")?.value;
   const age = calculateAge(dob);
   const children = Number(document.getElementById("children")?.value || 0);
@@ -655,30 +654,24 @@ function calculateMidijob({ sv, employer }) {
   const steuerklasse = document.getElementById("steuerklasse")?.value || "1";
   const kirchensteuerpflichtig =
     document.getElementById("kirchensteuer")?.checked || false;
- 
-
-
- 
-  if (brutto <= 603 || brutto > 2000) {
-    alert("Brutto liegt nicht im Übergangsbereich (603,01 – 2.000 €)");
-    return;
-  }
 
   const steuerpflichtigesBrutto = brutto;
 
-  // Midijob SV bases for 2026
-const MIDIJOB_MIN = 603.01;
-const MIDIJOB_MAX = 2000;
-const F2026 = 0.6619; // from 28 / 42.30
+  // ✅ Calculate SV HERE (fix)
+  const sv = calculateSV({
+    brutto: steuerpflichtigesBrutto,
+    children,
+    age,
+    state,
+    employeeType: "midijob"
+  });
 
- 
-  // Case: midijob range
-if (brutto > MIDIJOB_MIN && brutto <= MIDIJOB_MAX) {
-  const G = MIDIJOB_MIN;
- 
-  
+  const totalAN = sv.totalAN;
+  const totalAG = sv.totalAG;
 
-  // ===== Lohnsteuer (annualized) =====
+  console.log("SV contributions:", sv);
+
+  // ===== Lohnsteuer =====
   const annualIncome = steuerpflichtigesBrutto * 12;
   let annualTax = calculateAnnualProgressiveTax(annualIncome);
   annualTax = adjustTaxBySteuerklasse(annualTax, steuerklasse, children);
@@ -687,44 +680,39 @@ if (brutto > MIDIJOB_MIN && brutto <= MIDIJOB_MAX) {
   const annualSoli = calculateSoli(annualTax, steuerklasse);
   const soli = annualSoli / 12;
 
-  
   // ===== Kirchensteuer =====
   let kirchensteuer = 0;
 
-if (kirchensteuerpflichtig && lohnsteuer > 0) {
-  const kirchensteuerRate = getKirchensteuerRate(state);
-  kirchensteuer = lohnsteuer * kirchensteuerRate;
-}
+  if (kirchensteuerpflichtig && lohnsteuer > 0) {
+    const kirchensteuerRate = getKirchensteuerRate(state);
+    kirchensteuer = lohnsteuer * kirchensteuerRate;
+  }
 
-  // ===== Umlagen (Arbeitgeber only) =====
-const umlage1 = brutto * 0.028;        // U1 (2.8%)
-const umlage2 = brutto * 0.0075;       // U2 (0.75%)
-const insolvenzgeld = brutto * 0.006;  // Insolvenzgeld (0.6%)
+  // ===== Umlagen =====
+  const umlage1 = brutto * 0.028;
+  const umlage2 = brutto * 0.0075;
+  const insolvenzgeld = brutto * 0.006;
 
-  
+  const arbeitgeberGesamt =
+    totalAG +
+    umlage1 +
+    umlage2 +
+    insolvenzgeld;
+
   // ===== Netto =====
   const netto =
     steuerpflichtigesBrutto -
     lohnsteuer -
     soli -
     kirchensteuer -
-    sv.totalAN;
+    totalAN;
 
-  const arbeitgeberGesamt =
-  sv.totalAG +
-  umlage1 +
-  umlage2 +
-  insolvenzgeld;
-
+  const gesamtBrutto = brutto;
+  const gesamtKostenAG = brutto + arbeitgeberGesamt;
 
   // ===== Output =====
-const gesamtBrutto = brutto;
-const gesamtKostenAG = brutto + arbeitgeberGesamt;
-
-const outputHTML = `
+  const outputHTML = `
 <table>
-
-  <!-- ================= BRUTTO ================= -->
   <tr>
     <th colspan="2">Brutto</th>
   </tr>
@@ -733,7 +721,6 @@ const outputHTML = `
     <td>${formatCurrency(gesamtBrutto)}</td>
   </tr>
 
-  <!-- ================= ABZÜGE AN ================= -->
   <tr>
     <th colspan="2">Abzüge Arbeitnehmer</th>
   </tr>
@@ -775,7 +762,6 @@ const outputHTML = `
     <th>${formatCurrency(netto)}</th>
   </tr>
 
-    <!-- ================= ARBEITGEBER ================= -->
   <tr>
     <th colspan="2">Arbeitgeberanteile</th>
   </tr>
@@ -800,7 +786,6 @@ const outputHTML = `
     <td>${formatCurrency(sv.pvAG)}</td>
   </tr>
 
-  <!-- ================= UMLAGEN ================= -->
   <tr>
     <th colspan="2">Umlagen & Sonstige AG-Kosten</th>
   </tr>
@@ -827,12 +812,12 @@ const outputHTML = `
   </tr>
 </table>
 `;
-  
-const summaryHTML = `
+
+  const summaryHTML = `
 <div class="summary-box">
   <div class="summary-item">
     <h4>Beschäftigungsart</h4>
-    <p>Normal</p>
+    <p>Midijob</p>
   </div>
   <div class="summary-item">
     <h4>Brutto</h4>
@@ -849,9 +834,9 @@ const summaryHTML = `
 </div>
 `;
 
-document.getElementById("output").innerHTML = summaryHTML + outputHTML;
- }
- }
+  document.getElementById("output").innerHTML =
+    summaryHTML + outputHTML;
+}
 
  // Calculate for Normal AN
 // ===== Calculate Normal Employee =====
@@ -2282,6 +2267,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
