@@ -479,39 +479,36 @@ function calculateNetto() {
   updateExplanation(employeeType);
 }
 
+// Reset function
+
 
 function resetCalculator() {
 
-  // Reset all inputs inside the form
-  const form = document.querySelector("form");
-  if (form) {
-    form.reset();
+  // Reset all inputs inside inputTable
+  const inputs = document.querySelectorAll("#inputTable input, #inputTable select");
+
+  inputs.forEach(input => {
+    if (input.type === "checkbox") {
+      input.checked = false;
+    } else {
+      input.value = "";
+    }
+  });
+
+  // Reset Bundesland dropdown to default option
+  const stateSelect = document.getElementById("state");
+  if (stateSelect) {
+    stateSelect.selectedIndex = 0;
   }
 
   // Clear output
- 
-  const output = document.getElementById("output");
-  if (output) {
-    output.innerHTML = "";
-  }
-
-  // Reset Kostenfaktor display if exists
-  const kostenfaktorDisplay = document.getElementById("kostenfaktorDisplay");
-  if (kostenfaktorDisplay) {
-    kostenfaktorDisplay.innerText = "1.00 (0%)";
-  }
+  document.getElementById("output").innerHTML = "";
 
   // Hide explanation panel
   const explanationWrapper = document.getElementById("explanationWrapper");
   if (explanationWrapper) {
     explanationWrapper.style.display = "none";
   }
-
-  // Optional: Scroll to top smoothly
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
 }
 
 // ===== Calculate Minijob =====
@@ -2306,6 +2303,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
