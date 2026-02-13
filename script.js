@@ -59,6 +59,10 @@ function validateInputs() {
   }).format(value || 0);
 }
 
+if (brutto > 7550) {
+  showHint("Beitragsbemessungsgrenze RV erreicht – Beiträge werden gedeckelt.");
+}
+
 // ===== Global Setup =====
 
 // Fields to disable for certain employee types
@@ -2268,6 +2272,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
