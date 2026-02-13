@@ -587,14 +587,13 @@ const outputHTML = `
     <td>Insolvenzgeldumlage</td>
     <td>${formatCurrency(insolvenzgeld)}</td>
   </tr>
-
   <tr>
     <th>AG Gesamt</th>
-    <th>${formatCurrency(arbeitgeberGesamt)}</th>
+    <th>${formatCurrency(employer.totalCost)}</th>
   </tr>
   <tr>
     <th>Gesamtkosten AG</th>
-    <th>${formatCurrency(gesamtKostenAG)}</th>
+    <th>${formatCurrency(employer.kostenfaktor)}</th>
   </tr>
   <table>
 <tr><td>Bruttogehalt</td><td>${brutto.toFixed(2)} €</td></tr>
@@ -2261,6 +2260,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
