@@ -1740,8 +1740,7 @@ Im Modell werden Beitragsabschläge für mehrere Kinder unter 25 vereinfacht ber
   <li>Nachtarbeit: <strong>40 %</strong></li>
   <li>Sonntagsarbeit: <strong>50 %</strong></li>
   <li>Feiertagsarbeit: <strong>125 %</strong></li>
-   <li>Feiertagsarbeit: <strong>150 % (Nicht)</strong></li>
-</ul>
+  </ul>
 
 <h4>Steuerliche Behandlung</h4>
 <ul>
@@ -2269,6 +2268,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
