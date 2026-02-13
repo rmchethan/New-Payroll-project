@@ -480,6 +480,40 @@ function calculateNetto() {
 }
 
 
+function resetCalculator() {
+
+  // Reset all inputs inside the form
+  const form = document.querySelector("form");
+  if (form) {
+    form.reset();
+  }
+
+  // Clear output
+ 
+  const output = document.getElementById("output");
+  if (output) {
+    output.innerHTML = "";
+  }
+
+  // Reset Kostenfaktor display if exists
+  const kostenfaktorDisplay = document.getElementById("kostenfaktorDisplay");
+  if (kostenfaktorDisplay) {
+    kostenfaktorDisplay.innerText = "1.00 (0%)";
+  }
+
+  // Hide explanation panel
+  const explanationWrapper = document.getElementById("explanationWrapper");
+  if (explanationWrapper) {
+    explanationWrapper.style.display = "none";
+  }
+
+  // Optional: Scroll to top smoothly
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
 // ===== Calculate Minijob =====
 
 function calculateMinijob() {
@@ -2272,6 +2306,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
