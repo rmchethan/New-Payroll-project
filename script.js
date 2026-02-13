@@ -1812,8 +1812,13 @@ midijob: `
 <p>
 Der Übergangsbereich umfasst ein monatliches Arbeitsentgelt von
 <strong>603,01 € bis 2.000 €</strong>.
-Ziel ist die <strong>Entlastung des Arbeitnehmers bei den Sozialversicherungsbeiträgen</strong>,
-während der Arbeitgeber grundsätzlich reguläre Beiträge trägt.
+</p>
+
+<p>
+Im Modell wird die reduzierte Arbeitnehmer-Bemessungsgrundlage
+gemäß Übergangsbereichssystematik berechnet.
+Hierbei wird ein gesetzlich vorgegebener Faktor F
+(Modellannahme 2026 ≈ 0,6619) berücksichtigt.
 </p>
 
 <hr>
@@ -2106,31 +2111,31 @@ praktikant: `
   <li>Monatsbrutto wird bei SV-pflichtigen Praktika gemäß § 39b EStG auf Jahresarbeitslohn hochgerechnet (×12)</li>
   <li>Besteuerung nach progressivem Tarif gemäß § 32a EStG</li>
   <li>Berücksichtigung Steuerklasse I–VI (§ 39 EStG)</li>
-  <li>Solidaritätszuschlag 5,5 % der Lohnsteuer (§ 3 SolzG)</li>
   <li>Kirchensteuer: 8 % (Bayern/BW), 9 % (übrige Bundesländer)</li>
+  <h4>Solidaritätszuschlag</h4>
+<ul>
+  <li><strong>5,5 %</strong> der festgesetzten Lohnsteuer (§ 3 SolzG)</li>
+  <li>Freigrenze und Milderungszone werden im Modell vereinfacht berücksichtigt</li>
+</ul>
 </ul>
 
-<h3>3️⃣ Sozialversicherung – SV-Behandlung Praktikanten</h3>
+<h3>3️⃣ Sozialversicherung – Behandlung im Modell</h3>
 <p>
-Die Sozialversicherung hängt von Praktikantentyp, Dauer und Vergütung ab:
+Im vorliegenden Modell erfolgt keine automatische Statusprüfung
+(Pflichtpraktikum, freiwilliges Praktikum etc.).
 </p>
-<ul>
-  <li>Pflichtpraktikum: sozialversicherungsfrei (§ 20 SGB IV)</li>
-  <li>Freiwilliges Praktikum &lt; 3 Monate: sozialversicherungsfrei</li>
-  <li>Freiwilliges Praktikum ≥ 3 Monate:
-    <ul>
-      <li>Brutto ≤ 603 €: sozialversicherungsfrei / Minijob-Status</li>
-      <li>Brutto > 603 €: volle SV-Pflicht wie Normaler Arbeitnehmer</li>
-    </ul>
-  </li>
-</ul>
 
-<h4>Beitragssätze bei SV-pflichtigen Praktika</h4>
+<p>
+Praktikanten werden standardmäßig wie reguläre Arbeitnehmer
+sozialversicherungspflichtig behandelt.
+</p>
+
+<h4>Beitragssätze</h4>
 <ul>
-  <li>Krankenversicherung (KV): 14,6 % + Ø 1,7 % Zusatz → 16,3 % gesamt, 50 % AN / 50 % AG (§ 249 SGB V), BBG 2026 ≈ 5.175 €</li>
-  <li>Rentenversicherung (RV): 18,6 % gesamt, 9,3 % AN / 9,3 % AG (§ 158 SGB VI), BBG West 2026 ≈ 7.550 €</li>
-  <li>Arbeitslosenversicherung (AV): 2,6 % gesamt, 1,3 % AN / 1,3 % AG (§ 341 SGB III), BBG wie RV</li>
-  <li>Pflegeversicherung (PV): 3,4 % gesamt, 1,7 % AN / 1,7 % AG, Kinderlosenzuschlag +0,6 % AN (§ 55 Abs. 3 SGB XI), BBG wie KV</li>
+  <li>Krankenversicherung (KV): 14,6 % + Ø 1,7 % Zusatz → 16,3 % gesamt, 50 % AN / 50 % AG</li>
+  <li>Rentenversicherung (RV): 18,6 % gesamt → 9,3 % AN / 9,3 % AG</li>
+  <li>Arbeitslosenversicherung (AV): 2,6 % gesamt → 1,3 % AN / 1,3 % AG</li>
+  <li>Pflegeversicherung (PV): 3,4 % gesamt → 1,7 % AN / 1,7 % AG, ggf. +0,6 % Kinderlosenzuschlag</li>
 </ul>
 
 <h3>4️⃣ Zuschläge / Überstunden</h3>
@@ -2211,9 +2216,8 @@ azubi: `
 
 <h4>4️⃣ Solidaritätszuschlag</h4>
 <ul>
-  <li>5,5 % der festgesetzten Lohnsteuer (§ 3 SolzG)</li>
-  <li>Freigrenzen im Modell vereinfacht berücksichtigtSolidaritätszuschlag wird gemäß SolzG als 5,5 % der festgesetzten Lohnsteuer berechnet</li>
-  <li>Die Freigrenze und Milderungszone werden im Modell vereinfacht dargestellt</li>
+  <li><strong>5,5 %</strong> der festgesetzten Lohnsteuer (§ 3 SolzG)</li>
+  <li>Freigrenze und Milderungszone werden im Modell vereinfacht berücksichtigt</li>
 </ul>
 
 <h4>5️⃣ Kirchensteuer</h4>
@@ -2265,6 +2269,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
