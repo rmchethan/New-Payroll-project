@@ -478,33 +478,29 @@ function calculateNetto() {
 
 // Calculate for Minijob
 
-function calculateMinijob({ sv, employer }) {
+function calculateMinijob() {
+
   const brutto = safeNumber(document.getElementById("brutto")?.value);
+
   // Prevent negative or zero Brutto
   if (brutto <= 0) {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
-    return; // Stop the calculation
+    return;
   }
-  
+
+  // 2026 Minijob limit
   if (brutto > 603) {
     alert("Minijob darf 603€ nicht überschreiten.");
     return;
   }
 
   const steuerpflichtigesBrutto = brutto;
-  console.log("SV contributions:", sv);
-  console.log("Employer costs:", employer);
-
-  const totalAN = sv.totalAN;
-  const totalAG = sv.totalAG;
-  const totalEmployerCost = employer.totalCost;
- 
 
   // ===== RV Exemption checkbox =====
-  const minijobRVExempt = document.getElementById("minijobRVExempt")?.checked ?? true;
+  const minijobRVExempt =
+    document.getElementById("minijobRVExempt")?.checked ?? true;
 
   // ===== Arbeitnehmer =====
-  // If exempt -> AN pays 0; if not exempt -> 3.6% RV
   const rvAN = minijobRVExempt ? 0 : brutto * 0.036;
 
   const sozialversicherungAN = rvAN;
@@ -512,21 +508,27 @@ function calculateMinijob({ sv, employer }) {
   const netto = brutto - sozialversicherungAN;
 
   // ===== Arbeitgeber (pauschal) =====
-  const kvAG = brutto * 0.13;      // 13% KV
-  const rvAG = brutto * 0.15;      // 15% RV (AG always pays)
+  const kvAG = brutto * 0.13;       // 13% KV
+  const rvAG = brutto * 0.15;       // 15% RV
   const pauschsteuer = brutto * 0.02; // 2% pauschal
   const umlage1 = brutto * 0.028;
   const umlage2 = brutto * 0.0075;
   const insolvenzgeld = brutto * 0.006;
 
-  const arbeitgeberGesamt =
-    kvAG + rvAG + pauschsteuer + umlage1 + umlage2 + insolvenzgeld;
+  const svAG = kvAG + rvAG + pauschsteuer;
+  const umlagenTotal = umlage1 + umlage2 + insolvenzgeld;
+
+  const employer = calculateEmployerCosts({
+    brutto: steuerpflichtigesBrutto,
+    svAG: svAG,
+    umlagen: umlagenTotal
+  });
+
+  const gesamtBrutto = brutto;
+  const gesamtKostenAG = employer.totalCost;
 
   // ===== Output =====
-
-const gesamtBrutto = brutto;
-const gesamtKostenAG = brutto + arbeitgeberGesamt;
-
+ 
 const outputHTML = `
 <table>
 
@@ -2259,6 +2261,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
