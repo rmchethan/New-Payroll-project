@@ -603,6 +603,17 @@ button[onclick="calculateNetto()"] {
   font-weight: 700;
 }
 
+.btn-reset {
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.btn-reset:hover {
+  background-color: #e3e3e3;
+}
 
 
 
