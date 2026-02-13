@@ -929,7 +929,8 @@ function calculateNormal() {
   // ===== Employer Totals =====
   const gesamtBrutto = steuerpflichtigesBrutto + steuerfreieZuschlaege;
   const gesamtKostenAG = employer.totalCost;
-
+ const kostenfaktor = gesamtKostenAG / brutto
+ 
  const outputHTML = `
 <table>
   <tr>
@@ -1052,14 +1053,18 @@ function calculateNormal() {
   <td>Insolvenzgeldumlage</td>
   <td>${formatCurrency(insolvenzgeld)}</td>
 </tr>
-  <tr>
-    <th>AG Gesamt</th>
-    <th>${formatCurrency(employer.totalCost)}</th>
-  </tr>
-  <tr>
-    <th>Gesamtkosten AG</th>
-    <th>${formatCurrency(employer.kostenfaktor)}</th>
-  </tr>
+ <tr>
+  <th>AG Gesamt (ohne Brutto)</th>
+  <th>${formatCurrency(sv.totalAG + umlagenTotal)}</th>
+</tr>
+<tr>
+  <th>Gesamtkosten AG</th>
+  <th>${formatCurrency(gesamtKostenAG)}</th>
+</tr>
+<tr>
+  <th>Kostenfaktor</th>
+  <th>${employer.kostenfaktor.toFixed(2)}</th>
+</tr>
 </table>
 `;
 
@@ -1079,12 +1084,13 @@ const summaryHTML = `
   </div>
   <div class="summary-item">
     <h4>AG Gesamtkosten</h4>
-    <p>${formatCurrency(employer.kostenfaktor)}</p>
+    <p>${formatCurrency(gesamtKostenAG)}</p>
   </div>
-</div>
-<div class="result-card">
-  <div class="result-label">Kostenfaktor</div>
-  <div class="result-value" id="kostenfaktorDisplay">1.00 (0%)</div>
+  <div class="summary-item highlight">
+    <h4>Kostenfaktor</h4>
+    <p>${employer.kostenfaktor.toFixed(2)} 
+    (${((employer.kostenfaktor - 1) * 100).toFixed(1)}%)</p>
+  </div>
 </div>
 `;
 
@@ -1275,7 +1281,7 @@ const outputHTML = `
 <div class="summary-box">
   <div class="summary-item">
     <h4>Beschäftigungsart</h4>
-    <p>Normal</p>
+    <p>Praktikant</p>
   </div>
   <div class="summary-item">
     <h4>Brutto</h4>
@@ -1483,7 +1489,7 @@ const outputHTML = `
 <div class="summary-box">
   <div class="summary-item">
     <h4>Beschäftigungsart</h4>
-    <p>Normal</p>
+    <p>Azubi</p>
   </div>
   <div class="summary-item">
     <h4>Brutto</h4>
@@ -2258,6 +2264,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
