@@ -1663,9 +1663,8 @@ jobticket: `
     <li>Reduziert die Auszahlung an den Arbeitnehmer</li>
     <li>Steuer- und SV-Begünstigungen (§ 3 Nr. 15 EStG) werden im Modell nicht gesondert geprüft</li>
   </ul>
-`
-  `
-}; // <-- close the object properly
+`,
+  }; // <-- close the object properly
 
 
 
@@ -2329,6 +2328,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
