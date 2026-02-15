@@ -1569,9 +1569,6 @@ window.onclick = function(event) {
 }
 
 
-
-
-
 const infoContent = {
   brutto: `
     <ul>
@@ -1638,34 +1635,37 @@ const infoContent = {
       <li>Im Modell steuerfrei, erhöht Netto</li>
       <li>Sozialversicherungsfrei</li>
     </ul>
-    sonntag50: `
-  <ul>
-    <li>Sonntagsarbeit mit <strong>50 % Zuschlag</strong> gemäß § 3b EStG</li>
-    <li>Im Modell steuerfrei, sofern zusätzlich zum Grundlohn gezahlt</li>
-    <li>Sozialversicherungsfrei</li>
-    <li>Erhöht ausschließlich das Netto</li>
-    <li>Gesetzliche Höchstgrenzen (z. B. 50 € Grundlohn je Stunde) werden im Modell nicht gesondert geprüft</li>
-  </ul>
-`,
-feiertag125: `
-  <ul>
-    <li>Feiertagsarbeit mit <strong>125 % Zuschlag</strong> gemäß § 3b EStG</li>
-    <li>Im Modell steuerfrei bei zusätzlicher Zahlung zum Grundlohn</li>
-    <li>Sozialversicherungsfrei</li>
-    <li>Erhöht ausschließlich das Netto</li>
-    <li>Gesetzliche Höchstgrenzen werden vereinfacht dargestellt</li>
-  </ul>
-`,
-jobticket: `
-  <ul>
-    <li>Zuschuss des Arbeitgebers zum öffentlichen Nahverkehr</li>
-    <li>Im Modell als Nettoabzug dargestellt</li>
-    <li>Reduziert die Auszahlung an den Arbeitnehmer</li>
-    <li>Steuer- und SV-Begünstigungen (§ 3 Nr. 15 EStG) werden im Modell nicht gesondert geprüft</li>
-  </ul>
-`,
-  }; // <-- close the object properly
+  `,  
 
+  sonntag50: `
+    <ul>
+      <li>Sonntagsarbeit mit <strong>50 % Zuschlag</strong> gemäß § 3b EStG</li>
+      <li>Im Modell steuerfrei, sofern zusätzlich zum Grundlohn gezahlt</li>
+      <li>Sozialversicherungsfrei</li>
+      <li>Erhöht ausschließlich das Netto</li>
+      <li>Gesetzliche Höchstgrenzen (z. B. 50 € Grundlohn je Stunde) werden im Modell nicht gesondert geprüft</li>
+    </ul>
+  `,
+
+  feiertag125: `
+    <ul>
+      <li>Feiertagsarbeit mit <strong>125 % Zuschlag</strong> gemäß § 3b EStG</li>
+      <li>Im Modell steuerfrei bei zusätzlicher Zahlung zum Grundlohn</li>
+      <li>Sozialversicherungsfrei</li>
+      <li>Erhöht ausschließlich das Netto</li>
+      <li>Gesetzliche Höchstgrenzen werden vereinfacht dargestellt</li>
+    </ul>
+  `,
+
+  jobticket: `
+    <ul>
+      <li>Zuschuss des Arbeitgebers zum öffentlichen Nahverkehr</li>
+      <li>Im Modell als Nettoabzug dargestellt</li>
+      <li>Reduziert die Auszahlung an den Arbeitnehmer</li>
+      <li>Steuer- und SV-Begünstigungen (§ 3 Nr. 15 EStG) werden im Modell nicht gesondert geprüft</li>
+    </ul>
+  `
+};
 
 
 // ===== Toggle collapsible explanation panel =====
@@ -2328,6 +2328,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
