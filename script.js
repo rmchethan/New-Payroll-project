@@ -2496,3 +2496,4 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 
 
 
+
