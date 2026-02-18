@@ -875,7 +875,8 @@ function calculateNormal() {
     alert("Bitte geben Sie einen positiven Bruttobetrag ein.");
     return;
   }
- if (employeeType === "normal" && brutto <= 2000 && brutto > 603,01) {
+ 
+ if (employeeType === "normal" && brutto > 603 && brutto <= 2000) {
   alert("Hinweis: Das Brutto liegt im Midijob-Bereich (603,01 € – 2.000 €). Bitte Beschäftigungsart prüfen.");
 }
 
@@ -2332,6 +2333,7 @@ Netto = Brutto + steuerfreie Zuschläge – Lohnsteuer – Solidaritätszuschlag
 <p><em>Hinweis: Dieses Modell dient der strukturellen Darstellung der Systematik der Ausbildungsvergütung und ersetzt keine rechtsverbindliche Entgeltabrechnung.</em></p>
 `
 };
+
 
 
 
